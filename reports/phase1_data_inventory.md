@@ -6,7 +6,7 @@
 - **Dosya Yolu**: `C:\Users\agah\Documents\materials-data-lab\data\raw\Tempering data for carbon and low alloy steels - Raiipa.csv`
 - **Boyut**: `156,258` bytes
 - **SHA-256 Hash**: `3f88fdccf4bb2f3c03be6eeca03001b4bd8a2b0de5cd4818195486182a4762b0`
-- **Analiz Zamanı**: `2026-09-24T10:36:57.329030+00:00`
+- **Analiz Zamanı**: `2026-09-24T17:35:39.216465+00:00`
 - **Python Sürümü**: `3.12.8 (tags/v3.12.8:2dc476b, Dec  3 2024, 19:30:04) [MSC v.1942 64 bit (AMD64)]`
 - **Pandas Sürümü**: `3.0.5`
 
@@ -58,6 +58,29 @@
 | `Al (%wt)` | `float64` | 1466 | 0 | 0 | 2 | 0.0000 | 1.2600 | 0.0344 |
 | `Cu (%wt)` | `float64` | 1466 | 0 | 0 | 4 | 0.0000 | 0.0800 | 0.0060 |
 | `Final hardness (HRC) - post tempering` | `float64` | 1466 | 0 | 0 | 446 | 0.9000 | 68.5000 | 41.4680 |
+
+### Top Frequencies for Categorical Columns
+**Source**:
+- `Grange and Baughman, 1956`: 949
+- `Hollomon and Jaffe, 1945`: 270
+- `Penha, 2010`: 247
+
+**Steel type**:
+- `AISI-SAE 4340`: 101
+- `AISI-SAE 4140`: 93
+- `AISI-SAE 5160`: 51
+- `AISI-SAE 6150`: 51
+- `AISI-SAE E52100`: 51
+- `AISI-SAE 1335`: 50
+- `AISI-SAE 2340`: 50
+- `AISI-SAE 3140`: 50
+- `AISI-SAE 4640`: 50
+- `AISI-SAE 5140`: 50
+- `AISI-SAE 6145`: 50
+- `0,31%C - plain carbon steel`: 45
+- `0,56%C - plain carbon steel`: 45
+- `0,74%C - plain carbon steel`: 45
+- `0,89%C - plain carbon steel`: 45
 
 ## 4. İkincil Sayısal Dönüşüm Görünümü (Coerced Numeric View)
 > Bu bölüm `pd.to_numeric(errors='coerce')` ile elde edilen ikincil analizdir. Ham veriyi DEĞİŞTİRMEZ.

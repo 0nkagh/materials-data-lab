@@ -1,0 +1,523 @@
+{
+  "flag_x_source": {
+    "HARDNESS_OUT_OF_RANGE_SUSPECT": {
+      "Grange and Baughman, 1956": 92,
+      "Penha, 2010": 10,
+      "Hollomon and Jaffe, 1945": 21
+    },
+    "E140_EXTRAPOLATION_SUSPECT": {
+      "Grange and Baughman, 1956": 92,
+      "Penha, 2010": 10,
+      "Hollomon and Jaffe, 1945": 21
+    },
+    "TEMP_AC1_NEAR_WARNING": {
+      "Grange and Baughman, 1956": 49,
+      "Penha, 2010": 28,
+      "Hollomon and Jaffe, 1945": 30
+    },
+    "TIME_LONG_FURNACE_INFO": {
+      "Grange and Baughman, 1956": 248,
+      "Penha, 2010": 44,
+      "Hollomon and Jaffe, 1945": 54
+    },
+    "P_WARNING_BAND": {
+      "Grange and Baughman, 1956": 44
+    },
+    "P_UPPER_BOUND_SUSPECT": {
+      "Grange and Baughman, 1956": 17
+    },
+    "S_WARNING_BAND": {
+      "Grange and Baughman, 1956": 17
+    },
+    "TIME_SHORT_INDUCTION_INFO": {
+      "Grange and Baughman, 1956": 64,
+      "Penha, 2010": 86,
+      "Hollomon and Jaffe, 1945": 108
+    },
+    "TEMP_BELOW_WINDOW_WARNING": {
+      "Penha, 2010": 50,
+      "Hollomon and Jaffe, 1945": 60
+    },
+    "Al_UPPER_BOUND_SUSPECT": {
+      "Grange and Baughman, 1956": 40
+    }
+  },
+  "flag_x_steel": {
+    "HARDNESS_OUT_OF_RANGE_SUSPECT": {
+      "AISI-SAE 1026": 11,
+      "AISI-SAE 1030": 11,
+      "AISI-SAE 1035": 9,
+      "AISI-SAE 1042": 8,
+      "0,31%C - plain carbon steel": 8,
+      "AISI-SAE 1045": 7,
+      "AISI-SAE 1040": 6,
+      "AISI-SAE 1335": 5,
+      "AISI-SAE 2340": 5,
+      "AISI-SAE 4027": 5
+    },
+    "E140_EXTRAPOLATION_SUSPECT": {
+      "AISI-SAE 1026": 11,
+      "AISI-SAE 1030": 11,
+      "AISI-SAE 1035": 9,
+      "AISI-SAE 1042": 8,
+      "0,31%C - plain carbon steel": 8,
+      "AISI-SAE 1045": 7,
+      "AISI-SAE 1040": 6,
+      "AISI-SAE 1335": 5,
+      "AISI-SAE 2340": 5,
+      "AISI-SAE 4027": 5
+    },
+    "TEMP_AC1_NEAR_WARNING": {
+      "AISI-SAE 4340": 6,
+      "AISI-SAE 5160": 6,
+      "AISI-SAE 6150": 6,
+      "AISI-SAE E52100": 6,
+      "0,31%C - plain carbon steel": 5,
+      "0,56%C - plain carbon steel": 5,
+      "0,74%C - plain carbon steel": 5,
+      "0,89%C - plain carbon steel": 5,
+      "0,98%C - plain carbon steel": 5,
+      "1,15%C - plain carbon steel": 5
+    },
+    "TIME_LONG_FURNACE_INFO": {
+      "AISI-SAE 4340": 24,
+      "AISI-SAE 4140": 23,
+      "AISI-SAE 1335": 15,
+      "AISI-SAE 2340": 15,
+      "AISI-SAE 3140": 15,
+      "AISI-SAE 4640": 15,
+      "AISI-SAE 5140": 15,
+      "AISI-SAE 6145": 15,
+      "AISI-SAE 1026": 10,
+      "AISI-SAE 1030": 10
+    },
+    "P_WARNING_BAND": {
+      "AISI-SAE 1050": 17,
+      "AISI-SAE 1038": 9,
+      "AISI-SAE 1049": 9,
+      "AISI-SAE 1065": 9
+    },
+    "P_UPPER_BOUND_SUSPECT": {
+      "AISI-SAE 1080": 17
+    },
+    "S_WARNING_BAND": {
+      "AISI-SAE 1080": 17
+    },
+    "TIME_SHORT_INDUCTION_INFO": {
+      "AISI-SAE 4340": 26,
+      "AISI-SAE 4140": 22,
+      "AISI-SAE 5160": 18,
+      "AISI-SAE 6150": 18,
+      "AISI-SAE E52100": 18,
+      "0,31%C - plain carbon steel": 18,
+      "0,56%C - plain carbon steel": 18,
+      "0,74%C - plain carbon steel": 18,
+      "0,89%C - plain carbon steel": 18,
+      "0,98%C - plain carbon steel": 18
+    },
+    "TEMP_BELOW_WINDOW_WARNING": {
+      "AISI-SAE 4140": 10,
+      "AISI-SAE 4340": 10,
+      "AISI-SAE 5160": 10,
+      "AISI-SAE 6150": 10,
+      "AISI-SAE E52100": 10,
+      "0,31%C - plain carbon steel": 10,
+      "0,56%C - plain carbon steel": 10,
+      "0,74%C - plain carbon steel": 10,
+      "0,89%C - plain carbon steel": 10,
+      "0,98%C - plain carbon steel": 10
+    },
+    "Al_UPPER_BOUND_SUSPECT": {
+      "Nitriding Steel ": 40
+    }
+  },
+  "al_upper_bound_list": [
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "Nitriding Steel ",
+      "Al value": 1.26
+    }
+  ],
+  "p_upper_bound_list": [
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    },
+    {
+      "Source": "Grange and Baughman, 1956",
+      "Steel type": "AISI-SAE 1080",
+      "P value": 0.054
+    }
+  ],
+  "hrc_under_20_deep_dive": {
+    "source_breakdown": {
+      "Grange and Baughman, 1956": 92,
+      "Hollomon and Jaffe, 1945": 21,
+      "Penha, 2010": 10
+    },
+    "hrc_min": 0.9,
+    "hrc_max": 19.6,
+    "temp_min": 500.0,
+    "temp_max": 704.4,
+    "overlap_examples": [
+      {
+        "Steel type": "0,56%C - plain carbon steel",
+        "Source": "Hollomon and Jaffe, 1945",
+        "Final HRC": 62.5
+      },
+      {
+        "Steel type": "AISI-SAE 4640",
+        "Source": "Grange and Baughman, 1956",
+        "Final HRC": 45.2
+      },
+      {
+        "Steel type": "AISI-SAE 1045",
+        "Source": "Grange and Baughman, 1956",
+        "Final HRC": 56.9
+      }
+    ]
+  },
+  "logical_duplicates": {
+    "diff_hrc": {
+      "group_count": 0,
+      "examples": []
+    },
+    "same_hrc": {
+      "row_count": 0,
+      "group_count": 0,
+      "examples": []
+    }
+  },
+  "temp_grid": {
+    "Grange and Baughman, 1956": [
+      204.4,
+      260.0,
+      315.6,
+      371.1,
+      426.7,
+      482.2,
+      537.8,
+      593.3,
+      648.9,
+      704.4
+    ],
+    "Hollomon and Jaffe, 1945": [
+      100.0,
+      150.0,
+      200.0,
+      250.0,
+      300.0,
+      400.0,
+      406.0,
+      500.0,
+      600.0,
+      602.0,
+      700.0
+    ],
+    "Penha, 2010": [
+      100.0,
+      150.0,
+      200.0,
+      250.0,
+      300.0,
+      400.0,
+      500.0,
+      600.0,
+      700.0
+    ]
+  },
+  "time_regime": [
+    {
+      "Source": "Grange and Baughman, 1956",
+      "count": 949,
+      "min": 40,
+      "max": 115200,
+      "median": 3600.0
+    },
+    {
+      "Source": "Hollomon and Jaffe, 1945",
+      "count": 270,
+      "min": 10,
+      "max": 86400,
+      "median": 900.0
+    },
+    {
+      "Source": "Penha, 2010",
+      "count": 247,
+      "min": 10,
+      "max": 86400,
+      "median": 900.0
+    }
+  ]
+}

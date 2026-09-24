@@ -1,0 +1,269 @@
+{
+  "manifest": {
+    "applied_decisions": [
+      "D-01",
+      "NK-1",
+      "D-05",
+      "D-07",
+      "flag_column",
+      "initial_hrc_missing"
+    ],
+    "counts": {
+      "nk1_strip_affected_cells": 40,
+      "d05_unknown_grade_rows": 0,
+      "initial_hrc_missing_count": 949
+    }
+  },
+  "final_hrc_dist": {
+    "overall": {
+      "n": 1466,
+      "min": 0.9,
+      "p25": 32.1,
+      "median": 43.1,
+      "p75": 51.8,
+      "max": 68.5,
+      "mean": 41.468008185538885,
+      "std": 14.079248389415339
+    },
+    "by_source": {
+      "Grange and Baughman, 1956": {
+        "n": 949,
+        "min": 0.9,
+        "p25": 29.7,
+        "median": 39.2,
+        "p75": 48.0,
+        "max": 62.7,
+        "mean": 37.94552160168599,
+        "std": 12.33318622902951
+      },
+      "Hollomon and Jaffe, 1945": {
+        "n": 270,
+        "min": 1.5,
+        "p25": 37.5,
+        "median": 50.5,
+        "p75": 62.25,
+        "max": 68.5,
+        "mean": 47.818518518518516,
+        "std": 16.490518556371118
+      },
+      "Penha, 2010": {
+        "n": 247,
+        "min": 7.3,
+        "p25": 40.75,
+        "median": 51.6,
+        "p75": 58.0,
+        "max": 64.0,
+        "mean": 48.059919028340076,
+        "std": 12.696275812442483
+      }
+    }
+  },
+  "temper_temp_c_dist": {
+    "overall": {
+      "n": 1466,
+      "min": 100.0,
+      "p25": 260.0,
+      "median": 426.7,
+      "p75": 593.3,
+      "max": 704.4,
+      "mean": 422.0241473396998,
+      "std": 176.08804105188662
+    },
+    "by_source": {
+      "Grange and Baughman, 1956": {
+        "n": 949,
+        "min": 204.4,
+        "p25": 315.6,
+        "median": 482.2,
+        "p75": 593.3,
+        "max": 704.4,
+        "mean": 456.58314014752375,
+        "std": 153.9092810163054
+      },
+      "Hollomon and Jaffe, 1945": {
+        "n": 270,
+        "min": 100.0,
+        "p25": 200.0,
+        "median": 300.0,
+        "p75": 500.0,
+        "max": 700.0,
+        "mean": 355.7037037037037,
+        "std": 196.85648817832868
+      },
+      "Penha, 2010": {
+        "n": 247,
+        "min": 100.0,
+        "p25": 200.0,
+        "median": 300.0,
+        "p75": 500.0,
+        "max": 700.0,
+        "mean": 361.7408906882591,
+        "std": 194.7058592180461
+      }
+    }
+  },
+  "temper_time_s_dist": {
+    "overall": {
+      "n": 1466,
+      "min": 10.0,
+      "p25": 600.0,
+      "median": 3600.0,
+      "p75": 14400.0,
+      "max": 115200.0,
+      "mean": 21969.75443383356,
+      "std": 34177.62386282785
+    },
+    "by_source": {
+      "Grange and Baughman, 1956": {
+        "n": 949,
+        "min": 40.0,
+        "p25": 900.0,
+        "median": 3600.0,
+        "p75": 28800.0,
+        "max": 115200.0,
+        "mean": 23862.507903055848,
+        "std": 34653.86669372049
+      },
+      "Hollomon and Jaffe, 1945": {
+        "n": 270,
+        "min": 10.0,
+        "p25": 90.0,
+        "median": 900.0,
+        "p75": 9000.0,
+        "max": 86400.0,
+        "mean": 19280.0,
+        "std": 33791.51335352102
+      },
+      "Penha, 2010": {
+        "n": 247,
+        "min": 10.0,
+        "p25": 90.0,
+        "median": 900.0,
+        "p75": 9000.0,
+        "max": 86400.0,
+        "mean": 17637.813765182185,
+        "std": 32239.358578334202
+      }
+    }
+  },
+  "composition_summary": {
+    "c_wt": {
+      "min": 0.25,
+      "median": 0.42,
+      "max": 1.15
+    },
+    "mn_wt": {
+      "min": 0.3,
+      "median": 0.74,
+      "max": 1.85
+    },
+    "p_wt": {
+      "min": 0.007,
+      "median": 0.017,
+      "max": 0.054
+    },
+    "s_wt": {
+      "min": 0.005,
+      "median": 0.024,
+      "max": 0.055
+    },
+    "si_wt": {
+      "min": 0.06,
+      "median": 0.21,
+      "max": 1.62
+    },
+    "ni_wt": {
+      "min": 0.0,
+      "median": 0.01,
+      "max": 3.41
+    },
+    "cr_wt": {
+      "min": 0.0,
+      "median": 0.06,
+      "max": 1.57
+    },
+    "mo_wt": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.36
+    },
+    "v_wt": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.16
+    },
+    "al_wt": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 1.26
+    },
+    "cu_wt": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.08
+    }
+  },
+  "spearman_temp": {
+    "overall": -0.889252168330557,
+    "by_source": {
+      "Grange and Baughman, 1956": -0.8960706385288114,
+      "Hollomon and Jaffe, 1945": -0.8499553937438844,
+      "Penha, 2010": -0.8241648391682306
+    }
+  },
+  "spearman_time": {
+    "overall": -0.2434313381105197,
+    "by_source": {
+      "Grange and Baughman, 1956": -0.07537747256275472,
+      "Hollomon and Jaffe, 1945": -0.258929384985765,
+      "Penha, 2010": -0.4330623405871594
+    }
+  },
+  "spearman_hj": {
+    "overall": -0.9284531176171394,
+    "by_source": {
+      "Grange and Baughman, 1956": -0.9236275151360134,
+      "Hollomon and Jaffe, 1945": -0.8907953096701193,
+      "Penha, 2010": -0.8943623999285383
+    }
+  },
+  "initial_hrc_missing_crosstab": {
+    "false": {
+      "Grange and Baughman, 1956": 0,
+      "Hollomon and Jaffe, 1945": 270,
+      "Penha, 2010": 247
+    },
+    "true": {
+      "Grange and Baughman, 1956": 949,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 0
+    }
+  },
+  "flag_consistency": {
+    "expected": {
+      "SUSPECT": 303,
+      "WARNING": 278,
+      "INFO": 604,
+      "E140": 123
+    },
+    "actual": {
+      "SUSPECT": 303,
+      "WARNING": 278,
+      "INFO": 604,
+      "E140": 123
+    },
+    "discrepancies": {},
+    "raw_counts": {
+      "TIME_LONG_FURNACE_INFO": 346,
+      "TIME_SHORT_INDUCTION_INFO": 258,
+      "HARDNESS_OUT_OF_RANGE_SUSPECT": 123,
+      "E140_EXTRAPOLATION_SUSPECT": 123,
+      "TEMP_BELOW_WINDOW_WARNING": 110,
+      "TEMP_AC1_NEAR_WARNING": 107,
+      "P_WARNING_BAND": 44,
+      "Al_UPPER_BOUND_SUSPECT": 40,
+      "P_UPPER_BOUND_SUSPECT": 17,
+      "S_WARNING_BAND": 17
+    }
+  }
+}

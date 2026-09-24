@@ -131,6 +131,10 @@ def run_inventory_analysis(file_path: Path) -> dict[str, Any]:
         min_val = float(finite_series.min()) if has_numeric else None
         max_val = float(finite_series.max()) if has_numeric else None
         mean_val = float(finite_series.mean()) if has_numeric else None
+        
+        top_values = None
+        if col in ["Source", "Steel type"]:
+            top_values = series.value_counts(dropna=False).head(15).to_dict()
 
         columns_report.append(
             {
@@ -153,6 +157,7 @@ def run_inventory_analysis(file_path: Path) -> dict[str, Any]:
                 "numeric_min": min_val,
                 "numeric_max": max_val,
                 "numeric_mean": mean_val,
+                "top_values": top_values,
             }
         )
 
@@ -247,6 +252,16 @@ def generate_markdown_report(data: dict[str, Any]) -> str:
 
     lines.extend([
         "",
+        "### Top Frequencies for Categorical Columns",
+    ])
+    for c in cols:
+        if c["top_values"]:
+            lines.append(f"**{c['column_name']}**:")
+            for val, count in c["top_values"].items():
+                lines.append(f"- `{val}`: {count}")
+            lines.append("")
+
+    lines.extend([
         "## 4. İkincil Sayısal Dönüşüm Görünümü (Coerced Numeric View)",
         "> Bu bölüm `pd.to_numeric(errors='coerce')` ile elde edilen ikincil analizdir. Ham veriyi DEĞİŞTİRMEZ.",
         "",

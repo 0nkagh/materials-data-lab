@@ -4,7 +4,7 @@
     "file_path": "C:\\Users\\agah\\Documents\\materials-data-lab\\data\\raw\\Tempering data for carbon and low alloy steels - Raiipa.csv",
     "file_size_bytes": 156258,
     "sha256": "3f88fdccf4bb2f3c03be6eeca03001b4bd8a2b0de5cd4818195486182a4762b0",
-    "analysis_timestamp": "2026-09-24T10:36:57.329030+00:00",
+    "analysis_timestamp": "2026-09-24T17:35:39.216465+00:00",
     "python_version": "3.12.8 (tags/v3.12.8:2dc476b, Dec  3 2024, 19:30:04) [MSC v.1942 64 bit (AMD64)]",
     "pandas_version": "3.0.5"
   },
@@ -57,7 +57,12 @@
       "coerced_neg_inf": 0,
       "numeric_min": null,
       "numeric_max": null,
-      "numeric_mean": null
+      "numeric_mean": null,
+      "top_values": {
+        "Grange and Baughman, 1956": 949,
+        "Hollomon and Jaffe, 1945": 270,
+        "Penha, 2010": 247
+      }
     },
     {
       "column_name": "Steel type",
@@ -78,7 +83,24 @@
       "coerced_neg_inf": 0,
       "numeric_min": null,
       "numeric_max": null,
-      "numeric_mean": null
+      "numeric_mean": null,
+      "top_values": {
+        "AISI-SAE 4340": 101,
+        "AISI-SAE 4140": 93,
+        "AISI-SAE 5160": 51,
+        "AISI-SAE 6150": 51,
+        "AISI-SAE E52100": 51,
+        "AISI-SAE 1335": 50,
+        "AISI-SAE 2340": 50,
+        "AISI-SAE 3140": 50,
+        "AISI-SAE 4640": 50,
+        "AISI-SAE 5140": 50,
+        "AISI-SAE 6145": 50,
+        "0,31%C - plain carbon steel": 45,
+        "0,56%C - plain carbon steel": 45,
+        "0,74%C - plain carbon steel": 45,
+        "0,89%C - plain carbon steel": 45
+      }
     },
     {
       "column_name": "Initial hardness (HRC) - post quenching",
@@ -99,7 +121,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 46.5,
       "numeric_max": 67.0,
-      "numeric_mean": 61.49361702127659
+      "numeric_mean": 61.49361702127659,
+      "top_values": null
     },
     {
       "column_name": "Tempering time (s)",
@@ -120,7 +143,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 10.0,
       "numeric_max": 115200.0,
-      "numeric_mean": 21969.75443383356
+      "numeric_mean": 21969.75443383356,
+      "top_values": null
     },
     {
       "column_name": "Tempering temperature (ºC)",
@@ -141,7 +165,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 100.0,
       "numeric_max": 704.4,
-      "numeric_mean": 422.0241473396998
+      "numeric_mean": 422.0241473396998,
+      "top_values": null
     },
     {
       "column_name": "C (%wt)",
@@ -162,7 +187,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.25,
       "numeric_max": 1.15,
-      "numeric_mean": 0.5115825375170532
+      "numeric_mean": 0.5115825375170532,
+      "top_values": null
     },
     {
       "column_name": "Mn (%wt)",
@@ -183,7 +209,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.3,
       "numeric_max": 1.85,
-      "numeric_mean": 0.7407298772169169
+      "numeric_mean": 0.7407298772169169,
+      "top_values": null
     },
     {
       "column_name": "P (%wt)",
@@ -204,7 +231,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.007,
       "numeric_max": 0.054,
-      "numeric_mean": 0.017236016371077762
+      "numeric_mean": 0.017236016371077762,
+      "top_values": null
     },
     {
       "column_name": "S (%wt)",
@@ -225,7 +253,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.005,
       "numeric_max": 0.055,
-      "numeric_mean": 0.023802182810368347
+      "numeric_mean": 0.023802182810368347,
+      "top_values": null
     },
     {
       "column_name": "Si (%wt)",
@@ -246,7 +275,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.06,
       "numeric_max": 1.62,
-      "numeric_mean": 0.2393792633015007
+      "numeric_mean": 0.2393792633015007,
+      "top_values": null
     },
     {
       "column_name": "Ni (%wt)",
@@ -267,7 +297,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.0,
       "numeric_max": 3.41,
-      "numeric_mean": 0.36283765347885405
+      "numeric_mean": 0.36283765347885405,
+      "top_values": null
     },
     {
       "column_name": "Cr (%wt)",
@@ -288,7 +319,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.0,
       "numeric_max": 1.57,
-      "numeric_mean": 0.38969645293315147
+      "numeric_mean": 0.38969645293315147,
+      "top_values": null
     },
     {
       "column_name": "Mo (%wt)",
@@ -309,7 +341,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.0,
       "numeric_max": 0.36,
-      "numeric_mean": 0.08023192360163711
+      "numeric_mean": 0.08023192360163711,
+      "top_values": null
     },
     {
       "column_name": "V (%wt)",
@@ -330,7 +363,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.0,
       "numeric_max": 0.16,
-      "numeric_mean": 0.005457025920873124
+      "numeric_mean": 0.005457025920873124,
+      "top_values": null
     },
     {
       "column_name": "Al (%wt)",
@@ -351,7 +385,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.0,
       "numeric_max": 1.26,
-      "numeric_mean": 0.034379263301500686
+      "numeric_mean": 0.034379263301500686,
+      "top_values": null
     },
     {
       "column_name": "Cu (%wt)",
@@ -372,7 +407,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.0,
       "numeric_max": 0.08,
-      "numeric_mean": 0.005985675306957707
+      "numeric_mean": 0.005985675306957707,
+      "top_values": null
     },
     {
       "column_name": "Final hardness (HRC) - post tempering",
@@ -393,7 +429,8 @@
       "coerced_neg_inf": 0,
       "numeric_min": 0.9,
       "numeric_max": 68.5,
-      "numeric_mean": 41.468008185538885
+      "numeric_mean": 41.468008185538885,
+      "top_values": null
     }
   ],
   "threshold_findings_summary": {
