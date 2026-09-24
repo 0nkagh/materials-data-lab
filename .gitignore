@@ -1,0 +1,28 @@
+# Raw data - strictly excluded from version control
+data/raw/
+data/raw/*
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Build & packaging
+dist/
+build/
+*.egg-info/
+
+# Testing & coverage caches
+.pytest_cache/
+.pytest_tmp/
+.coverage
+htmlcov/
+
+# Local / transient reports
+reports/_local/
