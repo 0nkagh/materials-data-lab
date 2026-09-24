@@ -88,6 +88,9 @@ def run_eda(csv_path: Path) -> dict[str, Any]:
     def get_spearman(d: pd.DataFrame, col1: str, col2: str) -> float:
         valid = d[[col1, col2]].dropna()
         if len(valid) < 2: return 0.0
+        # Check if arrays are constant
+        if valid[col1].nunique() <= 1 or valid[col2].nunique() <= 1:
+            return 0.0
         return float(valid[col1].corr(valid[col2], method="spearman"))
         
     spearman_temp = {
