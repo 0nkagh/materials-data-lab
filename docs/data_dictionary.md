@@ -31,7 +31,7 @@ Bu veri sözlüğü, `Tempering data for carbon and low alloy steels - Raiipa.cs
 | `V (%wt)` | Vanadyum kütlesel yüzdesi | `%wt` | 0.0 – 0.50 %wt | `REPORT_ONLY` | SAE J403/J404 heuristiği. Güçlü karbür oluşturucu ve tane inceltici. |
 | `Al (%wt)` | Alüminyum kütlesel yüzdesi | `%wt` | 0.0 – 0.15 %wt | `REPORT_ONLY` | SAE J403/J404 heuristiği. >0.15 %wt (40 satır) SUSPECT; nitrasyon çeliği (nitralloy) varlığı şüphesi notu. |
 | `Cu (%wt)` | Bakır kütlesel yüzdesi | `%wt` | 0.0 – 0.40 %wt | `REPORT_ONLY` | SAE J403/J404 heuristiği. Korozyon ve hava direnci elementi. |
-| `Final hardness (HRC) - post tempering` | Menevişleme sonrası ölçülen final sertlik | `HRC` | 20.0 – 70.0 HRC | `STANDARD_CROSSCHECKED` | ASTM E18 / ISO 6508 standardı. <20 HRC olan 123 satır mevcuttur; bu satırlar ASTM E140 Tablo 1'e göre 238 HV altından matematiksel dönüştürme şüphesiyle `E140_EXTRAPOLATION_SUSPECT` olarak işaretlenir. |
+| `Final hardness (HRC) - post tempering` | Menevişleme sonrası ölçülen final sertlik | `HRC` | 20.0 – 70.0 HRC | `STANDARD_CROSSCHECKED` | ASTM E18 / ISO 6508 standardı. <20 HRC olan 123 satır mevcuttur; bu satırlar ASTM E140 Tablo 1'e göre 238 HV altından matematiksel dönüştürme şüphesiyle `E140_EXTRAPOLATION_SUSPECT` olarak işaretlenir. Note: the dataset card records no HV->HRC conversions for Hollomon & Jaffe (1945), so the lowest-HRC rows in that subset are plausibly true measurements; the <20 HRC region should be read as UNKNOWN-origin (conversion or measurement), consistent with Phase 2 decision D-02. |
 
 ---
 

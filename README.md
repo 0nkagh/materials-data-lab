@@ -2,20 +2,38 @@
 
 Materials Data Lab is an independent learning and portfolio project investigating the empirical and metallurgical relationship between steel alloy composition, tempering conditions (temperature and soaking time), and the resulting post-tempering hardness (HRC) in carbon and low-alloy steels.
 
-## Current Project Status
-- **Phase 1: Project Setup and Read-Only Data Inventory.**
-- Scope is strictly limited to repository skeleton setup, non-destructive data auditing, physical threshold checking, and provenance tagging.
-- No data cleaning, feature engineering, predictive modeling, or dashboard development is included in this phase.
+## Project Status
+- **Phase 1-5: Completed.** The project has successfully established a read-only data inventory, broken down data anomalies, generated numerical EDA, established a modeling MVP (RandomForest vs Physics Baseline), and evaluated the predictions in-depth.
+- **Roadmap (Candidate Future Work)**:
+  - Investigating the remaining UNKNOWN variations.
+  - Adding SHAP explainability analysis.
+  - Building a local Gradio demo for inference.
+  - Developing an `initial_hrc` subset model for the partial data available.
 
-## Running Tests and Inventory
+## Results
+Below are the results of the MVP modeling (Phase 4). The physics baseline (B2) relies solely on the Hollomon-Jaffe parameter, while M1 uses the full composition and process variables.
+
+| Model | S1 (RandomSplit) - MAE / RMSE / R² | S2 (GroupSplit) - MAE / RMSE / R² |
+| :--- | :--- | :--- |
+| **B1_Naive** | 11.81 / 14.84 / -0.05 | 11.51 / 14.25 / -0.07 |
+| **B2_Physics** | 4.56 / 5.89 / 0.83 | 4.67 / 5.76 / 0.81 |
+| **M1_RF** | 1.52 / 2.35 / 0.97 | 2.69 / 3.57 / 0.93 |
+
+*Gözlem*: B2 (Fizik Baseline), tek bir birleşik özellikle R²=0.81 başarısına ulaşarak metalurjik denklemin veri üzerindeki sağlamlığını kanıtlamıştır.
+
+## Usage
 To run the automated test suite:
 ```bash
 pytest -q
 ```
 
-To run the data inventory CLI without installation:
+To run the data pipelines and generate reports:
 ```bash
 python -m materials_data_lab.inventory --input "data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv" --outdir reports
+python -m materials_data_lab.breakdown --input "data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv" --outdir reports
+python -m materials_data_lab.eda --input "data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv" --outdir reports
+python -m materials_data_lab.modeling --input "data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv" --outdir reports
+python -m materials_data_lab.evaluation --input "data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv" --outdir reports
 ```
 
 ## Data Attribution

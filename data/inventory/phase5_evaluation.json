@@ -1,0 +1,194 @@
+{
+  "RF_MAE_by_Source": {
+    "Grange and Baughman, 1956": {
+      "mae": 2.31800316122234,
+      "n": 949
+    },
+    "Hollomon and Jaffe, 1945": {
+      "mae": 3.3779444444444464,
+      "n": 270
+    },
+    "Penha, 2010": {
+      "mae": 3.353441295546559,
+      "n": 247
+    }
+  },
+  "RF_MAE_by_HRC_band": {
+    "25-40": {
+      "mae": 2.9639953271028037,
+      "n": 428
+    },
+    "40-55": {
+      "mae": 2.26708103448276,
+      "n": 580
+    },
+    "<25": {
+      "mae": 3.2698423645320194,
+      "n": 203
+    },
+    ">=55": {
+      "mae": 2.7170784313725527,
+      "n": 255
+    }
+  },
+  "RF_MAE_by_Temp_band": {
+    "300-500": {
+      "mae": 2.3763429158110885,
+      "n": 487
+    },
+    "500-650": {
+      "mae": 3.147517745302714,
+      "n": 479
+    },
+    "<300": {
+      "mae": 2.3357760814249393,
+      "n": 393
+    },
+    ">=650": {
+      "mae": 3.3385981308411217,
+      "n": 107
+    }
+  },
+  "B2_MAE_by_Source": {
+    "Grange and Baughman, 1956": {
+      "mae": 4.348002029768294,
+      "n": 949
+    },
+    "Hollomon and Jaffe, 1945": {
+      "mae": 5.722887275142648,
+      "n": 270
+    },
+    "Penha, 2010": {
+      "mae": 4.81688642067575,
+      "n": 247
+    }
+  },
+  "B2_MAE_by_HRC_band": {
+    "25-40": {
+      "mae": 4.067600808132645,
+      "n": 428
+    },
+    "40-55": {
+      "mae": 4.539363262805968,
+      "n": 580
+    },
+    "<25": {
+      "mae": 6.427812867053694,
+      "n": 203
+    },
+    ">=55": {
+      "mae": 4.637625827942753,
+      "n": 255
+    }
+  },
+  "B2_MAE_by_Temp_band": {
+    "300-500": {
+      "mae": 4.21065729567246,
+      "n": 487
+    },
+    "500-650": {
+      "mae": 5.075641081014146,
+      "n": 479
+    },
+    "<300": {
+      "mae": 4.31058545193987,
+      "n": 393
+    },
+    ">=650": {
+      "mae": 6.404880121821514,
+      "n": 107
+    }
+  },
+  "Worst_10_RF": [
+    {
+      "steel_type": "0,98%C - plain carbon steel",
+      "source": "Hollomon and Jaffe, 1945",
+      "temp_c": 602.0,
+      "time_s": 86400,
+      "actual": 4.5,
+      "predicted": 23.960999999999995,
+      "residual": 19.460999999999995
+    },
+    {
+      "steel_type": "0,31%C - plain carbon steel",
+      "source": "Hollomon and Jaffe, 1945",
+      "temp_c": 150.0,
+      "time_s": 90,
+      "actual": 46.0,
+      "predicted": 59.670000000000044,
+      "residual": 13.670000000000044
+    },
+    {
+      "steel_type": "0,31%C - plain carbon steel",
+      "source": "Hollomon and Jaffe, 1945",
+      "temp_c": 700.0,
+      "time_s": 10,
+      "actual": 21.5,
+      "predicted": 34.617999999999995,
+      "residual": 13.117999999999995
+    },
+    {
+      "steel_type": "0,31%C - plain carbon steel",
+      "source": "Hollomon and Jaffe, 1945",
+      "temp_c": 700.0,
+      "time_s": 90,
+      "actual": 16.0,
+      "predicted": 28.675,
+      "residual": 12.675
+    },
+    {
+      "steel_type": "AISI-SAE E52100",
+      "source": "Penha, 2010",
+      "temp_c": 600.0,
+      "time_s": 90,
+      "actual": 51.7,
+      "predicted": 39.079,
+      "residual": -12.621000000000002
+    },
+    {
+      "steel_type": "AISI-SAE 5160",
+      "source": "Penha, 2010",
+      "temp_c": 500.0,
+      "time_s": 86400,
+      "actual": 25.0,
+      "predicted": 37.59299999999999,
+      "residual": 12.59299999999999
+    },
+    {
+      "steel_type": "AISI-SAE 9264",
+      "source": "Grange and Baughman, 1956",
+      "temp_c": 648.9,
+      "time_s": 86400,
+      "actual": 26.3,
+      "predicted": 13.774000000000003,
+      "residual": -12.525999999999998
+    },
+    {
+      "steel_type": "0,31%C - plain carbon steel",
+      "source": "Hollomon and Jaffe, 1945",
+      "temp_c": 100.0,
+      "time_s": 10,
+      "actual": 47.5,
+      "predicted": 59.747000000000035,
+      "residual": 12.247000000000035
+    },
+    {
+      "steel_type": "AISI-SAE E52100",
+      "source": "Penha, 2010",
+      "temp_c": 600.0,
+      "time_s": 900,
+      "actual": 47.2,
+      "predicted": 34.971999999999966,
+      "residual": -12.228000000000037
+    },
+    {
+      "steel_type": "0,31%C - plain carbon steel",
+      "source": "Hollomon and Jaffe, 1945",
+      "temp_c": 600.0,
+      "time_s": 90,
+      "actual": 22.5,
+      "predicted": 34.521999999999984,
+      "residual": 12.021999999999984
+    }
+  ]
+}
