@@ -1,0 +1,111 @@
+import gradio as gr
+import numpy as np
+import pandas as pd
+from materials_data_lab.modeling import RF_FEATURES
+
+# Observed bounds in the dataset
+OBSERVED_BOUNDS = {
+    "c_wt": (0.19, 0.77),
+    "mn_wt": (0.28, 1.70),
+    "p_wt": (0.007, 0.051),
+    "s_wt": (0.003, 0.046),
+    "si_wt": (0.12, 1.51),
+    "ni_wt": (0.0, 1.95),
+    "cr_wt": (0.0, 1.10),
+    "mo_wt": (0.0, 0.52),
+    "v_wt": (0.0, 0.03),
+    "al_wt": (0.0, 0.081),
+    "cu_wt": (0.0, 0.23),
+    "temper_temp_c": (100.0, 705.0),
+    "temper_time_s": (10.0, 115200.0)
+}
+
+def check_extrapolation(inputs: dict[str, float]) -> str:
+    """Check if inputs are outside the observed data range."""
+    for key, val in inputs.items():
+        min_val, max_val = OBSERVED_BOUNDS[key]
+        if val < min_val or val > max_val:
+            return "⚠ Input outside observed data range — extrapolation"
+    return "✅ Within observed bounds"
+
+def make_prediction(models, c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, mo_wt, v_wt, al_wt, cu_wt, temper_temp_c, temper_time_s) -> tuple[str, str, str]:
+    """Pure function to handle the prediction logic, disconnected from the UI definition."""
+    inputs = {
+        "c_wt": c_wt, "mn_wt": mn_wt, "p_wt": p_wt, "s_wt": s_wt, "si_wt": si_wt,
+        "ni_wt": ni_wt, "cr_wt": cr_wt, "mo_wt": mo_wt, "v_wt": v_wt, "al_wt": al_wt, "cu_wt": cu_wt,
+        "temper_temp_c": temper_temp_c, "temper_time_s": temper_time_s
+    }
+    
+    warning_text = check_extrapolation(inputs)
+    
+    log_time = np.log10(temper_time_s) if temper_time_s > 0 else 0
+    
+    # Feature ordering must match RF_FEATURES from modeling.py exactly
+    # ['c_wt', 'mn_wt', 'p_wt', 's_wt', 'si_wt', 'ni_wt', 'cr_wt', 'mo_wt', 'v_wt', 'al_wt', 'cu_wt', 'temper_temp_c', 'log_time']
+    x_rf = np.array([[c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, mo_wt, v_wt, al_wt, cu_wt, temper_temp_c, log_time]])
+    
+    temp_k = temper_temp_c + 273.15
+    t_saat = temper_time_s / 3600.0
+    p_hj = (temp_k / 1000.0) * (19.5 + np.log10(t_saat) if t_saat > 0 else 0)
+    
+    x_phys = np.array([[p_hj]])
+    
+    rf_model = models["rf"]
+    b2_model = models["b2"]
+    
+    rf_pred = rf_model.predict(x_rf)[0]
+    b2_pred = b2_model.predict(x_phys)[0]
+    
+    return f"{rf_pred:.1f} HRC", f"{b2_pred:.1f} HRC", warning_text
+
+def create_demo(models):
+    """Creates the Gradio interface block."""
+    with gr.Blocks(title="Materials Data Lab - Local Demo") as demo:
+        gr.Markdown("# Materials Data Lab — Tempering Hardness Predictor")
+        gr.Markdown("Predict final HRC for carbon and low-alloy steels using the MVP Random Forest and Physical Baseline models.")
+        
+        with gr.Row():
+            with gr.Column():
+                gr.Markdown("### Composition (wt%)")
+                c_wt = gr.Number(label="Carbon (c_wt)", value=0.40)
+                mn_wt = gr.Number(label="Manganese (mn_wt)", value=0.80)
+                p_wt = gr.Number(label="Phosphorus (p_wt)", value=0.015)
+                s_wt = gr.Number(label="Sulfur (s_wt)", value=0.015)
+                si_wt = gr.Number(label="Silicon (si_wt)", value=0.25)
+                ni_wt = gr.Number(label="Nickel (ni_wt)", value=0.0)
+                cr_wt = gr.Number(label="Chromium (cr_wt)", value=0.0)
+                mo_wt = gr.Number(label="Molybdenum (mo_wt)", value=0.0)
+                v_wt = gr.Number(label="Vanadium (v_wt)", value=0.0)
+                al_wt = gr.Number(label="Aluminum (al_wt)", value=0.0)
+                cu_wt = gr.Number(label="Copper (cu_wt)", value=0.0)
+                
+            with gr.Column():
+                gr.Markdown("### Tempering Conditions")
+                temper_temp_c = gr.Slider(minimum=100.0, maximum=705.0, value=400.0, label="Temperature (°C)")
+                temper_time_s = gr.Slider(minimum=10.0, maximum=115200.0, step=10, value=3600.0, label="Time (s)")
+                
+                predict_btn = gr.Button("Predict Hardness", variant="primary")
+                
+                gr.Markdown("### Predictions")
+                with gr.Row():
+                    rf_out = gr.Textbox(label="Random Forest (M1)", text_align="center")
+                    b2_out = gr.Textbox(label="Physics Baseline (B2)", text_align="center")
+                
+                warning_out = gr.Textbox(label="Data Quality Status", interactive=False)
+                
+        inputs = [c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, mo_wt, v_wt, al_wt, cu_wt, temper_temp_c, temper_time_s]
+        outputs = [rf_out, b2_out, warning_out]
+        
+        def predict_wrapper(*args):
+            return make_prediction(models, *args)
+            
+        predict_btn.click(fn=predict_wrapper, inputs=inputs, outputs=outputs)
+        
+        gr.Markdown("---")
+        gr.Markdown(
+            "Data source: Tempering data for carbon and low alloy steels (Raiipa Technologies) | "
+            "Educational demo, not for production QC | "
+            "[GitHub Repository](https://github.com/0nkagh/materials-data-lab)"
+        )
+        
+    return demo

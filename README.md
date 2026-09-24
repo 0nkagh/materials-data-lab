@@ -45,6 +45,14 @@ Below are the results of the MVP modeling (Phase 4) and the subset study (Phase 
 | **Phase 6a Set A** | (subset) | MAE: 4.02 / RMSE: 4.91 / R²: 0.83 [observational] |
 | **Phase 6a Set B** | (subset, with initial_hrc) | MAE: 3.53 / RMSE: 4.45 / R²: 0.86 [observational] |
 
+## Local Demo
+The repository includes a local Gradio web interface for interacting with the model. The model artifact is automatically trained on your local machine the first time you run the app (as it's excluded from git).
+```bash
+pip install -r requirements.txt
+python app.py
+```
+This will open the predictor interface in your default web browser.
+
 ## Usage
 To run the automated test suite:
 ```bash

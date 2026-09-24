@@ -26,3 +26,5 @@ htmlcov/
 
 # Local / transient reports
 reports/_local/
+models/
+*.joblib
