@@ -1,0 +1,95 @@
+{
+  "permutation_importance": [
+    {
+      "feature": "temper_temp_c",
+      "importance_mean": 13.080391359708958,
+      "importance_std": 0.2672759747411932,
+      "mdi_rank": 1,
+      "pi_rank": 1
+    },
+    {
+      "feature": "log_time",
+      "importance_mean": 3.647191223283309,
+      "importance_std": 0.06702993811396958,
+      "mdi_rank": 2,
+      "pi_rank": 2
+    },
+    {
+      "feature": "c_wt",
+      "importance_mean": 3.1344201909959053,
+      "importance_std": 0.0684735769091394,
+      "mdi_rank": 3,
+      "pi_rank": 3
+    },
+    {
+      "feature": "cr_wt",
+      "importance_mean": 1.6129063665302403,
+      "importance_std": 0.047067512527012294,
+      "mdi_rank": 4,
+      "pi_rank": 4
+    },
+    {
+      "feature": "si_wt",
+      "importance_mean": 0.3146429968167341,
+      "importance_std": 0.009681567422380886,
+      "mdi_rank": 5,
+      "pi_rank": 5
+    },
+    {
+      "feature": "s_wt",
+      "importance_mean": 0.2452482264665752,
+      "importance_std": 0.008238227929581749,
+      "mdi_rank": 7,
+      "pi_rank": 6
+    },
+    {
+      "feature": "p_wt",
+      "importance_mean": 0.23899574806730303,
+      "importance_std": 0.00955794743277795,
+      "mdi_rank": 6,
+      "pi_rank": 7
+    },
+    {
+      "feature": "mo_wt",
+      "importance_mean": 0.22425493406093625,
+      "importance_std": 0.008366089862717334,
+      "mdi_rank": 9,
+      "pi_rank": 8
+    },
+    {
+      "feature": "mn_wt",
+      "importance_mean": 0.1950940882219186,
+      "importance_std": 0.007224144876132945,
+      "mdi_rank": 8,
+      "pi_rank": 9
+    },
+    {
+      "feature": "ni_wt",
+      "importance_mean": 0.14036164165529746,
+      "importance_std": 0.005860890740020027,
+      "mdi_rank": 10,
+      "pi_rank": 10
+    },
+    {
+      "feature": "cu_wt",
+      "importance_mean": 0.012262619372442047,
+      "importance_std": 0.00113012644105496,
+      "mdi_rank": 11,
+      "pi_rank": 11
+    },
+    {
+      "feature": "al_wt",
+      "importance_mean": 0.0032571623465210697,
+      "importance_std": 0.00025128102058555546,
+      "mdi_rank": 13,
+      "pi_rank": 12
+    },
+    {
+      "feature": "v_wt",
+      "importance_mean": 0.0025334242837652286,
+      "importance_std": 0.00028276965051168547,
+      "mdi_rank": 12,
+      "pi_rank": 13
+    }
+  ]
+}

@@ -26,7 +26,7 @@ COMP_COLS = ["c_wt", "mn_wt", "p_wt", "s_wt", "si_wt", "ni_wt", "cr_wt", "mo_wt"
 RF_FEATURES = COMP_COLS + ["temper_temp_c", "log_time"]
 
 
-def prepare_features(df: pd.DataFrame) -> pd.DataFrame:
+def prepare_features(df: pd.DataFrame, keep_initial: bool = False) -> pd.DataFrame:
     """Prepare features for modeling.
     
     Drops rows where final_hrc is missing.
@@ -38,7 +38,7 @@ def prepare_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.dropna(subset=["final_hrc"])
     
     # D-08 Decision
-    if "initial_hrc" in df.columns:
+    if not keep_initial and "initial_hrc" in df.columns:
         df = df.drop(columns=["initial_hrc"])
         
     # log_time feature engineering

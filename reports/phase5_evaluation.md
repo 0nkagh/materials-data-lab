@@ -16,6 +16,7 @@
   4. (iv) MDI korele-feature uyarısı,
   5. (v) tuning yapılmadı,
   6. (vi) rezidüeller kaynaklar arasında dengesiz olabilir (Grange kaynağında hata 2.32 iken, Hollomon ve Penha kaynaklarında hata 3.35+ seviyesindedir).
+  7. Permutation importance cross-check (Faz 6a) eklendi; sonuç özeti.
 
 ## Sonuçların Doğru Okunması
 > Korelasyon nedensellik ifade etmez. Ayrıca S1'deki (Random Split) R² skorları aynı çelik türünün hem eğitim hem teste sızmasından ötürü **iyimserdir**. S2 skoru daha güvenilirdir.

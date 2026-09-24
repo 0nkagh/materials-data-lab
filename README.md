@@ -4,6 +4,7 @@ Materials Data Lab is an independent learning and portfolio project investigatin
 
 ## Project Status
 - **Phase 1-5: Completed.** The project has successfully established a read-only data inventory, broken down data anomalies, generated numerical EDA, established a modeling MVP (RandomForest vs Physics Baseline), and evaluated the predictions in-depth.
+- **Phase 6a (completed 2026-09-25)**: permutation importance cross-check of MDI rankings + observational initial_hrc subset study (517 rows, MAE 4.02 → 3.53).
 - **Roadmap (Candidate Future Work)**:
   - Investigating the remaining UNKNOWN variations.
   - Adding SHAP explainability analysis.
