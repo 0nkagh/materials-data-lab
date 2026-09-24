@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: "Materials Data Lab"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: "Agah"
+    given-names: "Ömer"
+version: 1.0.0
+date-released: 2026-09-25
+url: "https://github.com/0nkagh/materials-data-lab"
+license: MIT
+preferred-citation:
+  type: dataset
+  authors:
+    - name: "Raiipa Technologies"
+  title: "Tempering data for carbon and low alloy steels"
+  year: 2024
+  url: "https://www.kaggle.com/datasets/rgerschtzsauer/tempering-data-for-carbon-and-low-alloy-steels"
+  license: "CC BY 4.0"
