@@ -52,7 +52,11 @@ Below are the results of the MVP modeling (Phase 4) and the subset study (Phase 
 Point predictions are supplemented with a split-conformal prediction interval (Phase V3-A). Based on out-of-fold residuals (GroupKFold), a **±5.08 HRC** interval provides a rigorously calibrated empirical coverage of **~90%** across all hardness ranges and unseen steel alloys.
 
 ## Local Demo
-The repository includes a local Gradio web interface for interacting with the model. As of V2-F, the demo serves the XGBoost (tuned) champion model. The model artifact is automatically trained on your local machine the first time you run the app (as it's excluded from git).
+The repository includes a local Gradio web interface for interacting with the model. As of V2-F, the demo serves the XGBoost (tuned) champion model. The model artifact is automatically trained on your local machine the first time you run the app (as it's excluded from git). 
+
+As of V3-B, the demo also provides:
+1. **Conformal Uncertainty**: A rigorous 90% confidence interval based on `q90` out-of-fold residuals.
+2. **SHAP Explanations**: A waterfall plot and top 3 feature effects to explain the model's reasoning for each specific prediction.
 ```bash
 pip install -r requirements.txt
 python app.py

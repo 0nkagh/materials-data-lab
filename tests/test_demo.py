@@ -12,23 +12,23 @@ import joblib
 @pytest.fixture
 def synthetic_csv(tmp_path):
     df = pd.DataFrame({
-        "c_wt": [0.4, 0.5, 0.6, 0.4],
-        "mn_wt": [0.8, 0.9, 0.8, 0.8],
-        "p_wt": [0.01, 0.02, 0.01, 0.01],
-        "s_wt": [0.01, 0.01, 0.02, 0.01],
-        "si_wt": [0.2, 0.3, 0.2, 0.2],
-        "ni_wt": [0.0, 0.1, 0.0, 0.0],
-        "cr_wt": [0.0, 0.0, 0.1, 0.0],
-        "mo_wt": [0.0, 0.0, 0.0, 0.1],
-        "v_wt": [0.0, 0.0, 0.0, 0.0],
-        "al_wt": [0.0, 0.0, 0.0, 0.0],
-        "cu_wt": [0.0, 0.0, 0.0, 0.0],
-        "temper_temp_c": [200.0, 300.0, 400.0, 500.0],
-        "temper_time_s": [3600.0, 7200.0, 3600.0, 3600.0],
-        "final_hrc": [50.0, 45.0, 40.0, 35.0],
-        "steel_type": ["A", "B", "C", "D"],
-        "initial_hrc": [60.0, 55.0, 50.0, 45.0],
-        "data_source": ["Test", "Test", "Test", "Test"]
+        "c_wt": [0.4, 0.5, 0.6, 0.4, 0.5, 0.6, 0.4],
+        "mn_wt": [0.8, 0.9, 0.8, 0.8, 0.9, 0.8, 0.8],
+        "p_wt": [0.01, 0.02, 0.01, 0.01, 0.02, 0.01, 0.01],
+        "s_wt": [0.01, 0.01, 0.02, 0.01, 0.01, 0.02, 0.01],
+        "si_wt": [0.2, 0.3, 0.2, 0.2, 0.3, 0.2, 0.2],
+        "ni_wt": [0.0, 0.1, 0.0, 0.0, 0.1, 0.0, 0.0],
+        "cr_wt": [0.0, 0.0, 0.1, 0.0, 0.0, 0.1, 0.0],
+        "mo_wt": [0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.1],
+        "v_wt": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "al_wt": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "cu_wt": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "temper_temp_c": [200.0, 300.0, 400.0, 500.0, 300.0, 400.0, 500.0],
+        "temper_time_s": [3600.0, 7200.0, 3600.0, 3600.0, 7200.0, 3600.0, 3600.0],
+        "final_hrc": [50.0, 45.0, 40.0, 35.0, 45.0, 40.0, 35.0],
+        "steel_type": ["A", "B", "C", "D", "E", "F", "G"],
+        "initial_hrc": [60.0, 55.0, 50.0, 45.0, 55.0, 50.0, 45.0],
+        "data_source": ["Test", "Test", "Test", "Test", "Test", "Test", "Test"]
     })
     csv_path = tmp_path / "test_data.csv"
     df.to_csv(csv_path, index=False)
@@ -57,6 +57,22 @@ def test_build_or_load_artifact(synthetic_csv, tmp_path):
     models3, meta3 = build_or_load_artifact(synthetic_csv, models_dir=models_dir)
     assert meta3["retrained"] is True
     assert meta3["csv_sha256"] != meta1["csv_sha256"]
+    
+def test_migration_v2_no_conformal(synthetic_csv, tmp_path):
+    models_dir = tmp_path / "models"
+    models_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Generate real artifact first to have joblibs
+    _, meta1 = build_or_load_artifact(synthetic_csv, models_dir=models_dir)
+    
+    # Manually remove conformal_q90
+    del meta1["conformal_q90"]
+    with open(models_dir / "artifact_meta.json", "w") as f:
+        json.dump(meta1, f)
+        
+    models2, meta2 = build_or_load_artifact(synthetic_csv, models_dir=models_dir)
+    assert meta2["retrained"] is True
+    assert "conformal_q90" in meta2
 
 def test_migration_v1_to_v2(synthetic_csv, tmp_path):
     models_dir = tmp_path / "models"
@@ -95,22 +111,42 @@ def test_check_extrapolation():
     bad["c_wt"] = 1.0 # Out of bounds (max 0.77)
     assert "⚠" in check_extrapolation(bad)
 
-def test_make_prediction():
+def test_make_prediction(monkeypatch):
+    # Mock shap explainer and plot to avoid real computation and plt rendering in test
+    class MockExplainer:
+        def __init__(self, *args, **kwargs):
+            pass
+        def __call__(self, *args, **kwargs):
+            class MockShapValues:
+                @property
+                def values(self):
+                    arr = np.array([0.1]*13)
+                    arr[0] = 1.0 # Make c_wt high
+                    return arr
+            return [MockShapValues()]
+            
+    import shap
+    monkeypatch.setattr(shap, "TreeExplainer", MockExplainer)
+    monkeypatch.setattr(shap.plots, "waterfall", lambda *args, **kwargs: None)
+
     # Create a mock model
     class MockModel:
         def predict(self, X):
             return np.array([42.5])
             
     models = {"xgb": MockModel(), "b2": MockModel()}
-    meta = {"features": RF_FEATURES}
+    meta = {"features": RF_FEATURES, "conformal_q90": 5.08}
     
-    xgb_pred, b2_pred, warn = make_prediction(
+    xgb_pred, interval_text, b2_pred, warn, img_path, top_text = make_prediction(
         models, meta, 0.4, 0.8, 0.015, 0.015, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 400.0, 3600.0
     )
     
     assert xgb_pred == "42.5 HRC"
     assert b2_pred == "42.5 HRC"
+    assert "90% interval: 37.4 – 47.6 HRC" in interval_text
     assert "✅" in warn
+    assert str(img_path).endswith(".png")
+    assert "c_wt" in top_text
 
 def test_feature_order_mismatch():
     class MockModel:

@@ -1,6 +1,13 @@
 import gradio as gr
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import shap
+import tempfile
+import time
+import os
 from materials_data_lab.modeling import RF_FEATURES
 
 # Observed bounds in the dataset
@@ -59,7 +66,26 @@ def make_prediction(models, meta, c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, 
     xgb_pred = xgb_model.predict(x_rf)[0]
     b2_pred = b2_model.predict(x_phys)[0]
     
-    return f"{xgb_pred:.1f} HRC", f"{b2_pred:.1f} HRC", warning_text
+    q90 = meta.get("conformal_q90", 5.08) if meta else 5.08
+    interval_text = f"90% interval: {xgb_pred - q90:.1f} – {xgb_pred + q90:.1f} HRC (q90 = ±{q90:.2f} HRC)"
+    
+    start_time = time.time()
+    explainer = shap.TreeExplainer(xgb_model)
+    shap_values = explainer(x_rf)
+    
+    fig = plt.figure(figsize=(8, 4))
+    shap.plots.waterfall(shap_values[0], max_display=10, show=False)
+    tmp_path = os.path.join(tempfile.gettempdir(), f"shap_{time.time()}.png")
+    plt.tight_layout()
+    plt.savefig(tmp_path, bbox_inches='tight')
+    plt.close(fig)
+    
+    feature_names = RF_FEATURES
+    vals = shap_values[0].values
+    top_indices = np.argsort(np.abs(vals))[-3:][::-1]
+    top_text = ", ".join([f"{feature_names[i]}: {vals[i]:+.1f} HRC" for i in top_indices])
+    
+    return f"{xgb_pred:.1f} HRC", interval_text, f"{b2_pred:.1f} HRC", warning_text, tmp_path, top_text
 
 def create_demo(models, meta=None):
     """Creates the Gradio interface block."""
@@ -91,13 +117,19 @@ def create_demo(models, meta=None):
                 
                 gr.Markdown("### Predictions")
                 with gr.Row():
-                    xgb_out = gr.Textbox(label="Champion: XGBoost (tuned)", text_align="center")
+                    with gr.Column():
+                        xgb_out = gr.Textbox(label="Champion: XGBoost (tuned)", text_align="center")
+                        interval_out = gr.Textbox(label="Conformal Interval", text_align="center")
                     b2_out = gr.Textbox(label="Physics Baseline (B2)", text_align="center")
                 
                 warning_out = gr.Textbox(label="Data Quality Status", interactive=False)
                 
+                with gr.Accordion("Why this prediction?", open=False):
+                    top_text_out = gr.Textbox(label="Top 3 Features", interactive=False)
+                    shap_img_out = gr.Image(label="SHAP Waterfall", type="filepath")
+                
         inputs = [c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, mo_wt, v_wt, al_wt, cu_wt, temper_temp_c, temper_time_s]
-        outputs = [xgb_out, b2_out, warning_out]
+        outputs = [xgb_out, interval_out, b2_out, warning_out, shap_img_out, top_text_out]
         
         def predict_wrapper(*args):
             return make_prediction(models, meta, *args)

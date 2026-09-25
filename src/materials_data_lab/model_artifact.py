@@ -42,8 +42,8 @@ def build_or_load_artifact(csv_path: Path, models_dir: str | Path = "models") ->
             with open(meta_path, "r", encoding="utf-8") as f:
                 meta = json.load(f)
             
-            # Check schema version and csv hash
-            if meta.get("schema_version") == 2 and meta.get("csv_sha256") == csv_sha256:
+            # Check schema version, csv hash, and conformal field
+            if meta.get("schema_version") == 2 and meta.get("csv_sha256") == csv_sha256 and "conformal_q90" in meta:
                 # Valid artifact found
                 models = {
                     "xgb": joblib.load(xgb_path),
@@ -61,6 +61,7 @@ def build_or_load_artifact(csv_path: Path, models_dir: str | Path = "models") ->
     X_rf = df[RF_FEATURES].values
     X_phys = df[["p_hj"]].values
     y = df["final_hrc"].values
+    groups = df["steel_type"].values
     
     best_params = dict(
         subsample=0.7,
@@ -84,6 +85,18 @@ def build_or_load_artifact(csv_path: Path, models_dir: str | Path = "models") ->
     joblib.dump(xgb_model, xgb_path)
     joblib.dump(b2, b2_path)
     
+    # Calculate conformal q90
+    from sklearn.model_selection import GroupKFold
+    gkf = GroupKFold(n_splits=5)
+    oof_preds = np.zeros_like(y)
+    for train_idx, test_idx in gkf.split(X_rf, y, groups):
+        cv_model = xgb.XGBRegressor(**best_params)
+        cv_model.fit(X_rf[train_idx], y[train_idx])
+        oof_preds[test_idx] = cv_model.predict(X_rf[test_idx])
+        
+    residuals = np.abs(y - oof_preds)
+    q90 = float(np.quantile(residuals, 0.90))
+    
     meta = {
         "schema_version": 2,
         "champion": "XGB_tuned",
@@ -94,6 +107,7 @@ def build_or_load_artifact(csv_path: Path, models_dir: str | Path = "models") ->
         "xgboost_version": xgb.__version__,
         "features": RF_FEATURES,
         "n_rows": len(df),
+        "conformal_q90": q90,
         "note": "performance estimates from V2-C2 CV study, not this artifact",
         "trained_at": datetime.now(timezone.utc).isoformat(),
         "retrained": True
