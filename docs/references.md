@@ -35,7 +35,7 @@ This document records the bibliographic references, technical standards, and pro
 3. **Kang, S. U., & Lee, Y. K. (2014)**
    - *Prediction of Hardness of Tempered Martensite in Low-Alloy Steels*. Materials Transactions, 55(7), pp. 1069–1072. DOI: 10.2320/matertrans.M2014004.
    - **Provenance**: `STANDARD_CROSSCHECKED`
-   - **Notes**: Quantitative formulation of tempering kinetics and hardness evolution in low-alloy steels.
+   - **Notes**: Quantitative formulation of tempering kinetics and hardness evolution in low-alloy steels. (Note: our composite-C is a simplified adaptation, not a reproduction of the original method).
 
 4. **Penha, R. (2010)**
    - **Provenance**: `AMBIGUOUS` (Retained as `UNKNOWN`)
