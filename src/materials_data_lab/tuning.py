@@ -224,7 +224,7 @@ def run_v2c1(csv_path: Path, outdir: Path, n_iter: int = 40):
         f"| S2 (GroupSplit)  | Tuned RF   | {s2_tuned['MAE']['mean']:.4f} ± {s2_tuned['MAE']['std']:.4f} | {s2_tuned['RMSE']['mean']:.4f} ± {s2_tuned['RMSE']['std']:.4f} | {s2_tuned['R2']['mean']:.4f} ± {s2_tuned['R2']['std']:.4f} |",
         "",
         "## Öğrenme Eğrisi Gözlemi (Learning Curve)",
-        f"![Learning Curve](figures/learning_curve.png)",
+        "![Learning Curve](figures/learning_curve.png)",
         "Eğri, train ve validation MAE arasındaki kapanmayı ve verinin artışıyla kazanımın doygunluğa ulaşıp ulaşmadığını gösterir."
     ])
     

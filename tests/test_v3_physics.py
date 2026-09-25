@@ -1,5 +1,4 @@
 import numpy as np
-import pytest
 from materials_data_lab.modeling import RF_FEATURES
 
 def test_monotone_vector_alignment():

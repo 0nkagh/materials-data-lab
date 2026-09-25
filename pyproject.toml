@@ -1,18 +1,6 @@
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+[tool.ruff]
+line-length = 120
 
-[project]
-name = "materials-data-lab"
-version = "0.1.0"
-description = "Materials Data Lab - Steel tempering condition to hardness analysis"
-readme = "README.md"
-requires-python = ">=3.10"
-dependencies = [
-    "pandas>=3.0.0",
-]
-
-[tool.pytest.ini_options]
-pythonpath = ["src"]
-testpaths = ["tests"]
-addopts = "--basetemp=.pytest_tmp"
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = ["E501", "E701", "E402"]

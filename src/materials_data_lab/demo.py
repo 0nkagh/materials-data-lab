@@ -69,7 +69,7 @@ def make_prediction(models, meta, c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, 
     q90 = meta.get("conformal_q90", 5.08) if meta else 5.08
     interval_text = f"90% interval: {xgb_pred - q90:.1f} – {xgb_pred + q90:.1f} HRC (q90 = ±{q90:.2f} HRC)"
     
-    start_time = time.time()
+    time.time()
     explainer = shap.TreeExplainer(xgb_model)
     df_rf = pd.DataFrame(x_rf, columns=RF_FEATURES)
     shap_values = explainer(df_rf)

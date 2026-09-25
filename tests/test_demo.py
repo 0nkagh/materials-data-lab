@@ -1,5 +1,4 @@
 import json
-from pathlib import Path
 import pytest
 import numpy as np
 import pandas as pd
@@ -7,7 +6,6 @@ import pandas as pd
 from materials_data_lab.model_artifact import build_or_load_artifact, _hash_file
 from materials_data_lab.demo import check_extrapolation, make_prediction
 from materials_data_lab.modeling import RF_FEATURES
-import joblib
 
 @pytest.fixture
 def synthetic_csv(tmp_path):

@@ -1,10 +1,8 @@
 import argparse
 import json
-import time
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
 import sklearn
 
 import matplotlib
@@ -12,7 +10,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
 import xgboost as xgb
 from sklearn.model_selection import train_test_split, GroupKFold
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score

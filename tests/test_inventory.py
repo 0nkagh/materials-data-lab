@@ -11,9 +11,7 @@ import json
 from pathlib import Path
 import subprocess
 
-import numpy as np
 import pandas as pd
-import pytest
 
 from materials_data_lab.inventory import (
     compute_sha256,

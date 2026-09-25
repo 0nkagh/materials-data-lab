@@ -463,7 +463,7 @@ def main(argv: list[str] | None = None) -> int:
     md_report_path = outdir / "phase1_data_inventory.md"
     md_report_path.write_text(md_content, encoding="utf-8")
 
-    print(f"Inventory analysis complete.")
+    print("Inventory analysis complete.")
     print(f"  Markdown report saved to: {md_report_path}")
     print(f"  JSON output saved to: {json_path}")
     return 0

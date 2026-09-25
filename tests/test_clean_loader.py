@@ -1,7 +1,6 @@
 """Tests for Phase 3 Clean Loader and EDA."""
 
 from pathlib import Path
-import json
 import numpy as np
 import pandas as pd
 import pytest
@@ -62,8 +61,8 @@ def test_clean_loader_features(synthetic_csv_phase3: Path):
     # Check "?" to NaN (missing HRC)
     assert pd.isna(df.at[0, "initial_hrc"])
     assert pd.isna(df.at[2, "initial_hrc"])
-    assert df.at[0, "initial_hrc_missing"] == True
-    assert df.at[1, "initial_hrc_missing"] == False
+    assert df.at[0, "initial_hrc_missing"]
+    assert not df.at[1, "initial_hrc_missing"]
     assert manifest["counts"]["initial_hrc_missing_count"] == 2
     
     # Check flags

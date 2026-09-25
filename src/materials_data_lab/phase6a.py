@@ -3,9 +3,7 @@
 import argparse
 import json
 import numpy as np
-import pandas as pd
 from pathlib import Path
-import sys
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
@@ -55,7 +53,7 @@ def run_phase6a(csv_path: Path, outdir: Path):
     # ---------------------------------------------------------
     X_rf = df[RF_FEATURES].values
     y = df["final_hrc"].values
-    groups = df["steel_type"].values
+    df["steel_type"].values
     
     # We will train on the full dataset for permutation importance, 
     # but technically the instructions say: 

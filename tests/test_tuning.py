@@ -1,6 +1,4 @@
-import pytest
 import numpy as np
-from pathlib import Path
 from materials_data_lab.tuning import SEARCH_SPACE, perform_tuning, generate_learning_curve
 from sklearn.ensemble import RandomForestRegressor
 

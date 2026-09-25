@@ -2,7 +2,6 @@
 
 import argparse
 import json
-import time
 from pathlib import Path
 
 import numpy as np
@@ -12,7 +11,6 @@ import sklearn
 # Must be before pyplot
 import matplotlib
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 
 import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor

@@ -200,7 +200,7 @@ def run_v2c2(csv_path: Path, outdir: Path, n_iter: int = 30):
         "- **D-11**: XGBoost için GroupKFold tabanlı adil yarış. Arama: RandomizedSearchCV, n_iter=30.",
         "- **D-12**: Şampiyon model değişimi için S2 MAE'de >0.15 HRC iyileşme aranır. Yoksa RF tacını korur.",
         "",
-        f"### XGBoost Tuning Sonucu",
+        "### XGBoost Tuning Sonucu",
         f"- Süre: {xgb_search_meta['time_seconds']:.1f} saniye",
         f"- En İyi Parametreler: `{xgb_search_meta['best_params']}`",
         "",
