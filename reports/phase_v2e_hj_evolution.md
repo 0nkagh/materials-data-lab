@@ -13,4 +13,11 @@
 2. **XGB + p_hj**: p_hj özelliğini XGBoost'a eklemenin S2 MAE katkısı marjinal kaldı (<0.1 HRC ise 'not material').
 3. **Physics vs ML**: Öğrenilmiş fiziksel model (Composite_C) geleneksel HJ'yi geçse de, XGB_tuned gibi non-lineer ML modellerine S2 genel hata (MAE) bağlamında hala uzaktır.
 
-Learned base constant c0 = -90.41 (vs assumed C=19.5 in classic B2)
+**Effective C Analizi [REPORT_ONLY]**
+Tasarım matrisindeki `(T_K/1000)` ve `(T_K/1000)*x_i` kolonlarının kolineer yapısı nedeniyle `c0` sabiti tek başına (raw) yorumlanamaz. Bu nedenle üç referans bileşim için "Effective C" ($c_0 + \sum k_i x_i$) değerleri hesaplanmıştır:
+- (i) Veri seti medyan bileşimi: **-74.22**
+- (ii) Tipik 4140 (C 0.40, Mn 0.85, Si 0.25, Cr 1.00, Mo 0.22, diğer ~min): **-69.17**
+- (iii) Tipik 1026 (C 0.26, Mn 0.75, Si 0.20, diğer ~min): **-80.69**
+
+*Gözlem*: Değerler klasik literatür aralığı olan ~15-22 bandında **çıkmamıştır**. Bunun temel nedeni, kapalı-form lineer tasarımda doğrudan HRC hedefine regresyon yapılması sonucu oluşan kolinearlik ve ölçek uyuşmazlığıdır.
+*Caveat*: individual coefficients of the collinear composite design are not separately interpretable; only effective C at reference compositions and predictive performance are meaningful [REPORT_ONLY].
