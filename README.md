@@ -42,6 +42,7 @@ Below are the results of the MVP modeling (Phase 4) and the subset study (Phase 
 | **B1_Naive** | MAE: 11.81 / RMSE: 14.84 / R²: -0.05 | MAE: 11.51 / RMSE: 14.25 / R²: -0.07 |
 | **B2_Physics** | MAE: 4.56 / RMSE: 5.89 / R²: 0.83 | MAE: 4.67 / RMSE: 5.76 / R²: 0.81 |
 | **M1_RF** | MAE: 1.52 / RMSE: 2.35 / R²: 0.97 | MAE: 2.69 / RMSE: 3.57 / R²: 0.93 |
+| **M1_RF_tuned** | MAE: 1.53 / RMSE: 2.48 / R²: 0.97 | MAE: 2.64 / RMSE: 3.41 / R²: 0.94 |
 | **Phase 6a Set A** | (subset) | MAE: 4.02 / RMSE: 4.91 / R²: 0.83 [observational] |
 | **Phase 6a Set B** | (subset, with initial_hrc) | MAE: 3.53 / RMSE: 4.45 / R²: 0.86 [observational] |
 

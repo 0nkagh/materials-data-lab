@@ -14,7 +14,7 @@
   2. (ii) C=19.5 ASSUMED [REPORT_ONLY],
   3. (iii) initial_hrc hariç tutuldu (D-08),
   4. (iv) MDI korele-feature uyarısı,
-  5. (v) tuning yapılmadı,
+  5. (v) Tuning (V2-C1): `RandomizedSearchCV` ile yapılan hiperparametre araması sonucunda kazanım <0.1 HRC olmuştur (MAE: 2.687 → 2.639; kazanç 0.048 HRC). Default MVP parametrelerinin halihazırda yeterli olduğu raporlanmış olup, `demo.py` default RF modeliyle hizmet vermeye devam etmektedir. Tuning yapılması modelin MDI/Permutation sıralamasını (özellik önemini) anlamlı ölçüde değiştirmemiştir.
   6. (vi) rezidüeller kaynaklar arasında dengesiz olabilir (Grange kaynağında hata 2.32 iken, Hollomon ve Penha kaynaklarında hata 3.35+ seviyesindedir).
   7. Permutation importance cross-check (Faz 6a) eklendi; sonuç özeti.
 
