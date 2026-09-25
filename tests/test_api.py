@@ -1,5 +1,4 @@
 from fastapi.testclient import TestClient
-import tomli # Built-in in 3.11+, wait no, Python 3.11 has tomllib
 import sys
 if sys.version_info >= (3, 11):
     import tomllib
@@ -7,7 +6,6 @@ else:
     import tomli as tomllib
 
 from materials_data_lab.api import app
-from materials_data_lab.model_artifact import build_or_load_artifact
 from pathlib import Path
 
 client = TestClient(app)

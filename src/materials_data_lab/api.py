@@ -1,6 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel, Field, ConfigDict
-import os
 from pathlib import Path
 import warnings
 
