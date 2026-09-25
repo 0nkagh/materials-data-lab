@@ -1,0 +1,112 @@
+{
+  "dist_overall": {
+    "plain_carbon": 579,
+    "UNKNOWN_CLASS": 201,
+    "Mo_steel": 160,
+    "Ni_Cr_Mo": 101,
+    "Cr_steel": 101,
+    "Cr_V": 101,
+    "Cr_Mo": 93,
+    "Mn_steel": 50,
+    "Si_steel": 40,
+    "nitriding": 40
+  },
+  "dist_source": {
+    "Cr_Mo": {
+      "Grange and Baughman, 1956": 50,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 43
+    },
+    "Cr_V": {
+      "Grange and Baughman, 1956": 50,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 51
+    },
+    "Cr_steel": {
+      "Grange and Baughman, 1956": 50,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 51
+    },
+    "Mn_steel": {
+      "Grange and Baughman, 1956": 50,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 0
+    },
+    "Mo_steel": {
+      "Grange and Baughman, 1956": 160,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 0
+    },
+    "Ni_Cr_Mo": {
+      "Grange and Baughman, 1956": 50,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 51
+    },
+    "Si_steel": {
+      "Grange and Baughman, 1956": 40,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 0
+    },
+    "UNKNOWN_CLASS": {
+      "Grange and Baughman, 1956": 150,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 51
+    },
+    "nitriding": {
+      "Grange and Baughman, 1956": 40,
+      "Hollomon and Jaffe, 1945": 0,
+      "Penha, 2010": 0
+    },
+    "plain_carbon": {
+      "Grange and Baughman, 1956": 309,
+      "Hollomon and Jaffe, 1945": 270,
+      "Penha, 2010": 0
+    }
+  },
+  "class_mae": {
+    "Cr_Mo": {
+      "err_xgb": 2.186107381184896,
+      "err_rf": 2.255043682795667
+    },
+    "Cr_V": {
+      "err_xgb": 1.7823727787131132,
+      "err_rf": 1.9944139851484874
+    },
+    "Cr_steel": {
+      "err_xgb": 3.0299735437525377,
+      "err_rf": 2.5198061056105705
+    },
+    "Mn_steel": {
+      "err_xgb": 1.3152551040649412,
+      "err_rf": 1.250512499999969
+    },
+    "Mo_steel": {
+      "err_xgb": 1.7509681814908984,
+      "err_rf": 2.1968200520833356
+    },
+    "Ni_Cr_Mo": {
+      "err_xgb": 2.06578216363888,
+      "err_rf": 1.9214907178217708
+    },
+    "Si_steel": {
+      "err_xgb": 9.260781061649322,
+      "err_rf": 7.437893750000032
+    },
+    "UNKNOWN_CLASS": {
+      "err_xgb": 2.094027297176532,
+      "err_rf": 2.1465399461028376
+    },
+    "nitriding": {
+      "err_xgb": 4.073075141906739,
+      "err_rf": 4.338772135416675
+    },
+    "plain_carbon": {
+      "err_xgb": 2.1604247972755237,
+      "err_rf": 2.9272492546673226
+    }
+  },
+  "mae_base": 2.352698717793859,
+  "mae_ab": 2.3314814585780703,
+  "ab_gain": 0.021217259215788875,
+  "ab_result": "Adding one-hot class improved MAE by 0.0212 HRC. This is <0.1 HRC, so the gain is not material."
+}

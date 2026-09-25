@@ -13,6 +13,8 @@ Bu veri sözlüğü, `Tempering data for carbon and low alloy steels - Raiipa.cs
 
 ## 2. Sütun Tanımları ve Özellikleri
 
+*(Not: Tablodaki kimyasal kompozisyon "Referans Aralıkları" SAE J403/J404 tarzı tipik spec bağlamını gösterir `[REPORT_ONLY]`; bu aralıklar dışındaki uç değerler veri kalitesi amacıyla "bayrak kuralları" ile etiketlenir.)*
+
 | Kolon Adı (Dosyadaki Haliyle) | Tahmini Anlam | Birim | Referans Aralık | Köken (Provenance) | Notlar |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | `Source` | Verinin alındığı birincil literatür çalışması | `UNKNOWN` | Grange & Baughman (1956), Hollomon & Jaffe (1945), Penha (2010) | `REPORT_ONLY` | Kategorik metin alanı. Penha (2010) künyesi belirsizdir (`docs/references.md`). |
@@ -51,3 +53,23 @@ Bu veri sözlüğü, `Tempering data for carbon and low alloy steels - Raiipa.cs
 
 3. **Su Verme Sertliği - Karbon İlişkisi (As-Quenched Hardness)**:
    - Su verilmiş martenzitik çeliklerin maksimum sertliği esas olarak çözünmüş karbon yüzdesi tarafından belirlenir (Hodge & Orehoski 1946 modelleri). Düşük alaşım elementleri martenzit sertliğini doğrudan artırmaktan ziyade kritik soğuma hızını düşürerek sertleşebilirliği (hardenability) artırır.
+
+---
+
+## 4. Steel Class System (`steel_class`)
+Proje kapsamında, `Steel type` sütunu standart SAE etiketlerine dayanılarak daha üst seviye çelik sınıflarına (steel_class) dönüştürülür `[STANDARD_CROSSCHECKED]`. Bilinmeyen formattaki isimler `UNKNOWN_CLASS` olarak işaretlenir.
+
+| Çelik Sınıfı (steel_class) | SAE/AISI Kodu | Tanım |
+| :--- | :--- | :--- |
+| **plain_carbon** | 10xx | Sade karbon çelikleri |
+| **Mn_steel** | 13xx | Mangan alaşımlı çelikler |
+| **Mo_steel** | 40xx | Molibden alaşımlı çelikler |
+| **Cr_Mo** | 41xx | Krom-Molibden alaşımlı çelikler |
+| **Ni_Cr_Mo** | 43xx, 86xx, 87xx | Nikel-Krom-Molibden alaşımlı çelikler |
+| **Cr_steel** | 51xx, 52xx | Krom alaşımlı çelikler |
+| **Cr_V** | 61xx | Krom-Vanadyum alaşımlı çelikler |
+| **Si_steel** | 92xx | Silisyum alaşımlı çelikler |
+| **nitriding** | Nitriding Steel | Yüzey sertleştirme (nitrasyon) için özel alaşım |
+| **UNKNOWN_CLASS** | - | Standart dışı, eksik veya eşleşmeyen kodlar |
+
+Note: Si-alloy steels (e.g. 9260-type) show the highest prediction error for both models, consistent with Si delaying cementite precipitation during tempering (REPORT_ONLY observation).
