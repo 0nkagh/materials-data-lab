@@ -7,9 +7,8 @@
 Materials Data Lab is an independent learning and portfolio project investigating the empirical and metallurgical relationship between steel alloy composition, tempering conditions (temperature and soaking time), and the resulting post-tempering hardness (HRC) in carbon and low-alloy steels.
 
 ## Project Status
-- **Phase 1-5: Completed.** The project has successfully established a read-only data inventory, broken down data anomalies, generated numerical EDA, established a modeling MVP (RandomForest vs Physics Baseline), and evaluated the predictions in-depth.
-- **Phase 6a (completed 2026-09-25)**: permutation importance cross-check of MDI rankings + observational initial_hrc subset study (517 rows, MAE 4.02 → 3.53).
-- **V2-A**: Repository polishing (CI setup, CITATION.cff, README finalization).
+- **Phase 1-5 & Phase 6a: Completed.**
+- **V2-A..V2-F: Completed.** Repository polishing, tests, local demo, and final evaluation. See [docs/methodology.md](docs/methodology.md) for the complete scientific narrative.
 - **Roadmap (Candidate Future Work)**:
   - Investigating the remaining UNKNOWN variations.
   - Adding SHAP explainability analysis.
@@ -46,7 +45,6 @@ Below are the results of the MVP modeling (Phase 4) and the subset study (Phase 
 | **M1_RF_tuned** | MAE: 1.53 / RMSE: 2.48 / R²: 0.97 | MAE: 2.64 / RMSE: 3.41 / R²: 0.94 |
 | **M2_XGB_default** | MAE: 1.20 / RMSE: 2.10 / R²: 0.98 | MAE: 2.50 / RMSE: 3.41 / R²: 0.94 |
 | **M2_XGB_tuned** (Champion) | MAE: 1.05 / RMSE: 1.89 / R²: 0.98 | MAE: 2.35 / RMSE: 3.21 / R²: 0.94 |
-| **M2_XGB_tuned + p_hj** | MAE: 1.03 / RMSE: 1.81 / R²: 0.98 | MAE: 2.30 / RMSE: 3.13 / R²: 0.95 |
 | **Phase 6a Set A** | (subset) | MAE: 4.02 / RMSE: 4.91 / R²: 0.83 [observational] |
 | **Phase 6a Set B** | (subset, with initial_hrc) | MAE: 3.53 / RMSE: 4.45 / R²: 0.86 [observational] |
 
