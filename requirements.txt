@@ -2,3 +2,4 @@ pandas>=3.0.0
 pytest>=8.0.0
 scikit-learn>=1.6
 gradio>=6.0
+matplotlib>=3.8
