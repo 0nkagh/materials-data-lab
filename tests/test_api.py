@@ -7,10 +7,22 @@ else:
 
 from materials_data_lab.api import app
 from pathlib import Path
+from unittest.mock import patch
 
 client = TestClient(app)
 
-def test_health():
+# Dummy models and meta for testing
+class MockModel:
+    def predict(self, X):
+        import numpy as np
+        return np.array([42.5])
+
+dummy_models = {"xgb": MockModel(), "b2": MockModel()}
+dummy_meta = {"champion": "XGB_tuned", "features": ["c_wt", "mn_wt", "p_wt", "s_wt", "si_wt", "ni_wt", "cr_wt", "mo_wt", "v_wt", "al_wt", "cu_wt", "temper_temp_c", "log_time"], "conformal_q90": 5.08}
+
+@patch("materials_data_lab.api.get_models", return_value=(dummy_models, dummy_meta))
+@patch("materials_data_lab.api.make_prediction", return_value=("42.5 HRC", "90% interval: 37.4 \u2013 47.6 HRC (q90 = \u00b15.08 HRC)", "42.5 HRC", "\u2705", Path("dummy.png"), "dummy"))
+def test_health(mock_make_pred, mock_get_models):
     response = client.get("/health")
     assert response.status_code == 200
     data = response.json()
@@ -18,7 +30,9 @@ def test_health():
     assert data["champion"] == "XGB_tuned"
     assert "model_version" in data
 
-def test_predict_valid_4140():
+@patch("materials_data_lab.api.get_models", return_value=(dummy_models, dummy_meta))
+@patch("materials_data_lab.api.make_prediction", return_value=("42.5 HRC", "90% interval: 37.4 \u2013 47.6 HRC (q90 = \u00b15.08 HRC)", "42.5 HRC", "\u2705", Path("dummy.png"), "dummy"))
+def test_predict_valid_4140(mock_make_pred, mock_get_models):
     # Typical 4140 composition
     payload = {
         "c_wt": 0.40,
