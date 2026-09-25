@@ -54,7 +54,7 @@ def perform_tuning(X: np.ndarray, y: np.ndarray, groups: np.ndarray, n_iter: int
         scoring="neg_mean_absolute_error",
         cv=gkf,
         random_state=42,
-        n_jobs=-1
+        n_jobs=1
     )
     
     t0 = time.time()
@@ -87,7 +87,7 @@ def generate_learning_curve(model, X, y, groups, out_path: Path):
     
     train_sizes, train_scores, test_scores = learning_curve(
         model, X, y, groups=groups, cv=gkf, scoring="neg_mean_absolute_error",
-        train_sizes=np.linspace(0.1, 1.0, 8), n_jobs=-1, random_state=42
+        train_sizes=np.linspace(0.1, 1.0, 8), n_jobs=1, random_state=42
     )
     
     train_mae = -train_scores.mean(axis=1)

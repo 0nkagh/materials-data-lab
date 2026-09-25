@@ -44,7 +44,7 @@ def evaluate_model(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
 
 def perform_xgb_tuning(X: np.ndarray, y: np.ndarray, groups: np.ndarray, n_iter: int = 30) -> Tuple[xgb.XGBRegressor, dict[str, Any]]:
     # Use hist tree method for speed and deterministic behavior when random_state is set
-    model = xgb.XGBRegressor(random_state=42, tree_method="hist", n_jobs=-1)
+    model = xgb.XGBRegressor(random_state=42, tree_method="hist", n_jobs=1)
     
     n_splits = get_n_splits(groups, desired=5)
     gkf = GroupKFold(n_splits=n_splits)
@@ -56,7 +56,7 @@ def perform_xgb_tuning(X: np.ndarray, y: np.ndarray, groups: np.ndarray, n_iter:
         scoring="neg_mean_absolute_error",
         cv=gkf,
         random_state=42,
-        n_jobs=-1
+        n_jobs=1
     )
     
     t0 = time.time()
@@ -136,7 +136,7 @@ def run_v2c2(csv_path: Path, outdir: Path, n_iter: int = 30):
     rf_def = RandomForestRegressor(random_state=42)
     # The known best params from V2-C1
     rf_tuned = RandomForestRegressor(n_estimators=800, min_samples_split=2, min_samples_leaf=1, max_features=0.5, max_depth=30, random_state=42)
-    xgb_def = xgb.XGBRegressor(random_state=42, tree_method="hist", n_jobs=-1)
+    xgb_def = xgb.XGBRegressor(random_state=42, tree_method="hist", n_jobs=1)
     
     print("Tuning XGBoost...")
     xgb_tuned, xgb_search_meta = perform_xgb_tuning(X, y, groups, n_iter=n_iter)

@@ -69,7 +69,7 @@ def run_v2e(csv_path: Path, outdir: Path):
         colsample_bytree=1.0,
         random_state=42,
         tree_method="hist",
-        n_jobs=-1
+        n_jobs=1
     )
     
     def eval_model(model_cls, X_data, is_xgb=False):
