@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from materials_data_lab.api import get_models
-from materials_data_lab.recommender import recommend_recipe
 
 steels = {
     "4140": {"c_wt": 0.40, "mn_wt": 0.85, "p_wt": 0.015, "s_wt": 0.015, "si_wt": 0.25, "ni_wt": 0.0, "cr_wt": 1.0, "mo_wt": 0.20, "v_wt": 0.0, "al_wt": 0.0, "cu_wt": 0.0}

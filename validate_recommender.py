@@ -1,6 +1,4 @@
 import json
-import pandas as pd
-from pathlib import Path
 from materials_data_lab.api import get_models
 from materials_data_lab.recommender import recommend_recipe
 
