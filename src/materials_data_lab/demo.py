@@ -71,7 +71,8 @@ def make_prediction(models, meta, c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, 
     
     start_time = time.time()
     explainer = shap.TreeExplainer(xgb_model)
-    shap_values = explainer(x_rf)
+    df_rf = pd.DataFrame(x_rf, columns=RF_FEATURES)
+    shap_values = explainer(df_rf)
     
     fig = plt.figure(figsize=(8, 4))
     shap.plots.waterfall(shap_values[0], max_display=10, show=False)

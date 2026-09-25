@@ -21,7 +21,7 @@
 ### Challenger Study (V2-C2)
 - XGBoost, Random Forest şampiyonluğuna karşı test edilmiştir. XGBoost Tuned modeli, RF Tuned modeline kıyasla GroupKFold altında daha düşük ortalama MAE elde etmiş (S2 MAE: 2.35 ± 0.39 vs 2.64 ± 0.24) ve D-12 eşiğini (>0.15) aşarak yeni şampiyon olmuştur.
 - **SHAP Gözlemi**: XGBoost şampiyon modelinin SHAP analizi, MDI/Permutation sıralamasıyla genel uyum göstermektedir. Sıcaklık ve zaman özellikleri hala en dominatör olup, alaşımlar ikincil etkiye sahiptir.
-- **Demo Notu**: The demo serves XGB_tuned as of V2-F. Additionally, as of V3-B, the demo displays the conformal interval (q90 from V3-A) and per-prediction SHAP waterfall plots for explainability.
+- **Demo Notu**: The demo serves XGB_tuned as of V2-F. Additionally, as of V3-B, the demo displays the conformal interval (q90 from V3-A) and per-prediction SHAP waterfall plots for explainability. Artifact rebuild q90 = 4.97 vs study value 5.08 — XGBoost hist with n_jobs=-1 is not bit-exact deterministic; both values are within noise of each other [REPORT_ONLY].
 ### Physics Evolution Study (V2-E)
 - Kang & Lee (2014) yaklaşımından esinlenilerek Hollomon-Jaffe C sabiti bileşimden öğrenildi (Learned-C Composite, D-13). Bu model, klasik B2 modeline göre S2 MAE hatasını ~4.67'den ~3.34 HRC'ye düşürdü.
 - Klasik p_hj özelliğinin şampiyon XGBoost modeline (XGB_tuned) eklenmesi S2 MAE'de <0.1 HRC (0.046 HRC) kazanç sağladı. Bu marjinal kazanç, D-14 kuralı (şampiyon güncelleme eşiği) gereği model değişikliğini tetiklememiştir.
