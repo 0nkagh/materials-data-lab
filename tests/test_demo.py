@@ -6,6 +6,8 @@ import pandas as pd
 
 from materials_data_lab.model_artifact import build_or_load_artifact, _hash_file
 from materials_data_lab.demo import check_extrapolation, make_prediction
+from materials_data_lab.modeling import RF_FEATURES
+import joblib
 
 @pytest.fixture
 def synthetic_csv(tmp_path):
@@ -36,11 +38,12 @@ def synthetic_csv(tmp_path):
 def test_build_or_load_artifact(synthetic_csv, tmp_path):
     models_dir = tmp_path / "models"
     
-    # First call: should build
+    # First call: should build (v2)
     models1, meta1 = build_or_load_artifact(synthetic_csv, models_dir=models_dir)
     assert meta1["retrained"] is True
+    assert meta1["schema_version"] == 2
     assert (models_dir / "artifact_meta.json").exists()
-    assert (models_dir / "rf_final.joblib").exists()
+    assert (models_dir / "xgb_champion.joblib").exists()
     
     # Second call: should load
     models2, meta2 = build_or_load_artifact(synthetic_csv, models_dir=models_dir)
@@ -54,6 +57,30 @@ def test_build_or_load_artifact(synthetic_csv, tmp_path):
     models3, meta3 = build_or_load_artifact(synthetic_csv, models_dir=models_dir)
     assert meta3["retrained"] is True
     assert meta3["csv_sha256"] != meta1["csv_sha256"]
+
+def test_migration_v1_to_v2(synthetic_csv, tmp_path):
+    models_dir = tmp_path / "models"
+    models_dir.mkdir(parents=True)
+    
+    # Create fake v1 artifact
+    meta_v1 = {
+        "csv_sha256": _hash_file(synthetic_csv),
+        "model_type": "RandomForestRegressor + LinearRegression(p_hj)",
+        # missing schema_version
+    }
+    with open(models_dir / "artifact_meta.json", "w") as f:
+        json.dump(meta_v1, f)
+    
+    # dummy files
+    (models_dir / "rf_final.joblib").touch()
+    (models_dir / "b2_linear.joblib").touch()
+    
+    # Attempt to load -> should trigger retrain to v2 because missing xgb and schema!=2
+    models, meta = build_or_load_artifact(synthetic_csv, models_dir=models_dir)
+    assert meta["retrained"] is True
+    assert meta["schema_version"] == 2
+    assert "xgb" in models
+    assert (models_dir / "xgb_champion.joblib").exists()
 
 
 def test_check_extrapolation():
@@ -74,12 +101,23 @@ def test_make_prediction():
         def predict(self, X):
             return np.array([42.5])
             
-    models = {"rf": MockModel(), "b2": MockModel()}
+    models = {"xgb": MockModel(), "b2": MockModel()}
+    meta = {"features": RF_FEATURES}
     
-    rf_pred, b2_pred, warn = make_prediction(
-        models, 0.4, 0.8, 0.015, 0.015, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 400.0, 3600.0
+    xgb_pred, b2_pred, warn = make_prediction(
+        models, meta, 0.4, 0.8, 0.015, 0.015, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 400.0, 3600.0
     )
     
-    assert rf_pred == "42.5 HRC"
+    assert xgb_pred == "42.5 HRC"
     assert b2_pred == "42.5 HRC"
     assert "✅" in warn
+
+def test_feature_order_mismatch():
+    class MockModel:
+        pass
+    
+    models = {"xgb": MockModel(), "b2": MockModel()}
+    meta = {"features": ["wrong", "features"]}
+    
+    with pytest.raises(ValueError, match="Artifact features mismatch with code"):
+        make_prediction(models, meta, 0.4, 0.8, 0.015, 0.015, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 400.0, 3600.0)

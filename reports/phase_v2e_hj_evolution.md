@@ -21,3 +21,5 @@ Tasarım matrisindeki `(T_K/1000)` ve `(T_K/1000)*x_i` kolonlarının kolineer y
 
 *Gözlem*: Değerler klasik literatür aralığı olan ~15-22 bandında **çıkmamıştır**. Bunun temel nedeni, kapalı-form lineer tasarımda doğrudan HRC hedefine regresyon yapılması sonucu oluşan kolinearlik ve ölçek uyuşmazlığıdır.
 *Caveat*: individual coefficients of the collinear composite design are not separately interpretable; only effective C at reference compositions and predictive performance are meaningful [REPORT_ONLY].
+
+The composite model is best read as a linear interaction model; recovering a single 'effective C' is not identifiable (coefficients trade off against the separate time term and intercept), while its predictive CV results remain valid [REPORT_ONLY].

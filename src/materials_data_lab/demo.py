@@ -28,8 +28,11 @@ def check_extrapolation(inputs: dict[str, float]) -> str:
             return "⚠ Input outside observed data range — extrapolation"
     return "✅ Within observed bounds"
 
-def make_prediction(models, c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, mo_wt, v_wt, al_wt, cu_wt, temper_temp_c, temper_time_s) -> tuple[str, str, str]:
+def make_prediction(models, meta, c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, mo_wt, v_wt, al_wt, cu_wt, temper_temp_c, temper_time_s) -> tuple[str, str, str]:
     """Pure function to handle the prediction logic, disconnected from the UI definition."""
+    if meta is not None and meta.get("features") != RF_FEATURES:
+        raise ValueError("Artifact features mismatch with code")
+
     inputs = {
         "c_wt": c_wt, "mn_wt": mn_wt, "p_wt": p_wt, "s_wt": s_wt, "si_wt": si_wt,
         "ni_wt": ni_wt, "cr_wt": cr_wt, "mo_wt": mo_wt, "v_wt": v_wt, "al_wt": al_wt, "cu_wt": cu_wt,
@@ -50,19 +53,19 @@ def make_prediction(models, c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, mo_wt,
     
     x_phys = np.array([[p_hj]])
     
-    rf_model = models["rf"]
+    xgb_model = models["xgb"]
     b2_model = models["b2"]
     
-    rf_pred = rf_model.predict(x_rf)[0]
+    xgb_pred = xgb_model.predict(x_rf)[0]
     b2_pred = b2_model.predict(x_phys)[0]
     
-    return f"{rf_pred:.1f} HRC", f"{b2_pred:.1f} HRC", warning_text
+    return f"{xgb_pred:.1f} HRC", f"{b2_pred:.1f} HRC", warning_text
 
-def create_demo(models):
+def create_demo(models, meta=None):
     """Creates the Gradio interface block."""
     with gr.Blocks(title="Materials Data Lab - Local Demo") as demo:
         gr.Markdown("# Materials Data Lab — Tempering Hardness Predictor")
-        gr.Markdown("Predict final HRC for carbon and low-alloy steels using the MVP Random Forest and Physical Baseline models.")
+        gr.Markdown("model v1.1 · champion: XGB_tuned · data: Raiipa CC BY 4.0")
         
         with gr.Row():
             with gr.Column():
@@ -88,16 +91,16 @@ def create_demo(models):
                 
                 gr.Markdown("### Predictions")
                 with gr.Row():
-                    rf_out = gr.Textbox(label="Random Forest (M1)", text_align="center")
+                    xgb_out = gr.Textbox(label="Champion: XGBoost (tuned)", text_align="center")
                     b2_out = gr.Textbox(label="Physics Baseline (B2)", text_align="center")
                 
                 warning_out = gr.Textbox(label="Data Quality Status", interactive=False)
                 
         inputs = [c_wt, mn_wt, p_wt, s_wt, si_wt, ni_wt, cr_wt, mo_wt, v_wt, al_wt, cu_wt, temper_temp_c, temper_time_s]
-        outputs = [rf_out, b2_out, warning_out]
+        outputs = [xgb_out, b2_out, warning_out]
         
         def predict_wrapper(*args):
-            return make_prediction(models, *args)
+            return make_prediction(models, meta, *args)
             
         predict_btn.click(fn=predict_wrapper, inputs=inputs, outputs=outputs)
         

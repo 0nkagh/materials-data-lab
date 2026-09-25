@@ -28,7 +28,7 @@ def main():
     else:
         print("Loaded existing model artifact.")
         
-    demo = create_demo(models)
+    demo = create_demo(models, meta)
     
     # Launch strictly locally without share=True
     demo.launch(inbrowser=True, share=False)
