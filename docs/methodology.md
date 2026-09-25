@@ -61,14 +61,22 @@ Following the V2-C2 Challenger Study, a tuned **XGBoost Regressor** defeated the
 
 ---
 
-## 6. Limitations & Vulnerabilities
+## 6. Recommender System & Inverse Optimization (V5-A)
+The project includes a local "Recipe Recommender" to perform inverse optimization: finding the optimal tempering temperature and time for a given target HRC and composition.
+- **Methodology (Grid Scan):** Because tree-based models (Random Forest, XGBoost) create step-wise predictions rather than continuous gradients, gradient-based optimization tools (like `scipy.optimize` or `optuna`) fail. We use a brute-force grid scan over realistic domains ($T \in [100, 705]^\circ\text{C}$ at $0.5^\circ\text{C}$ resolution, $t \in [1800, 3600, 7200, 14400]$ seconds).
+- **Physical Constraints:** The system returns the shortest possible time and lowest temperature within a $\pm 0.5$ HRC tolerance. It enforces data support boundaries (extrapolation blocks) and rejects unachievable targets with a `NOT_ACHIEVABLE` flag.
+- **Validation:** Tests on 5 real steel grades (e.g., 4140, 1045, 4340) confirmed the system successfully identifies achievable recipes well within the $\pm 0.5$ HRC threshold across targets from 30 to 50 HRC.
+
+---
+
+## 7. Limitations & Vulnerabilities
 - **Single Dataset Bias:** The model is trained on a single aggregated literature dataset. Real-world industrial validation is required before any physical use.
 - **Weak Spot (Si-Alloys):** Both RF and XGBoost models show significant predictive weakness on Silicon-alloy steels (e.g., 9260 type), exhibiting high MAE (up to ~9.2 HRC). Silicon's complex role in delaying cementite precipitation is mathematically under-captured by the current feature space.
 - **Extrapolation Risk:** Predictions below 20 HRC or above 650°C enter the dataset's extrapolation zones and should be treated as highly suspect.
 
 ---
 
-## 7. Reproducibility & Deployment
+## 8. Reproducibility & Deployment
 - **Determinism:** All data splits and model trainings enforce `random_state=42`.
 - **Artifact Schema (v2):** The trained model is serialized alongside a `meta.json` file (Schema v2) that hashes the raw CSV and validates feature ordering. If the schema is outdated or the CSV hash mismatches, the system gracefully forces a retraining event.
 - **Continuous Integration (CI):** 39 strict `pytest` unit tests run on every push via GitHub Actions.

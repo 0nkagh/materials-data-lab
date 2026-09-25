@@ -113,3 +113,31 @@ def predict(comp: CompositionInput):
         "within_bounds": within_bounds,
         "warnings": warnings_list
     }
+
+class RecommendInput(BaseModel):
+    c_wt: float = Field(..., ge=0.0)
+    mn_wt: float = Field(..., ge=0.0)
+    p_wt: float = Field(..., ge=0.0)
+    s_wt: float = Field(..., ge=0.0)
+    si_wt: float = Field(..., ge=0.0)
+    ni_wt: float = Field(..., ge=0.0)
+    cr_wt: float = Field(..., ge=0.0)
+    mo_wt: float = Field(..., ge=0.0)
+    v_wt: float = Field(..., ge=0.0)
+    al_wt: float = Field(..., ge=0.0)
+    cu_wt: float = Field(..., ge=0.0)
+    target_hrc: float = Field(..., ge=0.0)
+
+    model_config = ConfigDict(extra='forbid')
+
+@app.post("/recommend")
+def recommend(comp: RecommendInput):
+    models, meta = get_models()
+    comp_dict = comp.model_dump(exclude={"target_hrc"})
+    target_hrc = comp.target_hrc
+    
+    from materials_data_lab.recommender import recommend_recipe
+    
+    result = recommend_recipe(models, meta, comp_dict, target_hrc)
+    return result
+

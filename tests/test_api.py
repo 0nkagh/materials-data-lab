@@ -15,7 +15,7 @@ client = TestClient(app)
 class MockModel:
     def predict(self, X):
         import numpy as np
-        return np.array([42.5])
+        return np.full(X.shape[0], 42.5)
 
 dummy_models = {"xgb": MockModel(), "b2": MockModel()}
 dummy_meta = {"champion": "XGB_tuned", "features": ["c_wt", "mn_wt", "p_wt", "s_wt", "si_wt", "ni_wt", "cr_wt", "mo_wt", "v_wt", "al_wt", "cu_wt", "temper_temp_c", "log_time"], "conformal_q90": 5.08}
@@ -94,6 +94,55 @@ def test_predict_extra_invalid_field():
     
     response = client.post("/predict", json=payload)
     assert response.status_code == 422
+
+@patch("materials_data_lab.api.get_models", return_value=(dummy_models, dummy_meta))
+def test_recommend_valid_4140(mock_get_models):
+    payload = {
+        "c_wt": 0.40,
+        "mn_wt": 0.85,
+        "p_wt": 0.01,
+        "s_wt": 0.01,
+        "si_wt": 0.25,
+        "ni_wt": 0.0,
+        "cr_wt": 1.00,
+        "mo_wt": 0.22,
+        "v_wt": 0.0,
+        "al_wt": 0.0,
+        "cu_wt": 0.0,
+        "target_hrc": 42.5
+    }
+    
+    response = client.post("/recommend", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["recommendable"] is True
+    assert data["T_c"] == 100.0
+    assert data["t_s"] == 1800.0
+    assert data["n_solutions"] > 0
+    assert data["predicted_hrc"] == 42.5
+
+@patch("materials_data_lab.api.get_models", return_value=(dummy_models, dummy_meta))
+def test_recommend_impossible(mock_get_models):
+    payload = {
+        "c_wt": 0.40,
+        "mn_wt": 0.85,
+        "p_wt": 0.01,
+        "s_wt": 0.01,
+        "si_wt": 0.25,
+        "ni_wt": 0.0,
+        "cr_wt": 1.00,
+        "mo_wt": 0.22,
+        "v_wt": 0.0,
+        "al_wt": 0.0,
+        "cu_wt": 0.0,
+        "target_hrc": 70.0
+    }
+    
+    response = client.post("/recommend", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["recommendable"] is False
+    assert data["T_c"] is None
 
 def test_ruff_ci_config():
     base = Path(__file__).parent.parent

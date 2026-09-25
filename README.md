@@ -63,6 +63,13 @@ python app.py
 ```
 This will open the predictor interface in your default web browser.
 
+## Recommender System (V5-A)
+The project includes a local "Recipe Recommender" via a REST API endpoint (`POST /recommend`). 
+Given a target hardness (HRC) and steel composition, the system performs a grid scan (0.5°C resolution) across tempering temperatures and times to find the optimal recipe.
+- Returns the shortest tempering time ($t$) and lowest temperature ($T$) within a ±0.5 HRC tolerance.
+- Automatically rejects targets that are `NOT_ACHIEVABLE` due to physical constraints or being out of model support range.
+- Incorporates conformal prediction intervals (`q90`) for the suggested recipe.
+
 ## Usage
 To run the automated test suite:
 ```bash
