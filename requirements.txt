@@ -3,3 +3,5 @@ pytest>=8.0.0
 scikit-learn>=1.6
 gradio>=6.0
 matplotlib>=3.8
+xgboost>=3.4
+shap>=0.52

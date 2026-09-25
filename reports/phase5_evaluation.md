@@ -18,6 +18,10 @@
   6. (vi) rezidüeller kaynaklar arasında dengesiz olabilir (Grange kaynağında hata 2.32 iken, Hollomon ve Penha kaynaklarında hata 3.35+ seviyesindedir).
   7. Permutation importance cross-check (Faz 6a) eklendi; sonuç özeti.
 
+### Challenger Study (V2-C2)
+- XGBoost, Random Forest şampiyonluğuna karşı test edilmiştir. XGBoost Tuned modeli, RF Tuned modeline kıyasla GroupKFold altında daha düşük ortalama MAE elde etmiş (S2 MAE: 2.35 ± 0.39 vs 2.64 ± 0.24) ve D-12 eşiğini (>0.15) aşarak yeni şampiyon olmuştur.
+- **SHAP Gözlemi**: XGBoost şampiyon modelinin SHAP analizi, MDI/Permutation sıralamasıyla genel uyum göstermektedir. Sıcaklık ve zaman özellikleri hala en dominatör olup, alaşımlar ikincil etkiye sahiptir.
+- **Demo Notu**: V2-C2 sonuçlarına göre XGBoost şampiyon olsa da, `demo.py` V2-F kararlarına kadar default RF ile çalışmaya devam edecektir.
 ## Sonuçların Doğru Okunması
 > Korelasyon nedensellik ifade etmez. Ayrıca S1'deki (Random Split) R² skorları aynı çelik türünün hem eğitim hem teste sızmasından ötürü **iyimserdir**. S2 skoru daha güvenilirdir.
 
