@@ -1,0 +1,96 @@
+{
+  "D-17": {
+    "base_s1": {
+      "MAE": 1.0515769911461135,
+      "RMSE": 1.8868584361867966,
+      "R2": 0.98297851676655
+    },
+    "mono_s1": {
+      "MAE": 1.241812026541249,
+      "RMSE": 1.875293362204211,
+      "R2": 0.9831865360019125
+    },
+    "base_s2": {
+      "MAE": {
+        "mean": 2.3498443906501114,
+        "std": 0.38787665155316703
+      },
+      "RMSE": {
+        "mean": 3.2053674084396264,
+        "std": 0.6647499369981703
+      },
+      "R2": {
+        "mean": 0.9439179045835855,
+        "std": 0.019571303167993607
+      }
+    },
+    "mono_s2": {
+      "MAE": {
+        "mean": 2.4943983638836693,
+        "std": 0.4595575104901205
+      },
+      "RMSE": {
+        "mean": 3.3721961808423755,
+        "std": 0.7352048530962374
+      },
+      "R2": {
+        "mean": 0.9376404145417154,
+        "std": 0.023376627681158692
+      }
+    },
+    "extrapolation": {
+      "750C": {
+        "base": 22.48053550720215,
+        "mono": 22.157146453857422
+      },
+      "800C": {
+        "base": 22.48053550720215,
+        "mono": 22.157146453857422
+      }
+    }
+  },
+  "D-18": {
+    "carbon_equivalent": {
+      "MAE": 2.3094921289845636,
+      "gain": 0.04035226166554784,
+      "material": false
+    },
+    "simplified_DI": {
+      "MAE": 2.2221532069772176,
+      "gain": 0.12769118367289378,
+      "material": false
+    },
+    "secondary_hardening_proxy": {
+      "MAE": 2.3439131180126695,
+      "gain": 0.0059312726374418645,
+      "material": false
+    },
+    "si_interaction": {
+      "MAE": 2.347642296876792,
+      "gain": 0.002202093773319369,
+      "material": false
+    },
+    "combined": {
+      "MAE": 2.3259259218110406,
+      "gain": 0.023918468839070783,
+      "material": false
+    }
+  },
+  "D-19": {
+    "q_90": 5.080390930175781,
+    "overall_coverage": 0.8997271487039563,
+    "band_coverage": {
+      "25-35": 0.9020408163265307,
+      "35-45": 0.9055555555555556,
+      "<25": 0.896551724137931,
+      ">45": 0.8966565349544073
+    }
+  },
+  "decisions": [
+    "D-15: initial_hrc imputasyonu REDD\u0130 (Verinin %64'\u00fc eksik, sentetik doldurma overconfidence yarat\u0131r).",
+    "D-16: MLflow/W&B REDD\u0130 (Statik karar defteri / markdown raporlama karma\u015f\u0131kl\u0131\u011f\u0131 yeterince d\u00fc\u015f\u00fck tutuyor).",
+    "D-17: Monotone constraints deneyi.",
+    "D-18: Metalurjik \u00f6zellik deneyleri (CE, DI, V+Mo, Si_interaction).",
+    "D-19: Split-conformal out-of-fold %90 g\u00fcven aral\u0131\u011f\u0131."
+  ]
+}

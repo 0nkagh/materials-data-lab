@@ -26,6 +26,13 @@
 - Kang & Lee (2014) yaklaşımından esinlenilerek Hollomon-Jaffe C sabiti bileşimden öğrenildi (Learned-C Composite, D-13). Bu model, klasik B2 modeline göre S2 MAE hatasını ~4.67'den ~3.34 HRC'ye düşürdü.
 - Klasik p_hj özelliğinin şampiyon XGBoost modeline (XGB_tuned) eklenmesi S2 MAE'de <0.1 HRC (0.046 HRC) kazanç sağladı. Bu marjinal kazanç, D-14 kuralı (şampiyon güncelleme eşiği) gereği model değişikliğini tetiklememiştir.
 
+### Physics-Guided Study & Conformal Intervals (V3-A)
+- **Monotonic Constraints (D-17)**: XGBoost modelinde sıcaklık ve zamana monotonik olarak azalan kısıt eklendiğinde performans S2'de (2.35'ten 2.49'a) düştü ve ekstrapolasyonda ek bir iyileşme sağlamadı. Bu yüzden modelden dışlandı.
+- **Metalurjik Özellikler (D-18)**: Karbon Eşdeğeri (CE), İdeal Kritik Çap log-toplamı (DI), İkincil Sertleşme (V+Mo) ve Si-Sıcaklık etkileşim özellikleri modele ayrı ayrı beslendi. Hiçbiri >0.15 HRC barajını aşamadı (en iyisi DI proxy ile 0.12 HRC kazançtı). Şampiyon model özellik değiştirmeden yoluna devam etti.
+  > Note: simplified DI reached 0.128 HRC gain — below the pre-registered 0.15 threshold; not adopted to avoid threshold-shopping (D-12/D-18 consistency).
+- **Split-Conformal Güven Aralıkları (D-19)**: Kullanıcılara nokta tahmini yerine kalibre edilmiş belirsizlik vermek amacıyla out-of-fold mutlak residüellerin %90'lık quantile değeri hesaplandı. Model, tüm sertlik bantlarında homojen ve tutarlı bir şekilde hedeflenen ~%90 kapsama oranına (overall 89.9%) **±5.08 HRC** güven aralığı bandı ile ulaştı.
+
+
 ## Sonuçların Doğru Okunması
 > Korelasyon nedensellik ifade etmez. Ayrıca S1'deki (Random Split) R² skorları aynı çelik türünün hem eğitim hem teste sızmasından ötürü **iyimserdir**. S2 skoru daha güvenilirdir.
 
