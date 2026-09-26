@@ -103,6 +103,7 @@ def predict(comp: CompositionInput):
         warnings_list.append(warning_text.replace("⚠ ", ""))
         
     within_bounds = len(warnings_list) == 0
+    is_extrapolated = not within_bounds
     
     return {
         "champion_hrc": champion_hrc,
@@ -111,6 +112,7 @@ def predict(comp: CompositionInput):
         "interval_high": interval_high,
         "q90": q90,
         "within_bounds": within_bounds,
+        "is_extrapolated": is_extrapolated,
         "warnings": warnings_list
     }
 

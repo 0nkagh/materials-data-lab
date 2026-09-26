@@ -61,8 +61,37 @@ def test_predict_valid_4140(mock_make_pred, mock_get_models):
     assert "q90" in data
     assert "within_bounds" in data
     assert "warnings" in data
+    assert "is_extrapolated" in data
     
     assert data["interval_low"] < data["interval_high"]
+    assert data["is_extrapolated"] is False
+
+@patch("materials_data_lab.api.get_models", return_value=(dummy_models, dummy_meta))
+@patch("materials_data_lab.api.make_prediction", return_value=("42.5 HRC", "90% interval: 37.4 – 47.6 HRC (q90 = ±5.08 HRC)", "42.5 HRC", "⚠ Input outside observed data range — extrapolation", Path("dummy.png"), "dummy"))
+def test_predict_extrapolated_true(mock_make_pred, mock_get_models):
+    payload = {
+        "c_wt": 1.9, # Extrapolated
+        "mn_wt": 0.85,
+        "p_wt": 0.01,
+        "s_wt": 0.01,
+        "si_wt": 0.25,
+        "ni_wt": 0.0,
+        "cr_wt": 1.00,
+        "mo_wt": 0.22,
+        "v_wt": 0.0,
+        "al_wt": 0.0,
+        "cu_wt": 0.0,
+        "temper_temp_c": 500.0,
+        "temper_time_s": 3600.0
+    }
+    
+    response = client.post("/predict", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    
+    assert data["is_extrapolated"] is True
+    assert data["within_bounds"] is False
+    assert len(data["warnings"]) > 0
 
 def test_predict_missing_field():
     payload = {
@@ -120,6 +149,46 @@ def test_recommend_valid_4140(mock_get_models):
     assert data["t_s"] == 1800.0
     assert data["n_solutions"] > 0
     assert data["predicted_hrc"] == 42.5
+    
+    assert "candidates" in data
+    assert len(data["candidates"]) > 0
+    assert len(data["candidates"]) <= 3
+    
+    # Check consistency between best_row and candidates[0]
+    assert data["candidates"][0]["T_c"] == data["T_c"]
+    assert data["candidates"][0]["t_s"] == data["t_s"]
+    assert data["candidates"][0]["predicted_hrc"] == data["predicted_hrc"]
+    
+    assert "is_extrapolated" in data
+    assert "high_uncertainty" in data
+    assert data["is_extrapolated"] is False
+    assert data["high_uncertainty"] is False # n_solutions > 5 for dummy model
+
+@patch("materials_data_lab.api.get_models", return_value=(dummy_models, dummy_meta))
+def test_recommend_extrapolated_and_high_uncertainty(mock_get_models):
+    payload = {
+        "c_wt": 1.90, # Extrapolated
+        "mn_wt": 0.85,
+        "p_wt": 0.01,
+        "s_wt": 0.01,
+        "si_wt": 0.25,
+        "ni_wt": 0.0,
+        "cr_wt": 1.00,
+        "mo_wt": 0.22,
+        "v_wt": 0.0,
+        "al_wt": 0.0,
+        "cu_wt": 0.0,
+        "target_hrc": 42.5
+    }
+    
+    response = client.post("/recommend", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert data["is_extrapolated"] is True
+    assert data["high_uncertainty"] is True
+    # Still provides solutions since target is achievable by dummy model
+    assert data["recommendable"] is True
+    assert len(data["candidates"]) > 0
 
 @patch("materials_data_lab.api.get_models", return_value=(dummy_models, dummy_meta))
 def test_recommend_impossible(mock_get_models):
