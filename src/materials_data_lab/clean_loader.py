@@ -37,7 +37,12 @@ def load_clean(csv_path: str | Path) -> tuple[pd.DataFrame, dict[str, Any]]:
     }
     
     # 1. D-01: read_csv with na_values=["?"]
-    df = pd.read_csv(csv_path, keep_default_na=True, na_values=["?"], encoding="utf-8")
+    try:
+        df = pd.read_csv(csv_path, keep_default_na=True, na_values=["?"], encoding="utf-8")
+        if df.empty or len(df.columns) == 0:
+            raise ValueError("DATA_NOT_AVAILABLE: The provided dataset is empty.")
+    except pd.errors.EmptyDataError:
+        raise ValueError("DATA_NOT_AVAILABLE: The provided dataset is empty.")
     
     # Find column names that might differ slightly in different environments/files, but fallback to dictionary keys
     # To be safe, we will just rely on the SLUG_MAPPING matching the exact file we have.

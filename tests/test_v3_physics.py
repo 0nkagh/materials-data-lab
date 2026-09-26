@@ -55,3 +55,55 @@ def test_conformal_interval_synthetic():
     # Covered
     covered = residuals <= q
     assert np.mean(covered) >= 0.8 # 4 out of 5 covered
+
+def test_calibration_breakdown_smoke(tmp_path):
+    from materials_data_lab.v3_physics import run_calibration_breakdown
+    import pandas as pd
+    
+    csv_path = tmp_path / "synthetic.csv"
+    out_dir = tmp_path / "reports"
+    
+    # Needs to match load_clean requirements
+    rows = []
+    grades = ["GradeA", "GradeB", "GradeC", "GradeD", "GradeE"]
+    for i in range(150):
+        rows.append({
+            "Source": "Test",
+            "Steel type": grades[i % 5],
+            "Initial hardness (HRC) - post quenching": np.nan,
+            "Tempering time (s)": 3600,
+            "Tempering temperature (ºC)": 200 + i,
+            "C (%wt)": 0.4,
+            "Mn (%wt)": 0.8,
+            "P (%wt)": 0.01,
+            "S (%wt)": 0.01,
+            "Si (%wt)": 0.2,
+            "Ni (%wt)": 0.0,
+            "Cr (%wt)": 1.0,
+            "Mo (%wt)": 0.2,
+            "V (%wt)": 0.0,
+            "Al (%wt)": 0.0,
+            "Cu (%wt)": 0.0,
+            "Final hardness (HRC) - post tempering": 45.0 + np.random.randn()
+        })
+    df = pd.DataFrame(rows)
+    # Add a small grade (less than 30)
+    for i in range(10):
+        r = df.iloc[0].copy()
+        r["Steel type"] = "SmallGrade"
+        df = pd.concat([df, pd.DataFrame([r])], ignore_index=True)
+        
+    df.to_csv(csv_path, index=False)
+    
+    # Run the function
+    run_calibration_breakdown(csv_path, out_dir)
+    
+    # Assert artifacts created
+    assert (out_dir / "phase7d_calibration.md").exists()
+    assert (out_dir / "figures" / "coverage_by_group.png").exists()
+    
+    # Check markdown contents for FLAG logic
+    content = (out_dir / "phase7d_calibration.md").read_text(encoding="utf-8")
+    assert "small_grades" in content
+    assert "GradeA" in content
+    assert "Sabit Genişlik Sınırlaması" in content

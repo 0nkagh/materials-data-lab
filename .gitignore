@@ -28,3 +28,4 @@ htmlcov/
 reports/_local/
 models/
 *.joblib
+scratch/

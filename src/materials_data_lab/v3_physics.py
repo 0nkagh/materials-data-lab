@@ -272,10 +272,114 @@ def run_v3a(csv_path: Path, outdir: Path):
     
     print("V3-A completed successfully.")
 
+def run_calibration_breakdown(csv_path: Path, outdir: Path):
+    raw_df, _ = load_clean(csv_path)
+    df = prepare_features(raw_df)
+    
+    X_base = df[RF_FEATURES].values
+    y = df["final_hrc"].values
+    groups = df["steel_type"].values
+    
+    # We use base xgb for conformal
+    xgb_base = xgb.XGBRegressor(**BEST_PARAMS)
+    _, oof_preds = run_s2_cv(X_base, y, groups, xgb_base)
+    
+    residuals = np.abs(y - oof_preds)
+    q = np.quantile(residuals, 0.90)
+    
+    df_cov = pd.DataFrame({"steel_type": groups, "y": y, "pred": oof_preds, "resid": residuals})
+    df_cov["covered"] = df_cov["resid"] <= q
+    
+    # Identify small grades
+    grade_counts = df_cov["steel_type"].value_counts()
+    small_grades = grade_counts[grade_counts < 30].index
+    
+    df_cov["group"] = df_cov["steel_type"]
+    df_cov.loc[df_cov["steel_type"].isin(small_grades), "group"] = "small_grades"
+    
+    # Group coverage
+    group_stats = df_cov.groupby("group").agg(
+        n=("covered", "count"),
+        coverage=("covered", "mean")
+    ).reset_index()
+    
+    # Flag if outside [0.87, 0.93]
+    group_stats["coverage_pct"] = group_stats["coverage"] * 100
+    group_stats["flag"] = group_stats["coverage_pct"].apply(
+        lambda c: "FLAG" if c < 87.0 or c > 93.0 else ""
+    )
+    
+    # Sort for plotting/table: largest n first, but small_grades at end
+    group_stats["is_small"] = group_stats["group"] == "small_grades"
+    group_stats = group_stats.sort_values(["is_small", "n"], ascending=[True, False])
+    
+    # Markdown generation
+    md_lines = [
+        "# Materials Data Lab — V7 Batch 2: Calibration Breakdown (Phase 7D)",
+        "",
+        "## Kimyasal Grup (Çelik Sınıfı) Kırılımı",
+        "Nominal hedef kapsama: **%90.0**",
+        "Flag Sınırı: **[87%, 93%]**",
+        "",
+        "| Grup | N (Satır) | Coverage (%) | Flag |",
+        "| :--- | :--- | :--- | :--- |"
+    ]
+    for _, row in group_stats.iterrows():
+        md_lines.append(f"| {row['group']} | {row['n']} | {row['coverage_pct']:.1f}% | {row['flag']} |")
+        
+    md_lines.extend([
+        "",
+        "## Sabit Genişlik Sınırlaması (OOD Davranışı)",
+        "Split conformal bantları (q90) sabit genişlikte hesaplanmıştır. Ağaç tabanlı (XGBoost) modelimiz Out-Of-Distribution (OOD) bölgelerde flatline (sabit uç yaprak değeri) verirken, güven bandı genişlemez. Bu durum fiziksel dünyada ekstrapolasyon yapılan alanlarda aşırı özgüvenli (over-confident) tahminlere yol açabilir.",
+        "",
+        "## OOF-Kalibrasyon Nüansı",
+        "Bu çalışmada ayrı bir bağımsız kalibrasyon (holdout) seti bulunmamaktadır. Kalan tüm veriler GroupKFold in-sample (OOF) mekanizmasıyla kalibre edildiğinden, kapsama (coverage) değerleri teorikte hafif over-confident (iyimser) olabilir.",
+        "",
+        "## Gelecek Çalışmalar",
+        "Lokal yoğunluğa göre değişen Adaptif İnterval (CQR vb.) yöntemleri FUTURE WORK (Gelecek Çalışma) olarak not edilmiştir."
+    ])
+    
+    md_path = outdir / "phase7d_calibration.md"
+    outdir.mkdir(parents=True, exist_ok=True)
+    md_path.write_text("\n".join(md_lines), encoding="utf-8")
+    
+    # Plot
+    fig, ax = plt.subplots(figsize=(10, 6))
+    groups_list = group_stats["group"].tolist()
+    covs = group_stats["coverage_pct"].tolist()
+    
+    bars = ax.bar(groups_list, covs, color="teal")
+    ax.axhline(90, color="red", linestyle="--", label="Target (90%)")
+    ax.axhspan(87, 93, color="red", alpha=0.1, label="Target Band [87-93%]")
+    ax.set_ylim(0, 100)
+    ax.set_ylabel("Empirical Coverage (%)")
+    ax.set_title("Conformal Coverage by Steel Grade")
+    ax.set_xticklabels(groups_list, rotation=45, ha="right")
+    ax.legend()
+    
+    for bar, pct, flag in zip(bars, covs, group_stats["flag"]):
+        height = bar.get_height()
+        ax.text(bar.get_x() + bar.get_width()/2., height - 5,
+                f"{pct:.1f}%", ha='center', va='top', color='white', fontweight='bold', fontsize=9)
+        if flag == "FLAG":
+            bar.set_color("salmon")
+            
+    fig.tight_layout()
+    fig_path = outdir / "figures" / "coverage_by_group.png"
+    fig_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(fig_path, dpi=150)
+    plt.close(fig)
+    
+    print("Calibration breakdown completed successfully.")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=str, required=True)
     parser.add_argument("--outdir", type=str, default="reports")
+    parser.add_argument("--calibration", action="store_true", help="Run grade calibration breakdown")
     args = parser.parse_args()
     
-    run_v3a(Path(args.input), Path(args.outdir))
+    if args.calibration:
+        run_calibration_breakdown(Path(args.input), Path(args.outdir))
+    else:
+        run_v3a(Path(args.input), Path(args.outdir))

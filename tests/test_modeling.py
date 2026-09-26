@@ -61,3 +61,40 @@ def test_split_determinism():
     
     np.testing.assert_array_equal(X1_tr, X2_tr)
     np.testing.assert_array_equal(y1_te, y2_te)
+
+
+def test_groupkfold_grade_disjoint_synthetic():
+    """Verify that GroupKFold effectively separates grades."""
+    from sklearn.model_selection import GroupKFold
+    
+    # Sentetik veri: 4 grade, her birinde 25 satır
+    grades = ["GradeA", "GradeB", "GradeC", "GradeD"]
+    rows = []
+    for g in grades:
+        for i in range(25):
+            rows.append({"steel_type": g, "val": i})
+            
+    df_syn = pd.DataFrame(rows)
+    X_syn = np.zeros((100, 13))
+    
+    gkf = GroupKFold(n_splits=2)
+    folds_checked = 0
+    for train_idx, test_idx in gkf.split(X_syn, groups=df_syn["steel_type"]):
+        train_grades = set(df_syn.iloc[train_idx]["steel_type"])
+        test_grades = set(df_syn.iloc[test_idx]["steel_type"])
+        assert train_grades.intersection(test_grades) == set()
+        folds_checked += 1
+        
+    assert folds_checked == 2
+
+
+def test_empty_dataframe_fails_clean(tmp_path):
+    """Empty dataframe should yield a meaningful error like DATA_NOT_AVAILABLE."""
+    from materials_data_lab.clean_loader import load_clean
+    import pytest
+    
+    empty_csv = tmp_path / "empty.csv"
+    pd.DataFrame().to_csv(empty_csv, index=False)
+    
+    with pytest.raises(ValueError, match="DATA_NOT_AVAILABLE"):
+        load_clean(empty_csv)
