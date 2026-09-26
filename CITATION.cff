@@ -3,8 +3,8 @@ title: "Materials Data Lab"
 message: "If you use this software, please cite it as below."
 type: software
 authors:
-  - family-names: "Agah"
-    given-names: "Ömer"
+  - family-names: "Koyun"
+    given-names: "Ömer Agah"
 version: 1.5.0
 date-released: 2026-09-25
 url: "https://github.com/0nkagh/materials-data-lab"
