@@ -10,10 +10,13 @@ Materials Data Lab is an independent learning and portfolio project investigatin
 - **Phase 1-5 & Phase 6a: Completed.**
 - **V2-A..V2-F: Completed.** Repository polishing, tests, local demo, and final evaluation. See [docs/methodology.md](docs/methodology.md) for the complete scientific narrative.
 - **Roadmap (Candidate Future Work)**:
-  - Investigating the remaining UNKNOWN variations.
+  - Investigating the steel_type UNKNOWN study (V2-D).
+  - Developing an `initial_hrc` subset model for the partial data available (future work — D-15 imputation rejected; Phase 6a observational only).
+  - Pilot testing protocol execution.
+
+  **Done in earlier releases:**
   - Adding SHAP explainability analysis.
   - Building a local Gradio demo for inference.
-  - Developing an `initial_hrc` subset model for the partial data available.
 
 ## Key Findings
 1. **The power of physical baselines**: The 1945 Hollomon-Jaffe parameter, as a single variable, achieves a remarkably high R²=0.81 in predicting final hardness on unseen steels.
@@ -112,7 +115,7 @@ Please see the Data Attribution section and [docs/DATA_SHEET.md](docs/DATA_SHEET
 ## Methodology
 - **Phase 1-5 & Phase 6a: Completed.**
 - **V2-A..V2-F: Completed.** Repository polishing, tests, local demo, and final evaluation. See [docs/methodology.md](docs/methodology.md) for the complete scientific narrative.
-- **Testing Approach:** Validation relies on hermetic testing using TestClient.
+- **Testing Approach:** Validation relies on hermetic testing using `TestClient`.
 
 ## Model
 Please see [docs/MODEL_CARD.md](docs/MODEL_CARD.md) for full details on the XGBoost champion model architecture and limitations.
@@ -124,11 +127,13 @@ See [docs/LIMITATIONS.md](docs/LIMITATIONS.md) and [docs/PROJECT_OVERVIEW.md](do
 See the Local Demo and Usage sections above for instructions on running the app and test suites.
 
 ## Example output
-Run the local server (python app.py) and use the /recommend endpoint via TestClient or cURL to get a full JSON response with conformal limits and multiple candidate windows.
+Run the local server (`python app.py`) and use the `/recommend` endpoint via `TestClient` or cURL to get a full JSON response with conformal limits and multiple candidate windows.
 
 ## Future work
-- Investigating the remaining UNKNOWN variations.
-- Adding SHAP explainability analysis (Completed).
-- Building a local Gradio demo for inference (Completed).
-- Developing an initial_hrc subset model for the partial data available (Completed).
+- Investigating the steel_type UNKNOWN study (V2-D).
+- Developing an `initial_hrc` subset model for the partial data available (future work — D-15 imputation rejected; Phase 6a observational only).
 - Pilot testing protocol execution.
+
+**Done in earlier releases:**
+- Adding SHAP explainability analysis.
+- Building a local Gradio demo for inference.
