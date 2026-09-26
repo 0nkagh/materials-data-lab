@@ -44,7 +44,7 @@ Below are the results of the MVP modeling (Phase 4) and the subset study (Phase 
 | **Phase 6a Set B** | (subset, with initial_hrc) | MAE: 3.53 / RMSE: 4.45 / R²: 0.86 [observational] |
 
 ## Uncertainty (Split-Conformal)
-Point predictions are supplemented with a split-conformal prediction interval (Phase V3-A). Based on out-of-fold residuals (GroupKFold), a **±5.08 HRC** interval provides a rigorously calibrated empirical coverage of **~90%** across all hardness ranges and unseen steel alloys.
+Point predictions are supplemented with a split-conformal prediction interval (Phase V3-A). Based on out-of-fold residuals (GroupKFold), a **±5.08 HRC** interval provides **~90%** global out-of-fold coverage, with documented under-coverage in five steel families (see reports/phase7d_calibration.md).
 
 ## Local Demo
 The repository includes a local Gradio web interface for interacting with the model. As of V2-F, the demo serves the XGBoost (tuned) champion model. The model artifact is automatically trained on your local machine the first time you run the app (as it's excluded from git). 
