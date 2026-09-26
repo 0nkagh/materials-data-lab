@@ -8,6 +8,7 @@ import shap
 import tempfile
 import time
 import os
+from materials_data_lab import __version__
 from materials_data_lab.modeling import RF_FEATURES
 
 # Observed bounds in the dataset
@@ -92,7 +93,7 @@ def create_demo(models, meta=None):
     """Creates the Gradio interface block."""
     with gr.Blocks(title="Materials Data Lab - Local Demo") as demo:
         gr.Markdown("# Materials Data Lab — Tempering Hardness Predictor")
-        gr.Markdown("model v1.1 · champion: XGB_tuned · data: Raiipa CC BY 4.0")
+        gr.Markdown(f"model v{__version__} · champion: XGB_tuned · data: Raiipa CC BY 4.0")
         
         with gr.Row():
             with gr.Column():

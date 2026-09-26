@@ -9,14 +9,6 @@ Materials Data Lab is an independent learning and portfolio project investigatin
 ## Project Status
 - **Phase 1-5 & Phase 6a: Completed.**
 - **V2-A..V2-F: Completed.** Repository polishing, tests, local demo, and final evaluation. See [docs/methodology.md](docs/methodology.md) for the complete scientific narrative.
-- **Roadmap (Candidate Future Work)**:
-  - Investigating the steel_type UNKNOWN study (V2-D).
-  - Developing an `initial_hrc` subset model for the partial data available (future work — D-15 imputation rejected; Phase 6a observational only).
-  - Pilot testing protocol execution.
-
-  **Done in earlier releases:**
-  - Adding SHAP explainability analysis.
-  - Building a local Gradio demo for inference.
 
 ## Key Findings
 1. **The power of physical baselines**: The 1945 Hollomon-Jaffe parameter, as a single variable, achieves a remarkably high R²=0.81 in predicting final hardness on unseen steels.
@@ -104,18 +96,16 @@ by **Raiipa Technologies** (Kaggle: rgerschtzsauer), licensed under
   see docs/data_dictionary.md for notes.
 
 ## Problem
-Materials Data Lab is an independent learning and portfolio project investigating the empirical and metallurgical relationship between steel alloy composition, tempering conditions (temperature and soaking time), and the resulting post-tempering hardness (HRC) in carbon and low-alloy steels.
+Steel parts get their final hardness during tempering, and picking the right temperature and soak time still comes down to handbooks and trial runs. I wanted to see how far a careful model could go with a public dataset — and where it stops being trustworthy.
 
 ## Why
-To provide a data-driven prototype capable of mapping steel alloy composition to post-tempering hardness and offering automated, uncertainty-aware recipe recommendations, accelerating heat treatment laboratory processes.
+Heat treatment work doesn't need another black box. It needs a tool that says "I don't know" outside its comfort zone. So this project ships predictions with error bands, recipe suggestions marked as lab candidates, and failure cases written down instead of hidden.
 
 ## Data
 Please see the Data Attribution section and [docs/DATA_SHEET.md](docs/DATA_SHEET.md) for full details on dataset provenance, licenses, and structural limits.
 
 ## Methodology
-- **Phase 1-5 & Phase 6a: Completed.**
-- **V2-A..V2-F: Completed.** Repository polishing, tests, local demo, and final evaluation. See [docs/methodology.md](docs/methodology.md) for the complete scientific narrative.
-- **Testing Approach:** Validation relies on hermetic testing using `TestClient`.
+Full scientific narrative lives in `docs/methodology.md`; every decision is logged in `docs/cleaning_decisions.md` (D-01..D-24).
 
 ## Model
 Please see [docs/MODEL_CARD.md](docs/MODEL_CARD.md) for full details on the XGBoost champion model architecture and limitations.
@@ -127,13 +117,11 @@ See [docs/LIMITATIONS.md](docs/LIMITATIONS.md) and [docs/PROJECT_OVERVIEW.md](do
 See the Local Demo and Usage sections above for instructions on running the app and test suites.
 
 ## Example output
-Run the local server (`python app.py`) and use the `/recommend` endpoint via `TestClient` or cURL to get a full JSON response with conformal limits and multiple candidate windows.
+Run `python app.py` for the demo or `python api.py` for the REST service. Example `/recommend` response (4140 steel, target 45 HRC) is in `reports/phase_v5a_recommender.md`.
 
-## Future work
-- Investigating the steel_type UNKNOWN study (V2-D).
-- Developing an `initial_hrc` subset model for the partial data available (future work — D-15 imputation rejected; Phase 6a observational only).
-- Pilot testing protocol execution.
+## Roadmap
+- steel_type UNKNOWN study (V2-D)
+- initial_hrc subset model (future work — D-15 imputation rejected; Phase 6a observational only)
+- Shadow pilot with real lab samples (protocol ready, docs/COMMERCIAL_PILOT.md)
 
-**Done in earlier releases:**
-- Adding SHAP explainability analysis.
-- Building a local Gradio demo for inference.
+Done in earlier releases: SHAP explainability, local Gradio demo, REST API, recipe recommender, per-family calibration study.
