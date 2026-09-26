@@ -34,7 +34,7 @@ Materials Data Lab is an independent learning and portfolio project investigatin
 ```
 
 ## Results
-Below are the results of the MVP modeling (Phase 4) and the subset study (Phase 6a). 
+Below are the results of the MVP modeling (Phase 4) and the subset study (Phase 6a). *(Note: Aggregations labeled as MAE for XGB_tuned are 2.35 HRC fold-mean and 2.48 HRC pooled OOF).* See [docs/EVALUATION.md](docs/EVALUATION.md) for more details. 
 
 | Model | S1 (RandomSplit) | S2 (GroupSplit: unseen steel) |
 | :--- | :--- | :--- |
@@ -99,3 +99,36 @@ by **Raiipa Technologies** (Kaggle: rgerschtzsauer), licensed under
 - The literature sources cited by the dataset card (Hollomon & Jaffe 1945;
   Grange & Baughman 1956; Penha 2010) remain the primary experimental sources;
   see docs/data_dictionary.md for notes.
+
+## Problem
+Materials Data Lab is an independent learning and portfolio project investigating the empirical and metallurgical relationship between steel alloy composition, tempering conditions (temperature and soaking time), and the resulting post-tempering hardness (HRC) in carbon and low-alloy steels.
+
+## Why
+To provide a data-driven prototype capable of mapping steel alloy composition to post-tempering hardness and offering automated, uncertainty-aware recipe recommendations, accelerating heat treatment laboratory processes.
+
+## Data
+Please see the Data Attribution section and [docs/DATA_SHEET.md](docs/DATA_SHEET.md) for full details on dataset provenance, licenses, and structural limits.
+
+## Methodology
+- **Phase 1-5 & Phase 6a: Completed.**
+- **V2-A..V2-F: Completed.** Repository polishing, tests, local demo, and final evaluation. See [docs/methodology.md](docs/methodology.md) for the complete scientific narrative.
+- **Testing Approach:** Validation relies on hermetic testing using TestClient.
+
+## Model
+Please see [docs/MODEL_CARD.md](docs/MODEL_CARD.md) for full details on the XGBoost champion model architecture and limitations.
+
+## Limitations
+See [docs/LIMITATIONS.md](docs/LIMITATIONS.md) and [docs/PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md) for full context, limitations, and the pre-registered commercial pilot protocol ([docs/COMMERCIAL_PILOT.md](docs/COMMERCIAL_PILOT.md)).
+
+## How to run
+See the Local Demo and Usage sections above for instructions on running the app and test suites.
+
+## Example output
+Run the local server (python app.py) and use the /recommend endpoint via TestClient or cURL to get a full JSON response with conformal limits and multiple candidate windows.
+
+## Future work
+- Investigating the remaining UNKNOWN variations.
+- Adding SHAP explainability analysis (Completed).
+- Building a local Gradio demo for inference (Completed).
+- Developing an initial_hrc subset model for the partial data available (Completed).
+- Pilot testing protocol execution.
