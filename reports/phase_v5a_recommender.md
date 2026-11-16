@@ -48,3 +48,7 @@
 }
 
 ```
+
+---
+> **Düzeltme Notu (2026-11-17 — Tarihsel Koşu Çıktıları Korundu):** Bu tablo ilk prototip koşusunun tarihsel çıktısıdır. `Round-Trip Err <= 0.5` (`PASS`) yalnız modelin kendi nokta tahminleriyle grid uyumluluğunu gösterir; fiziksel doğrulama değildir ve ampirik OOF tahmin bandı `±4.9673 HRC` (dokümanlarda `±5.08 HRC` V3-A) genişliğindedir. `5160` çeliği kalibrasyon analizinde `%47.1` OOF kapsamasıyla pilot dışı bırakılmıştır. Yeni kapsam politikası gereği gözlenen tek değişkenli kimya sınırları dışındaki girdilerde `/recommend` artık aday işlem koşulu üretmez (`OUT_OF_OBSERVED_SCOPE`).
+

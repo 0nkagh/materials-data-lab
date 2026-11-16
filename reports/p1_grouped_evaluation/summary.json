@@ -1,0 +1,1286 @@
+{
+  "integrity": {
+    "n_prediction_rows": 1466,
+    "n_unique_orig_row_ids": 1466,
+    "n_unique_groups": 34,
+    "evaluated_folds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "models": {
+    "B1_Naive": {
+      "fold_mean": {
+        "MAE_mean": 11.500756323424659,
+        "MAE_std_ddof0": 0.6352901295378636,
+        "RMSE_mean": 14.323105242688888,
+        "RMSE_std_ddof0": 0.739419078853342,
+        "R2_mean": -0.08111832686828295,
+        "R2_std_ddof0": 0.12888522837631153
+      },
+      "pooled_row_weighted": {
+        "n_rows": 1466,
+        "MAE": 11.49931787175989,
+        "RMSE": 14.342553957526412,
+        "R2": -0.03846147240339537,
+        "mean_signed_error": 2.561186903137789
+      },
+      "group_macro": {
+        "n_groups": 34,
+        "MAE_mean": 11.679339252682592,
+        "MAE_std_ddof0": 2.5711017570082495,
+        "MAE_median": 11.13888888888889,
+        "MAE_min": 7.145999999999999,
+        "MAE_max": 16.6974358974359
+      }
+    },
+    "B2_Physics": {
+      "fold_mean": {
+        "MAE_mean": 4.68670553394055,
+        "MAE_std_ddof0": 1.2491172052276758,
+        "RMSE_mean": 5.730395707588617,
+        "RMSE_std_ddof0": 1.3401669572540775,
+        "R2_mean": 0.8084509257003669,
+        "R2_std_ddof0": 0.11778103658320581
+      },
+      "pooled_row_weighted": {
+        "n_rows": 1466,
+        "MAE": 4.694338457452042,
+        "RMSE": 5.892718852466533,
+        "R2": 0.8247052756991047,
+        "mean_signed_error": 0.8015959665923997
+      },
+      "group_macro": {
+        "n_groups": 34,
+        "MAE_mean": 4.751268659698263,
+        "MAE_std_ddof0": 2.5639490350864707,
+        "MAE_median": 4.170268948239969,
+        "MAE_min": 1.738348110889513,
+        "MAE_max": 13.035857098659774
+      }
+    },
+    "XGBoost": {
+      "fold_mean": {
+        "MAE_mean": 2.9837812551176888,
+        "MAE_std_ddof0": 0.6321953972838972,
+        "RMSE_mean": 3.7936113904428863,
+        "RMSE_std_ddof0": 0.8022666051964749,
+        "R2_mean": 0.9225551562305128,
+        "R2_std_ddof0": 0.025967575003269197
+      },
+      "pooled_row_weighted": {
+        "n_rows": 1466,
+        "MAE": 2.9841855332438323,
+        "RMSE": 3.880001877556094,
+        "R2": 0.9240021554030936,
+        "mean_signed_error": -0.45912511895168057
+      },
+      "group_macro": {
+        "n_groups": 34,
+        "MAE_mean": 3.0450324279443444,
+        "MAE_std_ddof0": 1.6607383307119166,
+        "MAE_median": 2.664116524366232,
+        "MAE_min": 1.226781506008572,
+        "MAE_max": 8.850530922412872
+      }
+    }
+  },
+  "uncertainty": {
+    "global_row_weighted_coverage": 0.8724420190995907,
+    "n_covered_rows": 1279,
+    "n_total_rows": 1466,
+    "fold_mean_coverage": 0.8728462699423709,
+    "fold_std_coverage_ddof0": 0.050079120500501714,
+    "group_macro_coverage": 0.8712364028958095,
+    "group_macro_coverage_std_ddof0": 0.20345871914156385,
+    "group_macro_coverage_median": 0.9601485148514851,
+    "fold_mean_q90": 5.721672134399414,
+    "fold_mean_full_width": 11.443344268798828,
+    "row_weighted_mean_q90": 5.717165470253396,
+    "row_weighted_mean_full_width": 11.434330940506792,
+    "disclaimer": "No group-level 90% coverage guarantee for unseen steel groups and no external test set."
+  },
+  "folds": [
+    {
+      "fold": 0,
+      "n_test_rows": 293,
+      "n_test_groups": 7,
+      "models": {
+        "B1_Naive": {
+          "n_rows": 293,
+          "MAE": 10.996587030716723,
+          "RMSE": 14.717320482489342,
+          "R2": -0.3383598719331373,
+          "mean_signed_error": 7.3999999999999995
+        },
+        "B2_Physics": {
+          "n_rows": 293,
+          "MAE": 7.047129410441866,
+          "RMSE": 8.226728656390918,
+          "R2": 0.5818137407201953,
+          "mean_signed_error": 5.7163572598984365
+        },
+        "XGBoost": {
+          "n_rows": 293,
+          "MAE": 2.4919243283646098,
+          "RMSE": 3.1883487225882345,
+          "R2": 0.9371873604195788,
+          "mean_signed_error": 1.8594988310296383
+        }
+      },
+      "uncertainty": {
+        "q90_k": 5.0304904937744155,
+        "full_width": 10.060980987548831,
+        "empirical_coverage": 0.8805460750853242,
+        "n_covered": 258
+      },
+      "best_params": {
+        "subsample": 0.9,
+        "reg_lambda": 5,
+        "n_estimators": 500,
+        "max_depth": 7,
+        "learning_rate": 0.03,
+        "colsample_bytree": 0.6
+      },
+      "best_inner_cv_mae": 3.0356385261855547,
+      "calibration": {
+        "n_cal": 285,
+        "rank_1based": 258,
+        "rank_exceeded_n": false,
+        "finite_sample_feasible": true
+      },
+      "timing_seconds": 10.531000000002678,
+      "fit_counts": {
+        "inner_cv_fits": 60,
+        "proper_train_refit_via_search": 1,
+        "xgb_total_fits": 61,
+        "baseline_fits": 2,
+        "total_fits": 63
+      }
+    },
+    {
+      "fold": 1,
+      "n_test_rows": 307,
+      "n_test_groups": 6,
+      "models": {
+        "B1_Naive": {
+          "n_rows": 307,
+          "MAE": 11.618241042345277,
+          "RMSE": 14.409716681927518,
+          "R2": -0.028595574937972934,
+          "mean_signed_error": 2.402605863192181
+        },
+        "B2_Physics": {
+          "n_rows": 307,
+          "MAE": 4.68577096786367,
+          "RMSE": 5.7923172079305765,
+          "R2": 0.8337971592907089,
+          "mean_signed_error": 0.05165871674331521
+        },
+        "XGBoost": {
+          "n_rows": 307,
+          "MAE": 3.1322703625557864,
+          "RMSE": 4.224235982182686,
+          "R2": 0.911604509334512,
+          "mean_signed_error": -1.7330682617833635
+        }
+      },
+      "uncertainty": {
+        "q90_k": 5.490558624267578,
+        "full_width": 10.981117248535156,
+        "empirical_coverage": 0.8371335504885994,
+        "n_covered": 257
+      },
+      "best_params": {
+        "subsample": 0.9,
+        "reg_lambda": 5,
+        "n_estimators": 300,
+        "max_depth": 7,
+        "learning_rate": 0.1,
+        "colsample_bytree": 0.6
+      },
+      "best_inner_cv_mae": 2.5994578244721516,
+      "calibration": {
+        "n_cal": 285,
+        "rank_1based": 258,
+        "rank_exceeded_n": false,
+        "finite_sample_feasible": true
+      },
+      "timing_seconds": 10.937999999994645,
+      "fit_counts": {
+        "inner_cv_fits": 60,
+        "proper_train_refit_via_search": 1,
+        "xgb_total_fits": 61,
+        "baseline_fits": 2,
+        "total_fits": 63
+      }
+    },
+    {
+      "fold": 2,
+      "n_test_rows": 290,
+      "n_test_groups": 7,
+      "models": {
+        "B1_Naive": {
+          "n_rows": 290,
+          "MAE": 10.590689655172415,
+          "RMSE": 12.957278609550588,
+          "R2": -0.0155315636608917,
+          "mean_signed_error": 1.6024137931034481
+        },
+        "B2_Physics": {
+          "n_rows": 290,
+          "MAE": 4.389457154341154,
+          "RMSE": 5.362123515639327,
+          "R2": 0.8260840316274676,
+          "mean_signed_error": -2.033276659424525
+        },
+        "XGBoost": {
+          "n_rows": 290,
+          "MAE": 3.0991129178014294,
+          "RMSE": 3.8297005400445205,
+          "R2": 0.9112853253809989,
+          "mean_signed_error": -1.715884523720577
+        }
+      },
+      "uncertainty": {
+        "q90_k": 6.341819763183594,
+        "full_width": 12.683639526367188,
+        "empirical_coverage": 0.896551724137931,
+        "n_covered": 260
+      },
+      "best_params": {
+        "subsample": 0.9,
+        "reg_lambda": 1,
+        "n_estimators": 500,
+        "max_depth": 10,
+        "learning_rate": 0.1,
+        "colsample_bytree": 0.6
+      },
+      "best_inner_cv_mae": 2.858818585770699,
+      "calibration": {
+        "n_cal": 302,
+        "rank_1based": 273,
+        "rank_exceeded_n": false,
+        "finite_sample_feasible": true
+      },
+      "timing_seconds": 10.656000000002678,
+      "fit_counts": {
+        "inner_cv_fits": 60,
+        "proper_train_refit_via_search": 1,
+        "xgb_total_fits": 61,
+        "baseline_fits": 2,
+        "total_fits": 63
+      }
+    },
+    {
+      "fold": 3,
+      "n_test_rows": 288,
+      "n_test_groups": 7,
+      "models": {
+        "B1_Naive": {
+          "n_rows": 288,
+          "MAE": 11.947916666666666,
+          "RMSE": 14.369561773260713,
+          "R2": -0.003047192665801779,
+          "mean_signed_error": -0.7920138888888862
+        },
+        "B2_Physics": {
+          "n_rows": 288,
+          "MAE": 3.568717973928833,
+          "RMSE": 4.310528177631982,
+          "R2": 0.9097400068732547,
+          "mean_signed_error": -1.4614498845406603
+        },
+        "XGBoost": {
+          "n_rows": 288,
+          "MAE": 2.177179647154278,
+          "RMSE": 2.710610330285103,
+          "R2": 0.96430819615227,
+          "mean_signed_error": -0.3716941350036197
+        }
+      },
+      "uncertainty": {
+        "q90_k": 5.190639495849609,
+        "full_width": 10.381278991699219,
+        "empirical_coverage": 0.9479166666666666,
+        "n_covered": 273
+      },
+      "best_params": {
+        "subsample": 1.0,
+        "reg_lambda": 1,
+        "n_estimators": 500,
+        "max_depth": 3,
+        "learning_rate": 0.05,
+        "colsample_bytree": 1.0
+      },
+      "best_inner_cv_mae": 3.3295214720551893,
+      "calibration": {
+        "n_cal": 282,
+        "rank_1based": 255,
+        "rank_exceeded_n": false,
+        "finite_sample_feasible": true
+      },
+      "timing_seconds": 10.59299999999348,
+      "fit_counts": {
+        "inner_cv_fits": 60,
+        "proper_train_refit_via_search": 1,
+        "xgb_total_fits": 61,
+        "baseline_fits": 2,
+        "total_fits": 63
+      }
+    },
+    {
+      "fold": 4,
+      "n_test_rows": 288,
+      "n_test_groups": 7,
+      "models": {
+        "B1_Naive": {
+          "n_rows": 288,
+          "MAE": 12.350347222222222,
+          "RMSE": 15.161648666216276,
+          "R2": -0.020057431143611026,
+          "mean_signed_error": 2.126041666666664
+        },
+        "B2_Physics": {
+          "n_rows": 288,
+          "MAE": 3.7424521631272256,
+          "RMSE": 4.960280980350279,
+          "R2": 0.8908196899902081,
+          "mean_signed_error": 1.718526325745974
+        },
+        "XGBoost": {
+          "n_rows": 288,
+          "MAE": 4.018419019712342,
+          "RMSE": 5.01516137711389,
+          "R2": 0.888390389865204,
+          "mean_signed_error": -0.2819590373171701
+        }
+      },
+      "uncertainty": {
+        "q90_k": 6.554852294921872,
+        "full_width": 13.109704589843744,
+        "empirical_coverage": 0.8020833333333334,
+        "n_covered": 231
+      },
+      "best_params": {
+        "subsample": 0.7,
+        "reg_lambda": 1,
+        "n_estimators": 800,
+        "max_depth": 5,
+        "learning_rate": 0.05,
+        "colsample_bytree": 1.0
+      },
+      "best_inner_cv_mae": 2.5566469883812233,
+      "calibration": {
+        "n_cal": 284,
+        "rank_1based": 257,
+        "rank_exceeded_n": false,
+        "finite_sample_feasible": true
+      },
+      "timing_seconds": 10.610000000000582,
+      "fit_counts": {
+        "inner_cv_fits": 60,
+        "proper_train_refit_via_search": 1,
+        "xgb_total_fits": 61,
+        "baseline_fits": 2,
+        "total_fits": 63
+      }
+    }
+  ],
+  "per_steel": [
+    {
+      "steel_type": "AISI-SAE 9264",
+      "folds": [
+        1
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 8.850530922412872,
+      "xgb_RMSE": 9.20521906023909,
+      "xgb_bias": -8.850530922412872,
+      "b2_MAE": 8.227709129898738,
+      "b1_MAE": 10.4475,
+      "q90_k": 5.490558624267578,
+      "empirical_coverage": 0.1,
+      "n_covered": 4
+    },
+    {
+      "steel_type": "AISI-SAE 4640",
+      "folds": [
+        4
+      ],
+      "n_rows": 50,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 50
+      },
+      "xgb_MAE": 6.286487266540528,
+      "xgb_RMSE": 7.0199154854817385,
+      "xgb_bias": -6.286487266540528,
+      "b2_MAE": 2.047688074628374,
+      "b1_MAE": 8.885999999999997,
+      "q90_k": 6.554852294921872,
+      "empirical_coverage": 0.5,
+      "n_covered": 25
+    },
+    {
+      "steel_type": "0,31%C - plain carbon steel",
+      "folds": [
+        0
+      ],
+      "n_rows": 45,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Hollomon and Jaffe, 1945": 45
+      },
+      "xgb_MAE": 5.408297989103529,
+      "xgb_RMSE": 5.857398588943821,
+      "xgb_bias": 5.379801511764526,
+      "b2_MAE": 13.035857098659774,
+      "b1_MAE": 11.1,
+      "q90_k": 5.0304904937744155,
+      "empirical_coverage": 0.37777777777777777,
+      "n_covered": 17
+    },
+    {
+      "steel_type": "Nitriding Steel",
+      "folds": [
+        2
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 5.368907775878907,
+      "xgb_RMSE": 5.631169109038129,
+      "xgb_bias": -5.368907775878907,
+      "b2_MAE": 6.218925438160265,
+      "b1_MAE": 7.8775,
+      "q90_k": 6.341819763183594,
+      "empirical_coverage": 0.6,
+      "n_covered": 24
+    },
+    {
+      "steel_type": "AISI-SAE 4037",
+      "folds": [
+        4
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 4.814738674163818,
+      "xgb_RMSE": 5.56486047519422,
+      "xgb_bias": -4.814738674163818,
+      "b2_MAE": 2.5930528673879274,
+      "b1_MAE": 10.194999999999999,
+      "q90_k": 6.554852294921872,
+      "empirical_coverage": 0.625,
+      "n_covered": 25
+    },
+    {
+      "steel_type": "AISI-SAE 5160",
+      "folds": [
+        4
+      ],
+      "n_rows": 51,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Penha, 2010": 51
+      },
+      "xgb_MAE": 4.590659874560785,
+      "xgb_RMSE": 5.120095449603954,
+      "xgb_bias": 4.05296896018234,
+      "b2_MAE": 4.395359085707456,
+      "b1_MAE": 11.807843137254903,
+      "q90_k": 6.554852294921872,
+      "empirical_coverage": 0.8431372549019608,
+      "n_covered": 43
+    },
+    {
+      "steel_type": "0,56%C - plain carbon steel",
+      "folds": [
+        4
+      ],
+      "n_rows": 45,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Hollomon and Jaffe, 1945": 45
+      },
+      "xgb_MAE": 4.431090683407254,
+      "xgb_RMSE": 4.7702197462877445,
+      "xgb_bias": 4.431090683407254,
+      "b2_MAE": 2.496435736449081,
+      "b1_MAE": 13.746666666666664,
+      "q90_k": 6.554852294921872,
+      "empirical_coverage": 0.8888888888888888,
+      "n_covered": 40
+    },
+    {
+      "steel_type": "AISI-SAE 1065",
+      "folds": [
+        2
+      ],
+      "n_rows": 19,
+      "small_group_n_lt_30": true,
+      "sources": {
+        "Grange and Baughman, 1956": 19
+      },
+      "xgb_MAE": 4.425096572072882,
+      "xgb_RMSE": 4.7664824523254055,
+      "xgb_bias": -4.367417666786595,
+      "b2_MAE": 2.777110676437714,
+      "b1_MAE": 10.663157894736841,
+      "q90_k": 6.341819763183594,
+      "empirical_coverage": 0.7894736842105263,
+      "n_covered": 15
+    },
+    {
+      "steel_type": "AISI-SAE 4068",
+      "folds": [
+        2
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 3.825411705970764,
+      "xgb_RMSE": 4.115878740310041,
+      "xgb_bias": -3.825411705970764,
+      "b2_MAE": 4.727063843387522,
+      "b1_MAE": 10.57,
+      "q90_k": 6.341819763183594,
+      "empirical_coverage": 0.95,
+      "n_covered": 38
+    },
+    {
+      "steel_type": "AISI-SAE E52100",
+      "folds": [
+        2
+      ],
+      "n_rows": 51,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Penha, 2010": 51
+      },
+      "xgb_MAE": 3.3373267042870616,
+      "xgb_RMSE": 4.352287164181971,
+      "xgb_bias": -2.8641259623508826,
+      "b2_MAE": 6.131646068300387,
+      "b1_MAE": 13.811764705882352,
+      "q90_k": 6.341819763183594,
+      "empirical_coverage": 0.8627450980392157,
+      "n_covered": 44
+    },
+    {
+      "steel_type": "AISI-SAE 1026",
+      "folds": [
+        1
+      ],
+      "n_rows": 39,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 39
+      },
+      "xgb_MAE": 3.3226283000065733,
+      "xgb_RMSE": 3.6438351253145114,
+      "xgb_bias": 3.3226283000065733,
+      "b2_MAE": 9.574482612587243,
+      "b1_MAE": 15.817948717948717,
+      "q90_k": 5.490558624267578,
+      "empirical_coverage": 0.9230769230769231,
+      "n_covered": 36
+    },
+    {
+      "steel_type": "AISI-SAE 1080",
+      "folds": [
+        3
+      ],
+      "n_rows": 17,
+      "small_group_n_lt_30": true,
+      "sources": {
+        "Grange and Baughman, 1956": 17
+      },
+      "xgb_MAE": 3.1484796411850873,
+      "xgb_RMSE": 3.624805151760434,
+      "xgb_bias": -3.0743976817411536,
+      "b2_MAE": 5.149316682624461,
+      "b1_MAE": 9.891176470588235,
+      "q90_k": 5.190639495849609,
+      "empirical_coverage": 0.7647058823529411,
+      "n_covered": 13
+    },
+    {
+      "steel_type": "0,98%C - plain carbon steel",
+      "folds": [
+        4
+      ],
+      "n_rows": 45,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Hollomon and Jaffe, 1945": 45
+      },
+      "xgb_MAE": 2.9967035081651474,
+      "xgb_RMSE": 4.726369802133888,
+      "xgb_bias": 1.9062409294976128,
+      "b2_MAE": 4.674504725693186,
+      "b1_MAE": 16.33111111111111,
+      "q90_k": 6.554852294921872,
+      "empirical_coverage": 0.9111111111111111,
+      "n_covered": 41
+    },
+    {
+      "steel_type": "AISI-SAE 1049",
+      "folds": [
+        0
+      ],
+      "n_rows": 9,
+      "small_group_n_lt_30": true,
+      "sources": {
+        "Grange and Baughman, 1956": 9
+      },
+      "xgb_MAE": 2.9662371741400824,
+      "xgb_RMSE": 3.082993176095398,
+      "xgb_bias": 2.9662371741400824,
+      "b2_MAE": 3.7125843627585633,
+      "b1_MAE": 10.666666666666666,
+      "q90_k": 5.0304904937744155,
+      "empirical_coverage": 1.0,
+      "n_covered": 9
+    },
+    {
+      "steel_type": "AISI-SAE 6150",
+      "folds": [
+        3
+      ],
+      "n_rows": 51,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Penha, 2010": 51
+      },
+      "xgb_MAE": 2.936568226533777,
+      "xgb_RMSE": 3.5707903227531337,
+      "xgb_bias": -1.9436033061906406,
+      "b2_MAE": 3.960590714443417,
+      "b1_MAE": 11.883333333333333,
+      "q90_k": 5.190639495849609,
+      "empirical_coverage": 0.8431372549019608,
+      "n_covered": 43
+    },
+    {
+      "steel_type": "AISI-SAE 4140",
+      "folds": [
+        1
+      ],
+      "n_rows": 93,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 50,
+        "Penha, 2010": 43
+      },
+      "xgb_MAE": 2.868473315495317,
+      "xgb_RMSE": 3.425489952165579,
+      "xgb_bias": -2.1193431156937788,
+      "b2_MAE": 3.5951689770970505,
+      "b1_MAE": 8.701075268817206,
+      "q90_k": 5.490558624267578,
+      "empirical_coverage": 0.8924731182795699,
+      "n_covered": 83
+    },
+    {
+      "steel_type": "AISI-SAE 1030",
+      "folds": [
+        0
+      ],
+      "n_rows": 39,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 39
+      },
+      "xgb_MAE": 2.6817236826970037,
+      "xgb_RMSE": 3.298890904035089,
+      "xgb_bias": 2.6655234654744473,
+      "b2_MAE": 10.881875309969372,
+      "b1_MAE": 16.6974358974359,
+      "q90_k": 5.0304904937744155,
+      "empirical_coverage": 0.8974358974358975,
+      "n_covered": 35
+    },
+    {
+      "steel_type": "AISI-SAE 1040",
+      "folds": [
+        3
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 2.646509366035461,
+      "xgb_RMSE": 3.0349987412988075,
+      "xgb_bias": 1.492841467857361,
+      "b2_MAE": 4.340221061749465,
+      "b1_MAE": 13.030000000000001,
+      "q90_k": 5.190639495849609,
+      "empirical_coverage": 1.0,
+      "n_covered": 40
+    },
+    {
+      "steel_type": "AISI-SAE 1038",
+      "folds": [
+        0
+      ],
+      "n_rows": 9,
+      "small_group_n_lt_30": true,
+      "sources": {
+        "Grange and Baughman, 1956": 9
+      },
+      "xgb_MAE": 2.5186928219265408,
+      "xgb_RMSE": 2.5965168699140886,
+      "xgb_bias": 2.5186928219265408,
+      "b2_MAE": 6.334806584980786,
+      "b1_MAE": 11.177777777777777,
+      "q90_k": 5.0304904937744155,
+      "empirical_coverage": 1.0,
+      "n_covered": 9
+    },
+    {
+      "steel_type": "AISI-SAE 1042",
+      "folds": [
+        2
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 2.4089194822311404,
+      "xgb_RMSE": 2.918298731206526,
+      "xgb_bias": 1.880472102165222,
+      "b2_MAE": 3.3295580305511208,
+      "b1_MAE": 13.407499999999999,
+      "q90_k": 6.341819763183594,
+      "empirical_coverage": 0.975,
+      "n_covered": 39
+    },
+    {
+      "steel_type": "AISI-SAE 4047",
+      "folds": [
+        3
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 2.34528778553009,
+      "xgb_RMSE": 2.8217281342899505,
+      "xgb_bias": -2.0163087892532348,
+      "b2_MAE": 2.2503419880021442,
+      "b1_MAE": 9.9975,
+      "q90_k": 5.190639495849609,
+      "empirical_coverage": 0.95,
+      "n_covered": 38
+    },
+    {
+      "steel_type": "AISI-SAE 5140",
+      "folds": [
+        3
+      ],
+      "n_rows": 50,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 50
+      },
+      "xgb_MAE": 2.2186004409790034,
+      "xgb_RMSE": 2.622488566962153,
+      "xgb_bias": 1.5738476181030279,
+      "b2_MAE": 2.2892934399980565,
+      "b1_MAE": 8.118,
+      "q90_k": 5.190639495849609,
+      "empirical_coverage": 0.98,
+      "n_covered": 49
+    },
+    {
+      "steel_type": "AISI-SAE 1335",
+      "folds": [
+        2
+      ],
+      "n_rows": 50,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 50
+      },
+      "xgb_MAE": 2.065778984069824,
+      "xgb_RMSE": 2.464808744645711,
+      "xgb_bias": 1.7624320297241212,
+      "b2_MAE": 2.641103893163023,
+      "b1_MAE": 10.656,
+      "q90_k": 6.341819763183594,
+      "empirical_coverage": 1.0,
+      "n_covered": 50
+    },
+    {
+      "steel_type": "0,89%C - plain carbon steel",
+      "folds": [
+        1
+      ],
+      "n_rows": 45,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Hollomon and Jaffe, 1945": 45
+      },
+      "xgb_MAE": 2.065035099453396,
+      "xgb_RMSE": 2.402525427279213,
+      "xgb_bias": -1.9746506796942818,
+      "b2_MAE": 4.13180729815726,
+      "b1_MAE": 15.23111111111111,
+      "q90_k": 5.490558624267578,
+      "empirical_coverage": 0.9777777777777777,
+      "n_covered": 44
+    },
+    {
+      "steel_type": "AISI-SAE 4027",
+      "folds": [
+        0
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 1.8438071393966673,
+      "xgb_RMSE": 2.1281248219946405,
+      "xgb_bias": 1.7250929021835326,
+      "b2_MAE": 6.50216268066773,
+      "b1_MAE": 12.1825,
+      "q90_k": 5.0304904937744155,
+      "empirical_coverage": 1.0,
+      "n_covered": 40
+    },
+    {
+      "steel_type": "AISI-SAE 2340",
+      "folds": [
+        0
+      ],
+      "n_rows": 50,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 50
+      },
+      "xgb_MAE": 1.787779140472412,
+      "xgb_RMSE": 2.063579362448231,
+      "xgb_bias": 1.7656237068176264,
+      "b2_MAE": 4.9252652199602585,
+      "b1_MAE": 11.893999999999998,
+      "q90_k": 5.0304904937744155,
+      "empirical_coverage": 1.0,
+      "n_covered": 50
+    },
+    {
+      "steel_type": "AISI-SAE 4340",
+      "folds": [
+        0
+      ],
+      "n_rows": 101,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 50,
+        "Penha, 2010": 51
+      },
+      "xgb_MAE": 1.6798770545732862,
+      "xgb_RMSE": 2.1569163274543683,
+      "xgb_bias": -0.07784749588163772,
+      "b2_MAE": 4.525009148283119,
+      "b1_MAE": 7.848514851485148,
+      "q90_k": 5.0304904937744155,
+      "empirical_coverage": 0.9702970297029703,
+      "n_covered": 98
+    },
+    {
+      "steel_type": "AISI-SAE 1050",
+      "folds": [
+        4
+      ],
+      "n_rows": 17,
+      "small_group_n_lt_30": true,
+      "sources": {
+        "Grange and Baughman, 1956": 17
+      },
+      "xgb_MAE": 1.627015506519991,
+      "xgb_RMSE": 1.9021421975968344,
+      "xgb_bias": -1.1203301373650048,
+      "b2_MAE": 1.738348110889513,
+      "b1_MAE": 9.394117647058822,
+      "q90_k": 6.554852294921872,
+      "empirical_coverage": 1.0,
+      "n_covered": 17
+    },
+    {
+      "steel_type": "AISI-SAE 6145",
+      "folds": [
+        2
+      ],
+      "n_rows": 50,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 50
+      },
+      "xgb_MAE": 1.5408748321533203,
+      "xgb_RMSE": 2.3027884808672296,
+      "xgb_bias": -1.2824571685791017,
+      "b2_MAE": 4.087728705623822,
+      "b1_MAE": 7.145999999999999,
+      "q90_k": 6.341819763183594,
+      "empirical_coverage": 1.0,
+      "n_covered": 50
+    },
+    {
+      "steel_type": "AISI-SAE 1045",
+      "folds": [
+        1
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 1.42156507730484,
+      "xgb_RMSE": 1.726945226045081,
+      "xgb_bias": 0.9444753241539001,
+      "b2_MAE": 2.7334670833740256,
+      "b1_MAE": 13.319999999999999,
+      "q90_k": 5.490558624267578,
+      "empirical_coverage": 1.0,
+      "n_covered": 40
+    },
+    {
+      "steel_type": "AISI-SAE 1035",
+      "folds": [
+        4
+      ],
+      "n_rows": 40,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 40
+      },
+      "xgb_MAE": 1.358927788734436,
+      "xgb_RMSE": 1.6834499049159903,
+      "xgb_bias": -1.1781504917144772,
+      "b2_MAE": 7.382803812527532,
+      "b1_MAE": 14.735,
+      "q90_k": 6.554852294921872,
+      "empirical_coverage": 1.0,
+      "n_covered": 40
+    },
+    {
+      "steel_type": "1,15%C - plain carbon steel",
+      "folds": [
+        3
+      ],
+      "n_rows": 45,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Hollomon and Jaffe, 1945": 45
+      },
+      "xgb_MAE": 1.287367312113444,
+      "xgb_RMSE": 1.608384326881908,
+      "xgb_bias": 0.25957825978597004,
+      "b2_MAE": 3.7951599007952477,
+      "b1_MAE": 14.60777777777778,
+      "q90_k": 5.190639495849609,
+      "empirical_coverage": 1.0,
+      "n_covered": 45
+    },
+    {
+      "steel_type": "AISI-SAE 3140",
+      "folds": [
+        1
+      ],
+      "n_rows": 50,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Grange and Baughman, 1956": 50
+      },
+      "xgb_MAE": 1.2289211959838868,
+      "xgb_RMSE": 1.4184094888935588,
+      "xgb_bias": -1.1886809158325198,
+      "b2_MAE": 2.1279554685046227,
+      "b1_MAE": 10.092,
+      "q90_k": 5.490558624267578,
+      "empirical_coverage": 1.0,
+      "n_covered": 50
+    },
+    {
+      "steel_type": "0,74%C - plain carbon steel",
+      "folds": [
+        3
+      ],
+      "n_rows": 45,
+      "small_group_n_lt_30": false,
+      "sources": {
+        "Hollomon and Jaffe, 1945": 45
+      },
+      "xgb_MAE": 1.226781506008572,
+      "xgb_RMSE": 1.4544321251012877,
+      "xgb_bias": -0.557646475897895,
+      "b2_MAE": 4.208730598322679,
+      "b1_MAE": 15.165555555555557,
+      "q90_k": 5.190639495849609,
+      "empirical_coverage": 1.0,
+      "n_covered": 45
+    }
+  ],
+  "weak_regimes": {
+    "final_hrc_lt_20": {
+      "n_rows": 123,
+      "xgb_MAE": 3.224805011981871,
+      "empirical_coverage": 0.8536585365853658,
+      "n_covered": 105
+    },
+    "final_hrc_lt_25": {
+      "n_rows": 203,
+      "xgb_MAE": 3.416316895649351,
+      "empirical_coverage": 0.8472906403940886,
+      "n_covered": 172
+    }
+  },
+  "by_source": {
+    "Grange and Baughman, 1956": {
+      "n_rows": 949,
+      "n_groups": 25,
+      "xgb_MAE": 3.027635361698581,
+      "empirical_coverage": 0.8703898840885143,
+      "n_covered": 826
+    },
+    "Hollomon and Jaffe, 1945": {
+      "n_rows": 270,
+      "n_groups": 6,
+      "xgb_MAE": 2.902546016375224,
+      "empirical_coverage": 0.8592592592592593,
+      "n_covered": 232
+    },
+    "Penha, 2010": {
+      "n_rows": 247,
+      "n_groups": 5,
+      "xgb_MAE": 2.9064882957983595,
+      "empirical_coverage": 0.8947368421052632,
+      "n_covered": 221
+    }
+  },
+  "provenance": {
+    "schema_version": 1,
+    "mode": "full",
+    "package_version": "1.5.0",
+    "git_commit": "eeee8e884551573bdebd59a67d4fb40f1235790c",
+    "git_dirty": false,
+    "csv_sha256": "3f88fdccf4bb2f3c03be6eeca03001b4bd8a2b0de5cd4818195486182a4762b0",
+    "raw_rows": 1466,
+    "kept_rows": 1466,
+    "dropped_rows": 0,
+    "n_unique_groups": 34,
+    "parameters": {
+      "outer_splits": 5,
+      "inner_splits": 3,
+      "cal_fraction": 0.25,
+      "alpha": 0.1,
+      "seed": 42,
+      "overflow_policy": "inf",
+      "selected_folds": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "max_seconds": 900.0
+    },
+    "fit_counts": {
+      "xgb_fits": 305,
+      "baseline_fits": 10,
+      "total_fits": 315
+    },
+    "total_elapsed_seconds": 53.562999999994645,
+    "timed_out": false,
+    "search_n_jobs": 1,
+    "xgb_n_jobs": 1,
+    "candidates": {
+      "seed": 42,
+      "requested_n_iter": 20,
+      "canonical_full_n_iter": 20,
+      "pilot_is_exact_prefix_of_full": true,
+      "selected_candidates": [
+        {
+          "subsample": 1.0,
+          "reg_lambda": 1,
+          "n_estimators": 500,
+          "max_depth": 3,
+          "learning_rate": 0.05,
+          "colsample_bytree": 1.0
+        },
+        {
+          "subsample": 0.9,
+          "reg_lambda": 5,
+          "n_estimators": 500,
+          "max_depth": 7,
+          "learning_rate": 0.03,
+          "colsample_bytree": 0.6
+        },
+        {
+          "subsample": 0.7,
+          "reg_lambda": 1,
+          "n_estimators": 800,
+          "max_depth": 10,
+          "learning_rate": 0.05,
+          "colsample_bytree": 1.0
+        },
+        {
+          "subsample": 1.0,
+          "reg_lambda": 5,
+          "n_estimators": 800,
+          "max_depth": 5,
+          "learning_rate": 0.05,
+          "colsample_bytree": 0.8
+        },
+        {
+          "subsample": 1.0,
+          "reg_lambda": 2,
+          "n_estimators": 800,
+          "max_depth": 10,
+          "learning_rate": 0.1,
+          "colsample_bytree": 0.8
+        },
+        {
+          "subsample": 0.9,
+          "reg_lambda": 2,
+          "n_estimators": 800,
+          "max_depth": 10,
+          "learning_rate": 0.05,
+          "colsample_bytree": 0.8
+        },
+        {
+          "subsample": 0.9,
+          "reg_lambda": 5,
+          "n_estimators": 300,
+          "max_depth": 7,
+          "learning_rate": 0.1,
+          "colsample_bytree": 0.6
+        },
+        {
+          "subsample": 0.9,
+          "reg_lambda": 1,
+          "n_estimators": 500,
+          "max_depth": 7,
+          "learning_rate": 0.1,
+          "colsample_bytree": 0.6
+        },
+        {
+          "subsample": 0.9,
+          "reg_lambda": 2,
+          "n_estimators": 800,
+          "max_depth": 10,
+          "learning_rate": 0.1,
+          "colsample_bytree": 1.0
+        },
+        {
+          "subsample": 0.9,
+          "reg_lambda": 5,
+          "n_estimators": 800,
+          "max_depth": 3,
+          "learning_rate": 0.1,
+          "colsample_bytree": 1.0
+        },
+        {
+          "subsample": 1.0,
+          "reg_lambda": 2,
+          "n_estimators": 500,
+          "max_depth": 3,
+          "learning_rate": 0.1,
+          "colsample_bytree": 0.8
+        },
+        {
+          "subsample": 0.7,
+          "reg_lambda": 2,
+          "n_estimators": 300,
+          "max_depth": 3,
+          "learning_rate": 0.1,
+          "colsample_bytree": 1.0
+        },
+        {
+          "subsample": 1.0,
+          "reg_lambda": 5,
+          "n_estimators": 500,
+          "max_depth": 5,
+          "learning_rate": 0.05,
+          "colsample_bytree": 1.0
+        },
+        {
+          "subsample": 0.9,
+          "reg_lambda": 1,
+          "n_estimators": 800,
+          "max_depth": 5,
+          "learning_rate": 0.05,
+          "colsample_bytree": 0.8
+        },
+        {
+          "subsample": 0.7,
+          "reg_lambda": 2,
+          "n_estimators": 500,
+          "max_depth": 7,
+          "learning_rate": 0.03,
+          "colsample_bytree": 1.0
+        },
+        {
+          "subsample": 0.7,
+          "reg_lambda": 5,
+          "n_estimators": 300,
+          "max_depth": 10,
+          "learning_rate": 0.03,
+          "colsample_bytree": 0.8
+        },
+        {
+          "subsample": 0.7,
+          "reg_lambda": 1,
+          "n_estimators": 800,
+          "max_depth": 7,
+          "learning_rate": 0.03,
+          "colsample_bytree": 1.0
+        },
+        {
+          "subsample": 0.7,
+          "reg_lambda": 2,
+          "n_estimators": 300,
+          "max_depth": 5,
+          "learning_rate": 0.03,
+          "colsample_bytree": 0.6
+        },
+        {
+          "subsample": 0.7,
+          "reg_lambda": 1,
+          "n_estimators": 800,
+          "max_depth": 5,
+          "learning_rate": 0.05,
+          "colsample_bytree": 1.0
+        },
+        {
+          "subsample": 0.9,
+          "reg_lambda": 1,
+          "n_estimators": 500,
+          "max_depth": 10,
+          "learning_rate": 0.1,
+          "colsample_bytree": 0.6
+        }
+      ]
+    },
+    "coverage_note": "No group-level theoretical coverage guarantee exists for unseen steel_type groups; finite-sample order statistic calibration is evaluated strictly as an empirical benchmark."
+  }
+}

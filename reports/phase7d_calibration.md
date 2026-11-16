@@ -87,3 +87,6 @@ Lokal yoğunluğa göre değişen Adaptif İnterval (CQR vb.) yöntemleri FUTURE
 
 ## Pilot Rehberi (V7 Sonuçlarına Göre)
 Kanıtla desteklenen pilot aileler: Cr-Mo (41xx/43xx/46xx, coverage 94–98%); pilot dışı bırakılması önerilen: Si-yay (9264, 5160), E52100, Nitralloy, ultra-düşük-C plain — B4 pilot protokolüne girdi.
+
+---
+> **Düzeltme Notu (2026-11-17 — Tarihsel Tablo Korundu):** Bu rapordaki sayısal kapsamalar (`q90=5.08` V3-A koşusu) aynı 1466 OOF artığı üzerinde ölçülmüş olup dış/grup garantisi taşımaz (`artifact_meta.json`'daki `4.9673` ve `phase7a_baselines.md`'deki `4.98` ile farkın kesin nedeni yeniden eğitim yapılmadığı için doğrulanmamıştır). Kimya etiketi düzeltmesi: `AISI-SAE 5160` (`Si=0.22%, Cr=0.79%`) `Si-yay` değil `Cr_steel` grubudur; ayrıca `4340` (`Ni-Cr-Mo`) ve `4640` (`Ni-Mo`, `Cr=0.06%`) salt Cr-Mo sınıfında değildir.

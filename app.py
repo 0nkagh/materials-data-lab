@@ -1,37 +1,54 @@
+import argparse
 import sys
 from pathlib import Path
+
 _SRC = Path(__file__).resolve().parent / "src"
 if str(_SRC) not in sys.path:
     sys.path.insert(0, str(_SRC))
 
-import argparse
-from pathlib import Path
-
-from materials_data_lab.model_artifact import build_or_load_artifact
 from materials_data_lab.demo import create_demo
+from materials_data_lab.model_artifact import ArtifactError, load_artifact
 
-def main():
-    parser = argparse.ArgumentParser(description="Launch Materials Data Lab Local Demo")
-    parser.add_argument("--csv", type=str, default="data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv", help="Path to raw CSV file")
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Launch Materials Data Lab Local Demo (load-only artifacts)")
+    parser.add_argument(
+        "--models-dir",
+        type=str,
+        default="models",
+        help="Path to pre-trained Schema v2 models directory (default: models).",
+    )
+    parser.add_argument(
+        "--csv",
+        type=str,
+        default=None,
+        help="Optional path to raw CSV strictly for SHA-256 verification (never triggers training).",
+    )
     args = parser.parse_args()
-    
-    csv_path = Path(args.csv)
-    if not csv_path.exists():
-        print(f"Error: CSV file not found at {csv_path}")
-        return
-        
-    print("Loading or building model artifact...")
-    models, meta = build_or_load_artifact(csv_path)
-    
-    if meta.get("retrained"):
-        print("Models were retrained from data.")
-    else:
-        print("Loaded existing model artifact.")
-        
+
+    try:
+        models, meta = load_artifact(
+            models_dir=args.models_dir,
+            csv_path=args.csv,
+            verify_csv_hash=args.csv is not None,
+        )
+    except ArtifactError as exc:
+        print(f"MODEL NOT READY ({type(exc).__name__}): {exc}", file=sys.stderr)
+        print(
+            "Explicit training command: python -m materials_data_lab.model_artifact --csv \"data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv\"",
+            file=sys.stderr,
+        )
+        return 1
+
+    print("Loaded existing model artifact.")
+    if meta.get("version_mismatches"):
+        print(f"Runtime library version note: {meta['version_mismatches']}")
+
     demo = create_demo(models, meta)
-    
     # Launch strictly locally without share=True
     demo.launch(inbrowser=True, share=False)
+    return 0
+
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
