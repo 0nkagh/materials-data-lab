@@ -9,11 +9,12 @@ Materials Data Lab is an independent learning and research prototype investigati
 ## Project Status
 - **Phase 1–5 & Phase 6a / V2–V5:** Prototype completed ([docs/methodology.md](docs/methodology.md)).
 - **Safety & Scope Hardening (2026-11-17):** Runtime auto-training disabled in `app.py` / `api.py`, observed dataset boundaries (`OBSERVED_UNIVARIATE_BOUNDS`) reconciled against the raw CSV, application-supported input scope (`SUPPORTED_INPUT_BOUNDS`, distinct from observed range and metallurgical suitability) enforced before inference, out-of-scope chemistry blocked in `/recommend`, and empirical claims narrowed to match code behavior.
+- **P1 Unbiased Grouped Evaluation (`docs/p1-results`, 2026-11-17):** Added `5`-fold outer `GroupKFold(steel_type)` evaluation with target-blind `proper_train`/`calibration` splitting and inner `3`-fold hyperparameter search ([reports/p1_grouped_evaluation/README.md](reports/p1_grouped_evaluation/README.md)). The served demo/API still loads legacy `models/` artifacts (`artifact_meta.json`, `q90 = 4.9673 HRC`), not P1 `proper_train` models.
 
-## Key Findings (Historical Internal CV Study)
-1. **Physical baselines (`B2`):** A single-variable linear regression on the 1945 Hollomon-Jaffe parameter (`C = 19.5` assumed) reaches `R² = 0.81` (`MAE = 4.67 HRC`) under `GroupKFold(5, groups=steel_type)`.
-2. **Machine learning (`S2` grade-string holdout):** Under the same 34-group `GroupKFold(5)` partition (with no nested outer CV or independent external test set), tuned Random Forest reaches `MAE = 2.64 ± 0.24 HRC` and tuned XGBoost reaches `2.35 ± 0.39 HRC` fold-mean (`2.48 HRC` pooled OOF).
-3. **Identified weak spots:** Prediction error is concentrated at `<25 HRC`, `>=650 °C`, and specific steel groups where empirical OOF coverage drops sharply (`AISI-SAE 9264`, `0.31%C plain carbon`, `AISI-SAE 5160`, `Nitriding Steel`, `AISI-SAE E52100`).
+## Key Findings (Historical Internal CV Study vs. New P1 Benchmark)
+1. **Physical baselines (`B2`):** Single-variable linear regression on Hollomon-Jaffe (`C = 19.5` assumed) yields `4.67 HRC` (`R² = 0.81`, historical `S2`) and **`4.69 HRC`** pooled (`4.69 ± 1.25 HRC` fold-mean, `R² = 0.82`) under P1 `proper_train` evaluation.
+2. **XGBoost — Historical vs. Unbiased P1 Benchmark:** Historical shared-CV study reported `2.35 ± 0.39 HRC` fold-mean MAE (`2.48 HRC` pooled OOF). Under strict P1 nested evaluation with held-out calibration (`proper_train` = `20–21` groups per fold; `inner 3-fold × 20` candidates; `34` grades across `1466` rows), XGBoost achieves **`2.98 HRC` pooled MAE (`2.9838 ± 0.6322 HRC` fold-mean, `3.0450 ± 1.6607 HRC` group-macro, `R² = 0.92`)**, **`87.24%` empirical coverage** (`1279/1466`; group-macro `87.12%`), and **`11.44 HRC` mean full band width** (`2 × q90_k`). Because P1 shrinks training groups (`-25%`) to hold out calibration and uses a different inner search budget, this gap cannot be explained solely by historical selection optimism.
+3. **Identified weak spots & guarantees:** Error and under-coverage remain severe on `AISI-SAE 9264` (`10.0%`), `0.31%C plain carbon` (`37.8%`), `AISI-SAE 4640` (`50.0%`), `Nitriding Steel` (`60.0%`), and `AISI-SAE 4037` (`62.5%`), plus `<25 HRC` / `>=650 °C` tails. There is **no independent external dataset and no theoretical 90% coverage guarantee** for unseen steel grades.
 
 ## Repository Structure
 ```text
@@ -29,8 +30,22 @@ Materials Data Lab is an independent learning and research prototype investigati
 └── tests/               # Hermetic pytest suite
 ```
 
-## Results (Historical Study Tables)
-Reported metrics below come from Phase 4 / V2-C2 (`GroupKFold` over 34 `Steel type` strings within the same 3 literature sources; hyperparameter search and final scoring share this CV partition without nested CV) and the observational Phase 6a subset. For baseline discrepancies (`reports/phase7a_baselines.md` vs earlier summary figures), see [docs/EVALUATION.md](docs/EVALUATION.md).
+## Results
+
+### P1 Unbiased Grouped Evaluation (Held-Out Calibration, New Protocol)
+Executed via `materials_data_lab.p1_evaluation` (`outer GroupKFold(5)` → target-blind `proper_train`/`calibration` split `seed=42` → inner `GroupKFold(3)` `n_iter=20` on `20–21` `proper_train` groups only → finite-sample `ceil((n+1)*(1-alpha))` `q90_k` on `7` held-out calibration groups → outer-test evaluation across all `1466` rows / `34` steel grades; full report in [reports/p1_grouped_evaluation/README.md](reports/p1_grouped_evaluation/README.md)):
+
+| Model (`proper_train` `20–21` groups) | Fold-Mean MAE ± Std | Pooled MAE (`n=1466`) | Pooled RMSE | Pooled R² | Group-Macro MAE (`G=34`) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **B1_Naive** (median) | `11.5008 ± 0.6353` | `11.4993` | `14.3426` | `-0.0385` | `11.6793 ± 2.5711` |
+| **B2_Physics** (`p_hj`, `C=19.5`) | `4.6867 ± 1.2491` | `4.6943` | `5.8927` | `0.8247` | `4.7513 ± 2.5639` |
+| **XGBoost (P1)** | **`2.9838 ± 0.6322`** | **`2.9842`** | **`3.8800`** | **`0.9240`** | **`3.0450 ± 1.6607`** |
+
+- **P1 Empirical Band & Coverage (`outer_test`):** Global row-weighted empirical coverage = **`87.24%`** (`1279/1466`; fold-mean `87.28% ± 5.01%`), group-macro coverage = **`87.12% ± 20.35%`**, fold-mean `q90_k = 5.7217 HRC`, and mean full band width (`2 × q90_k`) = **`11.4433 HRC`** (`11.4343 HRC` row-weighted). There is **no independent external dataset and no theoretical 90% coverage guarantee** for unseen steel groups.
+- **Why P1 Differs From Historical `2.35 / 2.48 HRC`:** The shift cannot be attributed solely to historical selection optimism—holding out `7` calibration groups shrinks `proper_train` from `27–28` groups (`~80%`) to `20–21` groups (`~60%`), and P1 runs `3`-fold × `20`-iter inner search rather than `5`-fold × `30`-iter on full data.
+
+### Historical Internal Study Tables (Shared-CV Legacy Benchmark)
+Reported metrics below come from historical Phase 4 / V2-C2 (`GroupKFold` over 34 `Steel type` strings within the same 3 literature sources; hyperparameter search and final scoring shared that CV partition without nested CV) and the observational Phase 6a subset. For baseline discrepancies (`reports/phase7a_baselines.md` vs earlier summary figures), see [docs/EVALUATION.md](docs/EVALUATION.md).
 
 | Model | S1 (RandomSplit — leaky reference) | S2 (`GroupKFold(5, steel_type)`, fold-mean) |
 | :--- | :--- | :--- |
@@ -51,7 +66,7 @@ Point predictions are accompanied by a fixed-width empirical prediction band der
 - **Severe per-family under-coverage:** Empirical OOF coverage drops below target in five groups: `AISI-SAE 9264` (`12.5%`, `n=40`), `0.31%C plain carbon` (`37.8%`, `n=45`), `AISI-SAE 5160` (`47.1%`, `n=51`; Cr-steel, not Si-spring), `Nitriding Steel` (`67.5%`, `n=40`), and `AISI-SAE E52100` (`74.5%`, `n=51`). See [reports/phase7d_calibration.md](reports/phase7d_calibration.md).
 
 ## Local Demo & Explicit Training
-`app.py` and `api.py` load pre-built artifacts from `models/` using `load_artifact` and **never** start automatic retraining or silently overwrite existing `.joblib` files (they return an explicit error / HTTP `503 model_not_ready` if artifacts are missing or fail to load). Because `.joblib` files use Python `pickle` serialization, only load artifacts from trusted local `models/` directories.
+`app.py` and `api.py` load **legacy pre-built artifacts from `models/`** (`artifact_meta.json`, `XGB_tuned` from historical shared-CV study, `conformal_q90 = 4.9673 HRC`) using `load_artifact`—they do **not** run or reflect P1 `proper_train` models—and **never** start automatic retraining or silently overwrite existing `.joblib` files (they return an explicit error / HTTP `503 model_not_ready` if artifacts are missing or fail to load). Because `.joblib` files use Python `pickle` serialization, only load artifacts from trusted local `models/` directories.
 
 To install dependencies in an isolated virtual environment, explicitly build artifacts (when permitted), and launch the demo or API:
 ```bash
@@ -87,13 +102,23 @@ python -m materials_data_lab.eda --input "data/raw/Tempering data for carbon and
 python -m materials_data_lab.modeling --input "data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv" --outdir reports
 python -m materials_data_lab.evaluation --input "data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv" --outdir reports
 python -m materials_data_lab.phase6a --input "data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv" --outdir reports
+# Workflow A — Full P1 reproduction from a fresh clone (note: GitHub clone does NOT include data/raw/ or local P1 outputs):
+#   1. Download the Raiipa CSV to data/raw/ and verify its SHA-256 matches 3f88fdccf4bb2f3c03be6eeca03001b4bd8a2b0de5cd4818195486182a4762b0:
+python -c "import hashlib; print(hashlib.sha256(open('data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv', 'rb').read()).hexdigest())"
+#   2. Run P1 grouped evaluation (write to a local directory outside models/):
+python -m materials_data_lab.p1_evaluation --csv "data/raw/Tempering data for carbon and low alloy steels - Raiipa.csv" --outdir <local_p1_run_dir> --mode full --max-seconds 900
+#   3. Build sanitized summary.json, README.md, and PNG figures from that local run:
+python -m materials_data_lab.p1_reporting --input-dir <local_p1_run_dir> --outdir reports/p1_grouped_evaluation
+
+# Workflow B — Regenerate report & charts only from an already-saved <local_p1_run_dir> (no training or raw CSV needed):
+python -m materials_data_lab.p1_reporting --input-dir <local_p1_run_dir> --outdir reports/p1_grouped_evaluation
 ```
 
 ## Data Attribution
 This project uses **"Tempering data for carbon and low alloy steels"** by **Raiipa Technologies** (Kaggle: `rgerschtzsauer`), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 - Source: https://www.kaggle.com/datasets/rgerschtzsauer/tempering-data-for-carbon-and-low-alloy-steels
 - Data version: Kaggle dataset version 3 (file dated `2024-05-20`; accessed `2026-09-22`; SHA-256 `3f88fdccf4bb2f3c03be6eeca03001b4bd8a2b0de5cd4818195486182a4762b0`).
-- Stored read-only and excluded from Git via `.gitignore`.
+- Stored locally and excluded from Git via `.gitignore` as a workflow practice (not a legal determination; reproducing local runs from a fresh clone requires downloading the verified CSV first; general CC BY 4.0 attribution sharing vs. uploader rights over compiled original literature sources remains distinct—see [reports/p1_grouped_evaluation/README.md](reports/p1_grouped_evaluation/README.md)).
 - Primary literature references (`Hollomon & Jaffe 1945`, `Grange & Baughman 1956`, ambiguous `Penha 2010`) are documented in [docs/data_dictionary.md](docs/data_dictionary.md) and [docs/references.md](docs/references.md).
 
 ## Documentation Map

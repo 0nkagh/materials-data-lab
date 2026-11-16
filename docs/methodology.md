@@ -45,4 +45,12 @@ Regressing a composition-linear interaction design (`Composite_C`) improved hist
 
 ## 7. Reproducibility, Artifact Safety & Testing
 - **Load-Only Runtime (`app.py`, `api.py`):** Runtime entrypoints call `load_artifact` and **never** trigger automatic retraining or overwrite `models/` on missing/failing pickles. Explicit training requires `python -m materials_data_lab.model_artifact --csv ... [--overwrite]`.
-- **Tests & CI:** `14` hermetic test files (`56` test cases; historical earlier note mentioned `39`) verify mocked/synthetic logic (`pytest`, `ruff check .`). Runtime boundary definitions live solely in `src/materials_data_lab/data_bounds.py`.
+- **Tests & CI:** Hermetic tests (`pytest`, `ruff check .`) verify synthetic/mocked behavior without hitting raw CSV or real `.joblib` pickles. Runtime boundary definitions live in `src/materials_data_lab/data_bounds.py`.
+
+---
+
+## 8. P1 Unbiased Grouped Evaluation & Reproducible Reporting
+- **Protocol (`p1_evaluation.py`):** Uses outer `GroupKFold(5)`, target-blind `proper_train` (`20–21` groups) vs. `calibration` (`7` groups) separation (`seed=42`), inner `GroupKFold(3)` search (`20` deterministic candidates), single refit on `proper_train`, and finite-sample `ceil((n + 1) * (1 - alpha))` calibration (`overflow_policy="inf"`).
+- **Results (`reports/p1_grouped_evaluation/`):** `XGBoost` pooled MAE `2.9842 HRC` (`2.9838 ± 0.6322` fold-mean, `3.0450` group-macro), `B2_Physics` pooled MAE `4.6943 HRC`, global coverage `87.24%` (`87.12%` group-macro), mean full band width `11.4433 HRC`. This gap relative to legacy `2.35 / 2.48` stems jointly from `-25%` smaller training groups (`proper_train`), differing inner search budgets, and held-out calibration—not historical optimism alone.
+- **Artifact Separation:** Demo/API (`app.py`, `api.py`) continues to serve legacy pre-built `models/` artifacts (`conformal_q90 = 4.9673 HRC`); P1 metrics do not replace those weights and still carry **no 90% group-level guarantee or external dataset validation**.
+- **Reporting Script (`p1_reporting.py`):** Regenerates `summary.json`, `README.md`, and PNG charts from saved local P1 outputs. Per-row `predictions.csv`, reproducible `split_manifest.json`, and local OS `run_manifest.json` are omitted from Git because publishing them is optional here, source-rights provenance over underlying literature compilations is not separately cleared (distinct from general CC BY 4.0 attribution), and they can be regenerated locally from the verified source CSV.

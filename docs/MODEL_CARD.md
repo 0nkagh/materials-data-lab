@@ -25,7 +25,14 @@ This prototype is **NOT** intended for:
 - **Strategy:** Internal `5`-fold `GroupKFold` (`S2`), grouped by the `34` `Steel type` strings within the same 3 literature sources.
 - **Methodological Caveats:** Hyperparameter search, model selection, and reported `S2` metrics share the same 5-fold `GroupKFold` split (no nested CV or external test set). Chemically similar grades and same-literature experimental protocols can appear in both train and validation folds. See [EVALUATION.md](EVALUATION.md).
 
-## Recorded Internal CV Metrics (Historical Study)
+## P1 Unbiased Grouped Evaluation Benchmark (Nested + Held-Out Calibration)
+To measure selection optimism and unseen-group empirical band behavior without calibration leakage ([reports/p1_grouped_evaluation/README.md](../reports/p1_grouped_evaluation/README.md)), a separate 5-fold outer `GroupKFold` pipeline trained models strictly on `20–21` `proper_train` groups (`seed=42` group-disjoint calibration holdout, inner `3`-fold × `20` candidates) and evaluated fixed `q90_k` intervals on untouched outer groups:
+- **XGBoost (P1):** Fold-mean MAE `2.9838 ± 0.6322 HRC`, pooled MAE `2.9842 HRC` (`≈ 2.98 HRC`), group-macro MAE `3.0450 HRC`, pooled RMSE `3.8800 HRC`, pooled R² `0.9240`.
+- **Physics Baseline (`B2_Physics`):** Pooled MAE `4.6943 HRC` (`≈ 4.69 HRC`, fold-mean `4.6867 HRC`).
+- **Empirical Band (`outer_test`):** Global row-weighted coverage **`87.24%`** (`1279/1466`), group-macro coverage **`87.12%`**, mean full band width **`11.4433 HRC`** (`≈ 11.44 HRC`, fold-mean `q90_k = 5.7217 HRC`).
+- **Interpretation & Artifact Separation:** P1 MAE exceeds legacy `2.35 / 2.48 HRC` not solely due to legacy selection optimism, because P1 also trains on fewer groups (`20–21` vs `27–28`) under a `3`-fold/`20`-iter inner search. There is no external dataset and no 90% coverage guarantee for unseen steel groups. Note that `models/` still stores and serves the **legacy full-dataset/historical `q90 = 4.9673 HRC` artifact**, not P1 `proper_train` weights.
+
+## Recorded Internal CV Metrics (Historical Shared-CV Study — Served Legacy Artifact Basis)
 - **Mean Absolute Error (MAE):** `2.35 ± 0.39 HRC` (fold-mean) / `2.48 HRC` (pooled OOF).
 - **R² Score:** `0.94` (fold-mean / pooled OOF).
 - **Empirical Uncertainty Band (`q90`):** Unweighted `0.90` quantile of pooled `1466` OOF residuals (evaluated on the same 1466 OOF pool, without finite-sample or group correction — no external coverage guarantee).

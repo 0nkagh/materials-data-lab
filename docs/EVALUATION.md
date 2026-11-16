@@ -2,7 +2,20 @@
 
 This document summarizes the validation methodology, recorded study results, and known methodological gaps.
 
-## Historical Baselines & Model Comparison
+## P1 Unbiased Grouped Evaluation (Held-Out Calibration Benchmark)
+Executed via `materials_data_lab.p1_evaluation` (`outer GroupKFold(5)` → target-blind `proper_train`/`calibration` split `seed=42` → inner `GroupKFold(3)` `n_iter=20` on `proper_train` only → finite-sample `ceil((n+1)*(1-alpha))` order-statistic `q90_k` on `calibration` only → outer-test evaluation; reproducible summary and figures in [reports/p1_grouped_evaluation/README.md](../reports/p1_grouped_evaluation/README.md)):
+
+| Model (`proper_train` `20–21` groups) | Fold-Mean MAE ± Std | Pooled Row-Weighted MAE (`n=1466`) | Pooled RMSE | Pooled R² | Group-Macro MAE (`G=34`) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **`B1_Naive`** (median) | `11.5008 ± 0.6353` | `11.4993` | `14.3426` | `-0.0385` | `11.6793 ± 2.5711` |
+| **`B2_Physics`** (`p_hj`, `C=19.5`) | `4.6867 ± 1.2491` | `4.6943` | `5.8927` | `0.8247` | `4.7513 ± 2.5639` |
+| **`XGBoost` (P1)** | **`2.9838 ± 0.6322`** | **`2.9842`** | **`3.8800`** | **`0.9240`** | **`3.0450 ± 1.6607`** |
+
+- **P1 Empirical Uncertainty & Coverage (`outer_test`):** Global row-weighted empirical coverage = **`87.24%`** (`1279/1466`), fold-mean coverage = `87.28% ± 5.01%`, group-macro coverage = **`87.12% ± 20.35%`**, fold-mean `q90_k = 5.7217 HRC`, and mean full band width (`2 × q90_k`) = **`11.4433 HRC`** (`11.4343 HRC` row-weighted).
+- **Comparing P1 (`2.98`) vs. Historical `V2-C2` (`2.35` / `2.48`):** Both structural training reductions (`20–21` `proper_train` groups vs `27–28` groups after holding out `7` calibration groups), inner `3`-fold/`20`-iter tuning differences, and removal of selection/calibration overlap contribute; the score shift must **not** be attributed solely to historical selection optimism.
+- **Boundary & Serving Separation:** There is **no independent external dataset and no theoretical 90% coverage guarantee** for unseen steel groups. The runtime demo/API (`app.py`, `api.py`) continues to serve **legacy pre-built `models/` artifacts** (`conformal_q90 = 4.9673 HRC`), not P1 `proper_train` models.
+
+## Historical Baselines & Model Comparison (Legacy Shared-CV Study)
 > **Baseline Provenance Notice (2026-11-17):** Earlier revisions of this file cited `Dummy Regressor: 8.94 HRC` and `Ridge Regression: 4.70 HRC` while referencing `reports/phase7a_baselines.md`. Those two figures do not match `reports/phase7a_baselines.md` and have no reproducible generator script in `src/`, so they are **not** presented as verified current results. Similarly, `phase7a` and `phase7b` lack complete standalone CLI generators (`ablation_study.py` is a non-writing stub).
 
 Recorded `S2` (`GroupKFold(n_splits=5, groups=steel_type)`) values from existing report artifacts are:
