@@ -1,83 +1,48 @@
 # Materials Data Lab: Analytical Methodology & Pipeline Architecture
 
-This document synthesizes the empirical approach, data quality pipeline, and modeling evolution of the Materials Data Lab project. It serves as the definitive guide to how the project addresses the metallurgical relationship between steel composition, tempering conditions, and resulting hardness (HRC).
+This document summarizes the empirical workflow, data-quality rules, modeling evolution, and prototype boundaries of Materials Data Lab.
 
 ---
 
 ## 1. Data Provenance & Integrity
 - **Dataset:** "Tempering data for carbon and low alloy steels" (Raiipa Technologies, Kaggle: `rgerschtzsauer`).
 - **License:** Creative Commons Attribution 4.0 International (CC BY 4.0).
-- **Core Literature Sources:**
-  - Hollomon & Jaffe (1945): Foundational time-temperature equivalence in tempering.
-  - Grange & Baughman (1956): Hardness measurements of tempered martensite.
-  - Penha (2010) / Kang & Lee (2014): Kinetic formulations of tempering hardness.
-- **Immutability:** The raw CSV file is stored locally, excluded from version control, and accessed strictly in read-only mode via a hash-pinned loader to prevent data fabrication or accidental corruption.
+- **Core Literature Sources:** Hollomon & Jaffe (1945), Grange & Baughman (1956), Penha (2010, ambiguous citation in dataset card).
+- **Immutability:** The raw CSV (`1466×17`, `SHA-256 = 3f88fd...62b0`) is stored locally, excluded from Git, and accessed read-only. Row-level cleaning and feature transforms (`log_time`, `p_hj`) use no cross-row fitting statistics.
 
 ---
 
 ## 2. Quality-First Pipeline & Decision Log
-The project enforces a strict "data quality first" pipeline. Anomalies are not silently deleted; they are flagged using a custom taxonomy and handled via explicit, recorded decisions.
-
-| Decision ID | Summary of Action / Rule | Status |
-| :--- | :--- | :--- |
-| **D-01** | Missing `initial_hrc` values (literal `?`) are parsed as `NaN`. | `APPROVED` |
-| **D-02** | Values < 20 HRC (ASTM E140 extrapolation suspect) are kept but flagged. | `APPROVED` |
-| **D-03** | High Al (>0.15% wt) is flagged as potential Nitralloy (intentional) and kept. | `APPROVED` |
-| **D-04** | High P (>0.05% wt) is flagged as impurity suspect but kept. | `APPROVED` |
-| **D-05** | Missing `steel_type` is filled with `UNKNOWN_GRADE`. | `APPROVED` |
-| **D-06** | Logical duplicates (same composition & conditions) are kept to preserve variance. | `APPROVED` |
-| **D-07** | Column names are mapped to safe slugs via a hardcoded dictionary. | `APPROVED` |
-| **NK-1/2** | String whitespace stripped; Fahrenheit conversion traces logged `[REPORT_ONLY]`. | `APPROVED` |
-| **D-08** | `initial_hrc` is omitted from the main MVP to avoid dropping 64% of rows. | `APPROVED` |
-| **D-09/11** | Hyperparameter tuning must be leakage-free using `GroupKFold(5, steel_type)`. | `APPROVED` |
-| **D-10** | Champion models are selected based strictly on GroupKFold (S2) performance. | `APPROVED` |
-| **D-12/14** | A new model/feature becomes champion only if S2 MAE improves by >0.15 HRC. | `APPROVED` |
-
-*(Detailed records can be found in `docs/cleaning_decisions.md` and Phase 2/3 reports).*
+Anomalies are preserved and flagged rather than silently deleted (`D-01..D-24`, `docs/cleaning_decisions.md`):
+- Missing `initial_hrc` (`?`, `949/1466` rows) is parsed as `NaN` (`D-01`), dropped from main MVP features (`D-08`), and not synthetically imputed (`D-15`).
+- `<20 HRC` (`123` rows, `E140_EXTRAPOLATION_SUSPECT`), `Al > 0.15 %wt` (`40` rows), and `P > 0.05 %wt` (`17` rows) remain flagged (`D-02..D-04`).
+- `GroupKFold(5)` uses `.str.strip()` cleaned `Steel type` strings (`34` grades; `0` exact composition overlap between different names, though neighboring chemistries and same-literature series span folds; `heat ID`, quench medium, and geometry are absent).
 
 ---
 
-## 3. Modeling Protocol
-To prevent optimistic evaluation bias caused by identical steel samples appearing in both training and testing sets, models are evaluated under two splits:
-- **S1 (RandomSplit):** A standard 80/20 split. Prone to data leakage across rows of the same steel type.
-- **S2 (GroupSplit / GroupKFold):** Cross-validation grouped by `steel_type`. Simulates performance on entirely *unseen* steel grades. **S2 is the sole metric for champion selection (D-10).**
+## 3. Modeling Protocol & Selection Scope
+- **`S1 (RandomSplit)`:** Standard `80/20` split (`random_state=42`) — intentionally documented as leaky/optimistic across rows of the same steel grade.
+- **`S2 (GroupKFold(5, groups=steel_type))`:** Grade-string holdout within the 3 literature compilations. Note: Hyperparameter tuning (`RandomizedSearchCV`), champion comparison (`D-12`), and feature/constraint ablation (`D-14/17/18`) share this same 5-fold partition (no nested outer CV or external test set). Because `GroupKFold` fold sizes are unequal, both `fold-mean` and `pooled OOF` metrics are reported (`D-24`).
 
 ---
 
-## 4. Physics Evolution Study (V2-E)
-The classical Hollomon-Jaffe (HJ) parameter models tempering hardness using a constant $C$ (often assumed as 19.5). In Phase V2-E, inspired by Kang & Lee (2014), we tested a composition-dependent `Composite_C` formulation.
-
-- **Performance Gain:** The `Composite_C` formulation improved the physical baseline's S2 MAE from **4.67 HRC** to **3.34 HRC**.
-- **Metallurgical Consistency [REPORT_ONLY]:** The learned coefficients for strong carbide formers and hardenability elements (V, C, Mo, Si, Cr) were all strongly positive, correctly reflecting their physical role in delaying softening (increasing tempering resistance).
-- **Collinearity Caveat [REPORT_ONLY]:** Because the model acts as a closed-form linear interaction design regressed directly on HRC, recovering a single absolute 'effective C' is unidentifiable due to collinearity between the time term and intercept. However, the predictive CV results and directional trends remain entirely valid. *(See `reports/phase_v2e_hj_evolution.md`)*.
+## 4. Physics Baseline Study (`V2-E`)
+Regressing a composition-linear interaction design (`Composite_C`) improved historical `S2` fold-mean MAE from `4.67 HRC` (`B2`, assumed `C=19.5`) to `3.34 HRC` (`Composite_C`), though individual element weights are unidentifiable due to collinearity (`[REPORT_ONLY]`).
 
 ---
 
-## 5. The Champion: Tuned XGBoost
-Following the V2-C2 Challenger Study, a tuned **XGBoost Regressor** defeated the MVP Random Forest and was crowned the champion model.
-- **Performance:** S2 MAE of **2.35 ± 0.39 HRC** (R² = 0.94).
-- **Explainability:** SHAP (Shapley Additive exPlanations) analysis confirmed that tempering temperature and time dominate the model's decisions, while alloy compositions (C, Mo, Cr, Si) act as secondary adjusters. This completely aligns with both MDI and permutation importance rankings. *(See `reports/phase_v2c2_compare.md`)*.
-- **Feature Addition:** Attempting to feed the classical $p_{hj}$ feature into the XGBoost model yielded a marginal gain of ~0.046 HRC, failing the D-14 threshold (>0.15 HRC). The champion remained unmodified.
+## 5. Champion Configuration (`V2-C2`) & Attribution Caveat
+- **Internal `S2` Benchmark:** Tuned `XGBRegressor` achieved `2.35 ± 0.39 HRC` fold-mean MAE (`2.48 HRC` pooled OOF, `R² = 0.94`), outperforming tuned RF (`2.64 ± 0.24 HRC`) under `D-12` (`>0.15 HRC` rule). Feeding `p_hj`, monotonic constraints, or engineered metallurgical proxies failed to clear `>0.15 HRC` (`D-14/17/18`).
+- **SHAP Interpretability Caveat:** Tree SHAP decomposes **model predictions** across correlated alloying features (`temper_temp_c`, `log_time`, `c_wt`, `cr_wt`, `si_wt`, `mo_wt`); SHAP bars must **not** be read as isolated physical/causal metallurgical effects.
 
 ---
 
-## 6. Recommender System & Inverse Optimization (V5-A)
-The project includes a local "Recipe Recommender" to perform inverse optimization: finding the optimal tempering temperature and time for a given target HRC and composition.
-- **Methodology (Grid Scan):** Because tree-based models (Random Forest, XGBoost) create step-wise predictions rather than continuous gradients, gradient-based optimization tools (like `scipy.optimize` or `optuna`) fail. We use a brute-force grid scan over realistic domains ($T \in [100, 705]^\circ\text{C}$ at $0.5^\circ\text{C}$ resolution, $t \in [1800, 3600, 7200, 14400]$ seconds).
-- **Physical Constraints:** The system returns the shortest possible time and lowest temperature within a $\pm 0.5$ HRC tolerance. It enforces data support boundaries (extrapolation blocks) and rejects unachievable targets with a `NOT_ACHIEVABLE` flag.
-- **Validation:** Tests on 5 real steel grades (e.g., 4140, 1045, 4340) confirmed the system successfully identifies achievable recipes well within the $\pm 0.5$ HRC threshold across targets from 30 to 50 HRC.
+## 6. Empirical OOF Uncertainty Band (`D-19`) & Candidate Condition Search (`V5-A`)
+- **Uncertainty Band (`OOF residual pooling`):** `q90` is taken as `np.quantile(|y - oof_preds|, 0.90)` across all `1466` OOF residuals and evaluated on the same pool (`~89.97%` hit rate; no independent holdout or finite-sample/group correction). Recorded `q90` differs across V3-A (`5.080 HRC`), `models/artifact_meta.json` (`4.9673 HRC`), and `phase7a` (`4.98 HRC`) — discrepancy source unverified without re-running. Five steel groups exhibit severe under-coverage (`reports/phase7d_calibration.md`).
+- **Recommender (`/recommend`):** Performs a brute-force grid scan (`T ∈ [100, 704] °C` at `0.5 °C` numerical step across piecewise-constant tree splits; `t ∈ {1800, 3600, 7200, 14400} s`) to return **candidate tempering conditions requiring lab validation** (not optimal production recipes). Chemistry outside `OBSERVED_UNIVARIATE_BOUNDS` returns `OUT_OF_OBSERVED_SCOPE` with zero candidates; `±0.5 HRC` applies only to the point prediction (not the `~±5 HRC` uncertainty band); `(t_s, T_c)` sorting is heuristic and ignores furnace energy cost and temper embrittlement (`250–575 °C`); `NO_CANDIDATE_FOUND` reflects grid/model limits rather than physical impossibility.
 
 ---
 
-## 7. Limitations & Vulnerabilities
-- **Single Dataset Bias:** The model is trained on a single aggregated literature dataset. Real-world industrial validation is required before any physical use.
-- **Weak Spot (Si-Alloys):** Both RF and XGBoost models show significant predictive weakness on Silicon-alloy steels (e.g., 9260 type), exhibiting high MAE (up to ~9.2 HRC). Silicon's complex role in delaying cementite precipitation is mathematically under-captured by the current feature space.
-- **Extrapolation Risk:** Predictions below 20 HRC or above 650°C enter the dataset's extrapolation zones and should be treated as highly suspect.
-
----
-
-## 8. Reproducibility & Deployment
-- **Determinism:** All data splits and model trainings enforce `random_state=42`.
-- **Artifact Schema (v2):** The trained model is serialized alongside a `meta.json` file (Schema v2) that hashes the raw CSV and validates feature ordering. If the schema is outdated or the CSV hash mismatches, the system gracefully forces a retraining event.
-- **Continuous Integration (CI):** 39 strict `pytest` unit tests run on every push via GitHub Actions.
-- **Local Demo:** Users can launch a local Gradio interface running the Champion XGBoost model by simply executing `python app.py` (which seamlessly handles missing artifacts through automatic background training).
+## 7. Reproducibility, Artifact Safety & Testing
+- **Load-Only Runtime (`app.py`, `api.py`):** Runtime entrypoints call `load_artifact` and **never** trigger automatic retraining or overwrite `models/` on missing/failing pickles. Explicit training requires `python -m materials_data_lab.model_artifact --csv ... [--overwrite]`.
+- **Tests & CI:** `14` hermetic test files (`56` test cases; historical earlier note mentioned `39`) verify mocked/synthetic logic (`pytest`, `ruff check .`). Runtime boundary definitions live solely in `src/materials_data_lab/data_bounds.py`.

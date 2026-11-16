@@ -1,33 +1,24 @@
 # Materials Data Lab: Project Overview
 
 ## 1. Problem Statement
-The heat treatment of carbon and low-alloy steels requires determining precise tempering temperatures ($T$) and times ($t$) to achieve a specific target hardness (HRC). Traditional methods rely heavily on trial-and-error laboratory testing or static historical charts. This project addresses the need for a data-driven prototype capable of mapping steel alloy composition to post-tempering hardness and providing automated, uncertainty-aware recipe recommendations. 
+Heat treatment of carbon and low-alloy steels requires selecting tempering temperatures (`T`) and soaking times (`t`) toward a target hardness (`HRC`). This research prototype explores how well tabular models trained on an aggregated literature dataset predict post-tempering hardness and flag boundary/uncertainty risks before physical laboratory trials.
 
 ## 2. Approach
-The project employs a dual baseline approach: a purely physical baseline using the Hollomon-Jaffe (1945) parameter, and a set of machine learning models trained on empirical composition and treatment data. A data-quality-first approach was utilized to clean, audit, and structure the data (1466 rows, 17 columns) before training. Evaluation is built on a rigorous `GroupKFold` strategy (grouped by steel grade) to test the model's ability to generalize to unseen steel alloys.
+The pipeline combines a rule-based physical baseline (`Hollomon-Jaffe 1945`, assumed `C = 19.5`) with tree-based models trained on `1466` cleaned literature rows (`17` raw columns, `initial_hrc` excluded due to `64.7%` missingness). Internal evaluation uses `GroupKFold(5)` grouped by the `34` `Steel type` strings within those 3 literature sources (`S2`).
 
-## 3. Champion Model Summary
-The final champion model is a tuned XGBoost regressor (V1.1 model architecture). 
-When tested on entirely unseen steel families (Grade-Disjoint Cross-Validation), the model achieves:
-- **MAE:** 2.35 ± 0.39 HRC (fold-mean aggregation) / 2.48 HRC (pooled OOF aggregation)
-- **R²:** 0.94 (fold-mean aggregation)
+## 3. Champion Model Summary (Historical Internal CV)
+On the internal 5-fold `GroupKFold(steel_type)` split (shared with hyperparameter search and model selection, with no nested outer CV or external test set), the tuned XGBoost configuration achieved:
+- **MAE:** `2.35 ± 0.39 HRC` (fold-mean) / `2.48 HRC` (pooled OOF)
+- **R²:** `0.94`
 
-## 4. Uncertainty & Calibration
-To prevent over-confident predictions, the system uses Split-Conformal Prediction. 
-Based on out-of-fold (OOF) residuals, a constant width interval of **q90 = 5.08 HRC** was derived. This guarantees a global empirical coverage of ~89.9%. However, per-family calibration analysis revealed severe under-coverage in specific chemical groups (e.g., Si-spring steels, E52100 bearing steels), which are excluded from commercial pilot testing.
+## 4. Uncertainty Band (OOF Residual Pooling)
+Predictions include a fixed-width empirical prediction band from the unweighted `0.90` quantile of pooled `1466` OOF absolute residuals (`5.08 HRC` in V3-A `phase_v3a_physics.json`, `4.9673 HRC` in `models/artifact_meta.json`, `4.98 HRC` in `phase7a_baselines.md`; exact discrepancy cause unverified without re-running). Calibration and global same-pool hit rate (`89.97%`) share the same 1466 residuals, providing **no external or per-family coverage guarantee**. Five steel groups (`9264`, `0.31%C plain carbon`, `5160` [Cr-steel, not Si-spring], `Nitriding Steel`, `E52100`) show severe empirical under-coverage and are excluded from pilot trials.
 
-## 5. Recipe Recommender
-An API endpoint (`/recommend`) provides reverse-engineering capabilities. Given a composition and a target HRC, it scans a dense grid of $T$ and $t$, groups valid solutions into contiguous temperature windows (0.5°C step), and returns the top 3 recipe candidates (prioritizing shortest time, then lowest temperature). It includes strict safety boundaries, flagging Out-Of-Distribution (OOD) chemistry and "High Uncertainty" scenarios.
+## 5. Candidate Tempering Condition Recommender (`/recommend`)
+`/recommend` grids `T` (`100–704 °C`, `0.5 °C` numerical scan step across tree splits) and 4 discrete durations (`1800, 3600, 7200, 14400 s`), matching the model's **point prediction** within `±0.5 HRC` (separate from the `~±5 HRC` empirical band) and prioritizing shortest `t` then lowest `T` heuristically (not energy/cost or embrittlement optimization). Out-of-bounds chemistry is rejected with `recommendable = False` (`OUT_OF_OBSERVED_SCOPE`); `NO_CANDIDATE_FOUND` denotes no grid match within `±0.5 HRC` rather than physical impossibility. In-box results still lack verified multivariate support.
 
-## 6. Documentation Map (Single Source of Truth)
-To prevent duplication, specific details are isolated in the following documents:
-- **`PROJECT_OVERVIEW.md`** (This file): High-level summary of the prototype.
-- **`MODEL_CARD.md`**: Intended use, out-of-scope use, quantitative evaluation, and failure modes.
-- **`DATA_SHEET.md`**: Dataset origin, URL, SHA hashes, shape, caveats, and licensing.
-- **`EVALUATION.md`**: Complete evaluation history (baselines, ablation, leakage, calibration metrics).
-- **`COMMERCIAL_PILOT.md`**: Pre-registered protocol for pilot testing in a real laboratory environment.
-- **`LIMITATIONS.md`**: Consolidated list of all known boundaries and constraints.
-- **`cleaning_decisions.md`**: Log of all rules applied during data cleaning and preprocessing.
-- **`data_dictionary.md`**: Metadata and column descriptions for the raw dataset.
-- **`methodology.md`**: The scientific narrative and chronological phase decisions (V1-V6).
-- **`reports/phase*.md`**: Auto-generated evaluation tables directly sourced from the codebase.
+## 6. Documentation Map
+- [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md) · [MODEL_CARD.md](MODEL_CARD.md) · [DATA_SHEET.md](DATA_SHEET.md)
+- [EVALUATION.md](EVALUATION.md) · [COMMERCIAL_PILOT.md](COMMERCIAL_PILOT.md) · [LIMITATIONS.md](LIMITATIONS.md)
+- [cleaning_decisions.md](cleaning_decisions.md) · [data_dictionary.md](data_dictionary.md) · [methodology.md](methodology.md)
+- `reports/phase*.md`: Historical phase outputs (with post-audit correction notes where needed).

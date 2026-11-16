@@ -1,38 +1,34 @@
-# Commercial Pilot Protocol
+# Commercial Pilot Protocol (Pre-Registered Research Screening)
 
 ## A. Commercial Summary
-- **The Problem:** Heat treatment foundries spend significant time and energy on laboratory trial-and-error to find the correct tempering recipe to reach a target hardness.
-- **The Beneficiary:** Metallurgical engineers, quality control labs, and heat treatment process designers.
-- **The Acceleration:** Reduces the initial search space for tempering parameters, providing a strong mathematical starting point and candidate recipe windows.
-- **Data Footprint:** Trained on 1466 historical data points representing carbon and low alloy steels.
-- **Reliability:** Statistically evaluated to a ~2.35 HRC error margin on unseen steel grades, backed by a 90% conformal uncertainty interval.
-- **When NOT to use:** Cannot be used for high-alloy tool steels, unverified families (e.g., Si-spring steels), multi-stage tempering, or without mandatory human-in-the-loop laboratory verification.
-- **The Pilot:** A strictly scoped, physical laboratory validation sequence designed to measure real-world prototype viability against the digital baseline.
+- **The Problem:** Heat-treatment trial planning seeks starting tempering parameters (`T`, `t`) before laboratory coupons are tested.
+- **The Beneficiary:** Metallurgical engineers and heat-treatment QC labs (with mandatory domain-expert sign-off).
+- **Intended Role:** Reduces initial experimental search space by proposing **candidate processing windows** as a starting hypothesis—never an autonomous or production-ready recipe.
+- **Data Footprint:** `1466` literature rows across 3 sources (`Grange 1956`, `Hollomon 1945`, `Penha 2010`).
+- **Observed Internal Performance & Uncertainty Caveats:** Historical internal `GroupKFold(5)` study yielded `~2.35 HRC` fold-mean MAE (`2.48 HRC` pooled OOF) and an empirical OOF residual quantile (`±5.08 HRC` in V3-A study / `±4.9673 HRC` in `models/artifact_meta.json`). Because OOF pooling has no independent external coverage guarantee, physical acceptance must be established empirically in the lab.
+- **When NOT to use:** High-alloy tool steels, multi-stage tempering, unverified or under-covered steel families (high-Si spring `9264`, Cr-steel `5160`, bearing `E52100`, `Nitriding Steel`, `0.31%C plain carbon`), out-of-scope chemistry, or any setting without human-in-the-loop laboratory testing.
 
 ## B. Pilot Protocol
-The pilot phase moves the prototype from digital cross-validation to physical laboratory evaluation.
-- **Allowed Family:** Cr-Mo steels exclusively. (Evidence from `reports/phase7d_calibration.md`: AISI-SAE 41xx / 43xx / 46xx exhibit stable and verified coverage of 94–98%).
-- **Excluded Families:** Si-spring (9264, 5160), Bearing (E52100), Nitralloy, and ultra-low carbon plain steels.
+The pilot moves from internal digital cross-validation to physical laboratory coupon testing.
+- **Allowed Candidate Grades (based on historical OOF empirical coverage, NOT strictly single SAE prefix):**
+  - Documented as `41xx` (`Cr-Mo`: `4140`, `97.8%`), `43xx` (`Ni-Cr-Mo`: `4340`, `94.1%`), and `46xx` (`Ni-Mo`: `4640`, `Cr=0.06%`, `98.0%`). *(Correction note: earlier prose grouped all three under "Cr-Mo"; `4340` is `Ni-Cr-Mo` and `4640` is `Ni-Mo` classified as `UNKNOWN_CLASS` in `steel_classes.py`.)*
+- **Excluded Families:** High-Si spring (`9264`), Cr-steel (`5160` — previously mislabeled `Si-spring` in text), bearing (`E52100`), `Nitriding Steel`, and `0.31%C plain carbon` steel (`reports/phase7d_calibration.md`).
 - **Process Scope:** Single-stage continuous tempering only.
-- **Sample Size:** 5 to 20 physical lab coupons.
-- **Execution:** 
-  1. Forward-Predict: Generate predictions for known lab conditions, comparing predicted vs. actual hardness. Calculate interval coverage.
-  2. Reverse-Recommend: Use the `/recommend` endpoint to request a recipe for a target HRC. Run the laboratory furnace at the recommended candidate window (T, t). Compare the final physical HRC to the target.
+- **Sample Size:** `5` to `20` physical lab coupons.
+- **Execution:**
+  1. Forward-Predict: Compare point predictions and empirical band hits against measured lab coupon hardness.
+  2. Candidate Conditions (`/recommend`): Evaluate whether furnace runs at proposed candidate windows `(T, t)` fall within acceptable physical tolerances (accounting for both the `±0.5 HRC` grid-match tolerance and the `~±5 HRC` empirical band).
 
 ## C. Pre-Registered Acceptance Criteria
-To proceed beyond the pilot phase, the following physical thresholds must be met:
-1. **In-Family MAE:** ≤ 3.0 HRC error average on the physical coupons.
-2. **Interval Coverage:** ≥ 85% of physical results must fall within the model's ±5.08 HRC conformal band.
-3. **Recipe Round-Trip Accuracy:** The physical hardness produced by the recommended recipe candidate must be within ≤ 0.5 HRC of the predicted candidate hardness.
+1. **In-Family Physical MAE:** `≤ 3.0 HRC` error average on physical lab coupons.
+2. **Physical Band Hit Rate:** `≥ 85%` of physical coupon measurements fall within the model's empirical `±q90` band (`±5.08 HRC` study benchmark / `±4.9673 HRC` artifact value; state clearly which artifact is evaluated).
+3. **Candidate Round-Trip Physical Consistency:** Physical hardness measured at recommended candidate `(T, t)` is within `≤ 0.5 HRC` of the predicted candidate hardness (or document empirical deviation if `0.5 HRC` reflects grid-step precision rather than furnace repeatability).
 
 ## D. Pilot Results
 `DATA_NOT_AVAILABLE`
 *(This section remains strictly empty until physical laboratory measurements are recorded and integrated).*
 
-## E. Success Metrics & Commercial Limitations
-While the acceptance criteria govern the pilot's success, scaling up commercially is strictly bound by these fundamental limitations:
-- **Out-Of-Scope Families:** Applying the model outside the validated Cr-Mo family requires a completely new validation protocol.
-- **Missing `initial_hrc`:** The lack of pre-temper hardness (as-quenched HRC) in the training data means variations in the initial quench quality cannot be modeled.
-- **Missing Quench/Geometry Context:** The model assumes a standardized metallurgical quench state. Differences in cooling mediums (oil vs. water) and cross-sectional part thicknesses (mass effect) are blind spots.
-- **Domain Shift:** Furnace calibrations, thermocouple lag, and lab-specific practices can cause systematic shifts between the Kaggle dataset and a specific facility.
-- **Human Oversight:** The model provides a mathematical hypothesis. A qualified metallurgical engineer must authorize every production batch.
+## E. Limitations Binding Any Commercial Scale-Up
+- **Out-of-Scope & Unverified Multivariate Chemistry:** 1D min–max bounds do not verify multivariate support; unvalidated grades require separate calibration.
+- **Missing `initial_hrc`, Quench Medium, Geometry & Cost/Embrittlement Constraints:** Variations in as-quenched state, oil vs. water quenching, section mass effects, and temper embrittlement (`250–575 °C`) are unmodeled.
+- **Domain Shift & Human Oversight:** Furnace calibration and thermocouple lag can shift lab hardness systematically; a qualified metallurgist must authorize every physical trial and batch.

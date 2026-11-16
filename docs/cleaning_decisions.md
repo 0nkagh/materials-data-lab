@@ -30,3 +30,7 @@ Bu doküman Phase 2 kapsamında oluşturulmuş olup, verideki anomalilere karş�
 | **D-22** | `/recommend` OOD Semantiği | - | Yalnızca girdideki kimyasal bileşimi baz alarak Extrapolation (OOD) kontrolü yapmak. | T ve t zaten tarama gridinde sınırlandırılmıştır ve çıktı olarak hesaplanmaktadır; dolayısıyla sadece kimya OOD kontrolüne tabidir. | Tüm | `APPROVED (2026-09-26)`<br>_Uygulandı: recommender.py_ |
 | **D-23** | `high_uncertainty` Bayrağı Tanımı | - | Önceden kayıtlı iki koşula (OOD VEYA n_solutions < 5) göre `True` dönmek. | Model belirsizliğini ve reçete gevrekliğini programatik, kesin ve katı bir kurala bağlamak. | Tüm | `APPROVED (2026-09-26)`<br>_Uygulandı: recommender.py_ |
 | **D-24** | Çift Agregasyon Raporlama Sözleşmesi | - | S2 (GroupKFold) sonuçlarında fold-mean (2.35±0.39 HRC) ve pooled OOF (2.48 HRC) değerlerini her zaman etiketli ve birlikte raporlamak. | İstatistiksel dürüstlük; tek bir agregasyon metodunun yaratabileceği yanılsamayı engellemek. | Tüm | `APPROVED (2026-09-26)`<br>_Uygulandı: Tüm Dokümanlar_ |
+
+---
+> **Düzeltme Notu (2026-11-17):** Tarihsel karar tablosu korunmuştur. `D-19` uygulamasında `q90` bağımsız kalibrasyon/test ayrımı olmaksızın `GroupKFold(5)` OOF artıkları üzerinde (`np.quantile(residuals, 0.90)`) hesaplanır; bu nedenle dış kapsama garantisi vermez (`5.08 HRC` V3-A vs `4.9673 HRC` `artifact_meta.json` farkı doğrulanmamıştır). `D-21` kapsamındaki `AISI-SAE 5160` grubu `Cr_steel` sınıfındadır (`Si=0.22%, Cr=0.79%`); yüksek silisyumlu yay çeliği `9264` grubudur (`Si=1.62%`).
+

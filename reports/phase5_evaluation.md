@@ -76,3 +76,10 @@
 | 0,31%C - plain carbon steel | Hollomon and Jaffe, 1945 | 600.0 | 90 | 22.5 | 34.5 | 12.0 |
 
 **Gözlem**: B2'nin (fiziksel baseline) en zayıf olduğu bölgeler ile RF modelinin zorlandığı bölgeler (genellikle uç sertlik/sıcaklık değerleri) paralellik göstermektedir.
+
+---
+> **Düzeltme Notu (2026-11-17 — Tarihsel Sonuçlar Korundu):**
+> 1. Çalışma zamanı `app.py` / `api.py` artık eksik/bozuk artifact durumunda otomatik eğitim başlatmaz (`load_artifact` kullanır).
+> 2. Yukarıdaki `D-19` `q90` bandı bağımsız split-conformal değil, `1466` OOF kalıntı havuzu üzerinde aynı örneklemle ölçülmüş ampirik tahmin bandıdır; aile bazında (`9264`, `0,31%C`, `5160`, `Nitriding`, `E52100`) alt-kapsama mevcuttur ve dış kapsama garantisi yoktur.
+> 3. Yukarıdaki notta anılan `4.97` (`artifact_meta.json`: `4.96733`) vs `5.08` (`v3_physics.py`) farkının `n_jobs=-1` deterministik-olmayışından kaynaklandığı iddiası yeniden eğitim çalıştırılmadığı için **deneysel olarak doğrulanmamıştır**.
+> 4. Tuning, model seçimi ve final S2 değerlendirmesi nested CV olmadan aynı `GroupKFold(5)` bölümünü paylaşmaktadır.
